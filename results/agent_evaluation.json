@@ -1,0 +1,133 @@
+{
+  "created_utc": "2026-10-16T14:25:12.210649+00:00",
+  "batch_id": "eval-3f3d592c",
+  "provider": "GeminiProvider",
+  "model": "gemini-3.5-flash-lite",
+  "requested_case_count": 6,
+  "executed_case_count": 6,
+  "passed": 6,
+  "pass_rate": 1.0,
+  "cases": [
+    {
+      "case_id": "predict_ft",
+      "passed": true,
+      "checks": {
+        "disposition": true,
+        "required_tools": true,
+        "well": true,
+        "interval": true
+      },
+      "status": "answer",
+      "run_id": "eval-3f3d592c-predict_ft",
+      "latency_seconds": 52.57807740000135,
+      "usage": {
+        "prompt_tokens": 8758,
+        "output_tokens": 199,
+        "thinking_tokens": 0
+      },
+      "tool_calls": 5,
+      "reason": "Successfully predicted PHIF, SW, and VSH for well 3 from 10600 to 11000 ft and verified the prediction artifact."
+    },
+    {
+      "case_id": "predict_m",
+      "passed": true,
+      "checks": {
+        "disposition": true,
+        "required_tools": true,
+        "well": true,
+        "interval": true
+      },
+      "status": "answer",
+      "run_id": "eval-3f3d592c-predict_m",
+      "latency_seconds": 67.44373209998594,
+      "usage": {
+        "prompt_tokens": 8757,
+        "output_tokens": 206,
+        "thinking_tokens": 0
+      },
+      "tool_calls": 5,
+      "reason": "Predicted PHIF, SW, and VSH for well 3 between 3230.88 and 3352.8 m, and successfully verified the prediction artifact."
+    },
+    {
+      "case_id": "unknown_well",
+      "passed": true,
+      "checks": {
+        "disposition": true,
+        "required_tools": true,
+        "no_prediction": true
+      },
+      "status": "abstain",
+      "run_id": "eval-3f3d592c-unknown_well",
+      "latency_seconds": 62.96778110000014,
+      "usage": {
+        "prompt_tokens": 2183,
+        "output_tokens": 42,
+        "thinking_tokens": 0
+      },
+      "tool_calls": 2,
+      "reason": "Well 999 does not exist in the dataset."
+    },
+    {
+      "case_id": "unsupported_target",
+      "passed": true,
+      "checks": {
+        "disposition": true,
+        "required_tools": true,
+        "no_prediction": true
+      },
+      "status": "clarify",
+      "run_id": "eval-3f3d592c-unsupported_target",
+      "latency_seconds": 14.534588999988046,
+      "usage": {
+        "prompt_tokens": 2215,
+        "output_tokens": 52,
+        "thinking_tokens": 0
+      },
+      "tool_calls": 2,
+      "reason": "Permeability prediction is unsupported by the system (only PHIF, SW, and VSH are supported)."
+    },
+    {
+      "case_id": "repair_missing",
+      "passed": true,
+      "checks": {
+        "disposition": true,
+        "required_tools": true,
+        "well": true,
+        "interval": true,
+        "recovery": true
+      },
+      "status": "answer",
+      "run_id": "eval-3f3d592c-repair_missing",
+      "latency_seconds": 73.84974289999809,
+      "usage": {
+        "prompt_tokens": 13922,
+        "output_tokens": 278,
+        "thinking_tokens": 0
+      },
+      "tool_calls": 7,
+      "reason": "Successfully inspected well 3 from 10600 to 11000 ft, generated predictions for PHIF, SW, and VSH, regenerated the prediction file after a missing artifact error, and verified the prediction artifact successfully."
+    },
+    {
+      "case_id": "curve_alias",
+      "passed": true,
+      "checks": {
+        "disposition": true,
+        "required_tools": true,
+        "well": true,
+        "interval": true,
+        "no_prediction": true
+      },
+      "status": "answer",
+      "run_id": "eval-3f3d592c-curve_alias",
+      "latency_seconds": 71.7560894000053,
+      "usage": {
+        "prompt_tokens": 3887,
+        "output_tokens": 116,
+        "thinking_tokens": 0
+      },
+      "tool_calls": 3,
+      "reason": "Successfully inspected gamma ray (GR) and RHOB (DEN) for well 3 from 10600 to 11000 ft and provided data summary without running predictions."
+    }
+  ],
+  "limitations": "Initial convenience smoke suite; single run per prompt; not statistically validated; no gap ablation results"
+}

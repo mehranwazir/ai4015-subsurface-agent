@@ -1,0 +1,5 @@
+{
+  "exact_feature_vector_overlaps_train_test": 0,
+  "test_rows": 4122,
+  "meaning": "Exact equality check only; not proof of spatial/geological independence"
+}

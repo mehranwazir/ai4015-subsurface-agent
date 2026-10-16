@@ -1,0 +1,31 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "eval-3f3d592c-curve_alias/events.jsonl": "8143dceccf50738f57ae453be78a66a4b308994686aa5770ef9358c38f298f20",
+    "eval-3f3d592c-curve_alias/result.json": "eb0e5c8390f73dea06c3af4be874cfd05c1b6af84e1c8fa39ce21e27d3100e95",
+    "eval-3f3d592c-predict_ft/events.jsonl": "8e75eaa8d8efde6ea80d61a6fab7e56c9e5b851e8503d9435c45a3ec70c5bab1",
+    "eval-3f3d592c-predict_ft/pred-d1b99cbd57e60bde.csv": "8eef85e36f008b925b0979c645eaff6d8035ce4bc2f1a17cb9eaa85f849570b5",
+    "eval-3f3d592c-predict_ft/result.json": "07839966c24d9329c1453fa88f3b648333bf0588031be4da94645ad83bbf02ca",
+    "eval-3f3d592c-predict_m/events.jsonl": "c7d2aef7a13e3ed334a7d978ae9610243784f76477af646ff8e96d8934409a15",
+    "eval-3f3d592c-predict_m/pred-d1b99cbd57e60bde.csv": "8eef85e36f008b925b0979c645eaff6d8035ce4bc2f1a17cb9eaa85f849570b5",
+    "eval-3f3d592c-predict_m/result.json": "6fd6278faba8237b3e2d88798333693078e3cd5abbd5c824677472e5a7290eab",
+    "eval-3f3d592c-repair_missing/events.jsonl": "e87e1e824b01b4fd3c16262f72ce42b22766574d0b6da05c30cd8f83e8144e7d",
+    "eval-3f3d592c-repair_missing/pred-d1b99cbd57e60bde.csv": "8eef85e36f008b925b0979c645eaff6d8035ce4bc2f1a17cb9eaa85f849570b5",
+    "eval-3f3d592c-repair_missing/result.json": "5b4626be3957413da82e302912599dc6ccff8f82f86b69b89d44519b4c00038b",
+    "eval-3f3d592c-unknown_well/events.jsonl": "62e2d66ea60bcbc93170c09735fe4361ecf6f7d2b435ff7363b24de174426786",
+    "eval-3f3d592c-unknown_well/result.json": "4dfe592df80736789289bdf6fc4fec98ff1b43317ec81144754715fd4079cdf2",
+    "eval-3f3d592c-unsupported_target/events.jsonl": "83d6c9fc9fd08d6f5d6b8fd5aa643e31226e365f542694fe296118169a2f19e0",
+    "eval-3f3d592c-unsupported_target/result.json": "b76e24483ec6d5e04310e4b6d56dc1737610af73241d2e38622d86ed1c34f330",
+    "gemini-e2e-001/events.jsonl": "85e12f0b14190554f269ba531131b4b34e0e26a2a9ea5839d1777f5d04f4d5a6",
+    "gemini-e2e-001/result.json": "96afef1bbf9948b0a76c2f2a3dfb0eec5727227063e4152509592ead01ea0115",
+    "gemini-e2e-002/events.jsonl": "003f2dec80d4d2abefe74dc37069c7058f51a9738fb2cd17b389260f73ff5ebf",
+    "gemini-e2e-002/pred-d1b99cbd57e60bde.csv": "8eef85e36f008b925b0979c645eaff6d8035ce4bc2f1a17cb9eaa85f849570b5",
+    "gemini-e2e-002/pred-d1b99cbd57e60bde.png": "e6043051df11611c10913e42e2609026ea13f4dd4fd641ed27f149ff25da6e76",
+    "gemini-e2e-002/result.json": "9d365f6b0a340f1bfc78bb7000492c5a0679c601d6c125d579602729d1893550",
+    "model_manifest.json": "a71ea44d361500c3538762227d40b0b5f45fd8915e8a7203bb28d9c37c395326",
+    "README.md": "74c4e680f0e6aa9760daff6e1dab5b5f7c282e96d12ef377f868c7b456a65570",
+    "replay.json": "03c6ca101ce01966bc891676f2175d7c391452b6075ed9be10729a6eb3cb818d",
+    "request_accounting.json": "0687d33d021ced07ef7a50e61987a58e99f71ba93fac2dc6832cae5bc1c3be4d",
+    "tests_sandbox_temp_failure.xml": "ce1a6dcb23a06a81820c5713af4300870678138a52bb168a9e830ac84618d323"
+  }
+}

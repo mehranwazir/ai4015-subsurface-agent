@@ -1,0 +1,27 @@
+{
+  "model_id": "rf80-depth10-seed42-v1",
+  "features": [
+    "GR",
+    "CALI",
+    "DEN",
+    "NEU",
+    "RDEP",
+    "RMED",
+    "DTC"
+  ],
+  "targets": [
+    "PHIF",
+    "SW",
+    "VSH"
+  ],
+  "model_sha256": "e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e",
+  "train_wells": [
+    0,
+    2,
+    4,
+    6,
+    8
+  ],
+  "fit_seconds": 9.67377339999075,
+  "data_archive_sha256": "816d45f63f374892986c4a23f785bb027b15c90e00a2c304cbce8a85e6416d35"
+}

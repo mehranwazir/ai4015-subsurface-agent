@@ -1,0 +1,183 @@
+{
+  "run_id": "eval-3f3d592c-curve_alias",
+  "created_utc": "2026-10-16T14:25:12.205229+00:00",
+  "query": "Inspect gamma ray and RHOB for well 3 from 10600 to 11000 ft. Give a data summary without running predictions.",
+  "provider": "GeminiProvider",
+  "model_version": "gemini-3.5-flash-lite",
+  "status": "answer",
+  "reason": "Successfully inspected gamma ray (GR) and RHOB (DEN) for well 3 from 10600 to 11000 ft and provided data summary without running predictions.",
+  "tool_calls": 3,
+  "tool_errors": 0,
+  "provider_requests": 27,
+  "usage": {
+    "prompt_tokens": 3887,
+    "output_tokens": 116,
+    "thinking_tokens": 0
+  },
+  "latency_seconds": 71.7560894000053,
+  "estimated_cost_usd": null,
+  "billing_cost_usd": null,
+  "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
+  "source_commit": "0ffc94f702feab81f6eb1f4d453e19754a557305",
+  "model_sha256": "e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e",
+  "fault_injection": null,
+  "verified_predictions": [],
+  "trace": [
+    {
+      "event": "tool",
+      "turn": 1,
+      "name": "inspect_dataset",
+      "arguments": {},
+      "result": {
+        "ok": true,
+        "dataset": "SPWLA-2021-pinned",
+        "source_commit": "0ffc94f702feab81f6eb1f4d453e19754a557305",
+        "wells": {
+          "0": {
+            "min_depth_ft": 335.160104986877,
+            "max_depth_ft": 15211.6601049869,
+            "rows": 29754
+          },
+          "1": {
+            "min_depth_ft": 646.3254,
+            "max_depth_ft": 11919.29,
+            "rows": 34361
+          },
+          "2": {
+            "min_depth_ft": 646.3254,
+            "max_depth_ft": 12086.61,
+            "rows": 34871
+          },
+          "3": {
+            "min_depth_ft": 646.3254,
+            "max_depth_ft": 11371.39,
+            "rows": 32691
+          },
+          "4": {
+            "min_depth_ft": 646.3254,
+            "max_depth_ft": 13431.76,
+            "rows": 38971
+          },
+          "5": {
+            "min_depth_ft": 601.3779,
+            "max_depth_ft": 12343.18,
+            "rows": 35790
+          },
+          "6": {
+            "min_depth_ft": 601.3779,
+            "max_depth_ft": 15651.58,
+            "rows": 45874
+          },
+          "7": {
+            "min_depth_ft": 601.3779,
+            "max_depth_ft": 14966.54,
+            "rows": 43786
+          },
+          "8": {
+            "min_depth_ft": 710.5,
+            "max_depth_ft": 12144.5,
+            "rows": 22869
+          }
+        },
+        "features": [
+          "GR",
+          "CALI",
+          "DEN",
+          "NEU",
+          "RDEP",
+          "RMED",
+          "DTC"
+        ],
+        "aliases": {
+          "gamma ray": "GR",
+          "gamma": "GR",
+          "caliper": "CALI",
+          "CAL": "CALI",
+          "density": "DEN",
+          "RHOB": "DEN",
+          "neutron": "NEU",
+          "NPHI": "NEU",
+          "sonic": "DTC",
+          "DT": "DTC",
+          "porosity": "PHIF",
+          "PHI": "PHIF",
+          "water saturation": "SW",
+          "shale volume": "VSH"
+        },
+        "targets": [
+          "PHIF",
+          "SW",
+          "VSH"
+        ],
+        "depth_unit": "ft",
+        "target_unit": "fraction",
+        "evaluation_test_wells": [
+          3,
+          7
+        ],
+        "model_id": "rf80-depth10-seed42-v1",
+        "limits": "Only PHIF/SW/VSH prediction. No permeability, economics or production forecasting. Do not guess units/identifiers."
+      }
+    },
+    {
+      "event": "tool",
+      "turn": 2,
+      "name": "inspect_interval",
+      "arguments": {
+        "unit": "ft",
+        "start": 10600,
+        "end": 11000,
+        "well": 3,
+        "curves": [
+          "GR",
+          "RHOB"
+        ]
+      },
+      "result": {
+        "ok": true,
+        "slice_id": "slice-ff514ae1e7cd5c63",
+        "well": 3,
+        "rows": 1220,
+        "depth_min_ft": 10600.07,
+        "depth_max_ft": 11000.0,
+        "requested_curves": [
+          "GR",
+          "DEN"
+        ],
+        "eligible_input_rows": 1220,
+        "input_coverage": 1.0,
+        "missing_fraction": {
+          "GR": 0.0,
+          "DEN": 0.0
+        },
+        "summary": {
+          "GR": {
+            "mean": 41.939917213114754,
+            "min": 8.0011,
+            "max": 111.036
+          },
+          "DEN": {
+            "mean": 2.4319487704918035,
+            "min": 2.1501,
+            "max": 3.0518
+          }
+        }
+      }
+    },
+    {
+      "event": "tool",
+      "turn": 3,
+      "name": "finish",
+      "arguments": {
+        "status": "answer",
+        "reason": "Successfully inspected gamma ray (GR) and RHOB (DEN) for well 3 from 10600 to 11000 ft and provided data summary without running predictions."
+      },
+      "result": {
+        "ok": true,
+        "status": "answer",
+        "reason": "Successfully inspected gamma ray (GR) and RHOB (DEN) for well 3 from 10600 to 11000 ft and provided data summary without running predictions.",
+        "verified_predictions": []
+      }
+    }
+  ]
+}

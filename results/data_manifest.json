@@ -1,0 +1,99 @@
+{
+  "created_utc": "2026-10-16T14:13:58.574968+00:00",
+  "source_commit": "0ffc94f702feab81f6eb1f4d453e19754a557305",
+  "source_url": "https://raw.githubusercontent.com/pddasig/Machine-Learning-Competition-2021/0ffc94f702feab81f6eb1f4d453e19754a557305/data.zip",
+  "archive_sha256": "816d45f63f374892986c4a23f785bb027b15c90e00a2c304cbce8a85e6416d35",
+  "train_csv_sha256": "45fbe4e77d4429104eeb06aa5b2fcc5afbb8b9ee10c430d3a5b94e94b4abced7",
+  "raw_training_rows": 318967,
+  "raw_training_wells": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "raw_competition_test_rows": 11275,
+  "raw_competition_test_wells": [
+    100,
+    101,
+    103,
+    104
+  ],
+  "complete_finite_target_rows": 42309,
+  "complete_target_rows_outside_0_1": 90,
+  "cohort_rows": 42219,
+  "selection_rule": "finite targets in [0,1] and at least 4/7 finite input curves; no clipping",
+  "split_policy": "Prespecified whole-well 5/2/2 split; no test-guided tuning",
+  "splits": {
+    "train": {
+      "wells": [
+        0,
+        2,
+        4,
+        6,
+        8
+      ],
+      "rows": 33692,
+      "per_well": {
+        "0": 1790,
+        "2": 2281,
+        "4": 8422,
+        "6": 13933,
+        "8": 7266
+      }
+    },
+    "validation": {
+      "wells": [
+        1,
+        5
+      ],
+      "rows": 4405,
+      "per_well": {
+        "1": 2872,
+        "5": 1533
+      }
+    },
+    "test": {
+      "wells": [
+        3,
+        7
+      ],
+      "rows": 4122,
+      "per_well": {
+        "3": 2105,
+        "7": 2017
+      }
+    }
+  },
+  "features": [
+    "GR",
+    "CALI",
+    "DEN",
+    "NEU",
+    "RDEP",
+    "RMED",
+    "DTC"
+  ],
+  "targets": [
+    "PHIF",
+    "SW",
+    "VSH"
+  ],
+  "depth_unit": "ft",
+  "depth_unit_source": "https://raw.githubusercontent.com/pddasig/Machine-Learning-Competition-2021/0ffc94f702feab81f6eb1f4d453e19754a557305/SPWLA_2021_ML_Tutorial.ipynb",
+  "unit_caveat": "Tutorial labels DTC ns/ft; this appears inconsistent with typical log units. No DTC conversion is performed.",
+  "target_reference": "Petrophysicist interpreted reference values, not perfect physical truth",
+  "competition_score_claim": false,
+  "competition_test_policy": "Not scored: organizer labels lack identity keys; use held-out labeled training wells instead",
+  "license_notice": "Creative Commons Attribution-NonCommercial-ShareAlike; version not specified in README",
+  "processed_sha256": {
+    "features.csv": "fd1bf71f76ad2f202f0ec79fa40a5b8c009fa70c87ba277e82947ec873c34dbd",
+    "test.csv": "2cb990d71c6f302b162260fb5994d659e0f0c4ea9bd6bc84770ebdb1ac169e7e",
+    "train.csv": "d7dee494c907d185c42f64b251740f57de4a6f54076d6d1239c1d74b7de1d9b2",
+    "validation.csv": "2ff97cc5fbb98d2aace217a75d18bf40b504168e34b8e3446a65274a206ff988"
+  }
+}

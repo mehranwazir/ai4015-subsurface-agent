@@ -1,0 +1,31 @@
+{
+  "source_run": "gemini-e2e-002",
+  "checks": [
+    {
+      "tool": "inspect_dataset",
+      "matches": true
+    },
+    {
+      "tool": "inspect_interval",
+      "matches": true
+    },
+    {
+      "tool": "predict_properties",
+      "matches": true
+    },
+    {
+      "tool": "verify_predictions",
+      "matches": true
+    },
+    {
+      "tool": "plot_logs",
+      "matches": true
+    },
+    {
+      "tool": "finish",
+      "matches": true
+    }
+  ],
+  "all_match": true,
+  "llm_called": false
+}
