@@ -4,6 +4,8 @@
 
 The selected workflow now runs. The technical evidence needed to support the group's Phase 1 writing is available. Deliverables A and B have not been written for submission, and nothing has been published to GitHub or submitted to Classroom.
 
+**Subsequent Stage 7 update:** The group head approved the [evidence pack and writing outline](stage7/README.md), provided team details and a GitHub destination, and requested publication. This file records the earlier Stage 6 execution state; use the Stage 7 handoff for later preparation/publication status.
+
 ## 1. What exists
 
 | Component | Implemented behavior | Evidence |

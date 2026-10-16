@@ -4,6 +4,8 @@ A small **LogACF-inspired adaptation** for conventional well-log analysis. A fro
 
 This repository contains engineering code and factual execution artifacts. It is **not** a student-written Phase 1 literature review/proposal and must not be submitted as one. The assessed writing must be the group's own work.
 
+The [Stage 7 evidence pack and writing guide](docs/stage7/README.md) maps the exact rubric to verified references, gap experiments, architecture diagrams, actual results and the proposed team responsibilities. [GitHub publication and collaboration](docs/GITHUB_PUBLISHING.md) explains the repository handoff.
+
 ## Recorded results: 16 October 2026
 
 - **19 offline software tests passed**; see [results/tests.xml](results/tests.xml).
@@ -136,7 +138,7 @@ results/               actual metrics, figures, validation outputs
 results/evidence/      selected real traces/artifacts retained for review
 ```
 
-Only a **local Git repository** is prepared. Publishing it and giving the supervisor access remain submission tasks. Group members must add their own real contributions; commit history must not be fabricated.
+GitHub destination: [mehranwazir/ai4015-subsurface-agent](https://github.com/mehranwazir/ai4015-subsurface-agent). Initial source, tests, actual results and the Stage 7 evidence pack are prepared for publication. Verify the remote publication/CI state in GitHub before submission. Group members must add their own real contributions; commit history must not be fabricated.
 
 ## Attribution and comparison limits
 

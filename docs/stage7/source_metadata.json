@@ -1,0 +1,2461 @@
+{
+  "note": "Bibliographic registration metadata only: does not prove peer review, full-text access, venue rank, code availability or numerical results.",
+  "records": [
+    {
+      "id": "P01",
+      "metadata_url": "https://api.crossref.org/works/10.1016/j.petsci.2026.05.031",
+      "checked_utc": "2026-10-16T14:38:28.151601+00:00",
+      "metadata": {
+        "DOI": "10.1016/j.petsci.2026.05.031",
+        "title": [
+          "Large language model-based AI agent for well logging data processing and interpretation"
+        ],
+        "author": [
+          {
+            "given": "Gang",
+            "family": "Luo",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Li-Zhi",
+            "family": "Xiao",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Petroleum Science"
+        ],
+        "publisher": "Elsevier BV",
+        "type": "journal-article",
+        "published": {
+          "date-parts": [
+            [
+              2026,
+              5
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2026,
+              5
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2026,
+              5
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1016/j.petsci.2026.05.031",
+        "link": [
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S1995822626003067?httpAccept=text/xml",
+            "content-type": "text/xml",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          },
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S1995822626003067?httpAccept=text/plain",
+            "content-type": "text/plain",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2026-05-01T00:00:00Z",
+              "timestamp": 1777593600000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2026-05-01T00:00:00Z",
+              "timestamp": 1777593600000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/legal/tdmrep-license"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  5,
+                  21
+                ]
+              ],
+              "date-time": "2026-05-21T00:00:00Z",
+              "timestamp": 1779321600000
+            },
+            "content-version": "vor",
+            "delay-in-days": 20,
+            "URL": "http://creativecommons.org/licenses/by-nc-nd/4.0/"
+          }
+        ],
+        "relation": {}
+      }
+    },
+    {
+      "id": "P02",
+      "metadata_url": "https://api.crossref.org/works/10.1016/S1876-3804(26)60734-3",
+      "checked_utc": "2026-10-16T14:38:28.141699+00:00",
+      "metadata": {
+        "DOI": "10.1016/s1876-3804(26)60734-3",
+        "title": [
+          "A multi-agent collaborative framework with human-in-the-loop for well log interpretation and applications"
+        ],
+        "author": [
+          {
+            "given": "Zhangxing",
+            "family": "CHEN",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Ruichen",
+            "family": "DING",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Yang",
+            "family": "MENG",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Yizheng",
+            "family": "LI",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Junwei",
+            "family": "ZHANG",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Liu",
+            "family": "CAO",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Jian",
+            "family": "LI",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Wenqi",
+            "family": "FAN",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Yiyuan",
+            "family": "ZHANG",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Liqiu",
+            "family": "WANG",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Dongxiao",
+            "family": "ZHANG",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Yuntian",
+            "family": "CHEN",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Petroleum Exploration and Development"
+        ],
+        "publisher": "Elsevier BV",
+        "type": "journal-article",
+        "volume": "53",
+        "issue": "3",
+        "page": "900-914",
+        "published": {
+          "date-parts": [
+            [
+              2026,
+              6
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2026,
+              6
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2026,
+              6
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1016/s1876-3804(26)60734-3",
+        "link": [
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S1876380426607343?httpAccept=text/xml",
+            "content-type": "text/xml",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          },
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S1876380426607343?httpAccept=text/plain",
+            "content-type": "text/plain",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  6,
+                  1
+                ]
+              ],
+              "date-time": "2026-06-01T00:00:00Z",
+              "timestamp": 1780272000000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  6,
+                  1
+                ]
+              ],
+              "date-time": "2026-06-01T00:00:00Z",
+              "timestamp": 1780272000000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/legal/tdmrep-license"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  6,
+                  29
+                ]
+              ],
+              "date-time": "2026-06-29T00:00:00Z",
+              "timestamp": 1782691200000
+            },
+            "content-version": "vor",
+            "delay-in-days": 28,
+            "URL": "http://creativecommons.org/licenses/by-nc-nd/4.0/"
+          }
+        ],
+        "relation": {}
+      }
+    },
+    {
+      "id": "P03",
+      "metadata_url": "https://api.crossref.org/works/10.1016/j.acags.2025.100311",
+      "checked_utc": "2026-10-16T14:38:28.119140+00:00",
+      "metadata": {
+        "DOI": "10.1016/j.acags.2025.100311",
+        "title": [
+          "Fine-tuning small and open LLMs to automate geoscience data analysis workflows: A scalable approach"
+        ],
+        "author": [
+          {
+            "given": "Jiyin",
+            "family": "Zhang",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Wenjia",
+            "family": "Li",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Xiang",
+            "family": "Que",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Weilin",
+            "family": "Chen",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Chenhao",
+            "family": "Li",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-9110-7369",
+            "authenticated-orcid": false,
+            "given": "Xiaogang",
+            "family": "Ma",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Applied Computing and Geosciences"
+        ],
+        "publisher": "Elsevier BV",
+        "type": "journal-article",
+        "volume": "28",
+        "page": "100311",
+        "article-number": "100311",
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              12
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2025,
+              12
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              12
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1016/j.acags.2025.100311",
+        "link": [
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S259019742500093X?httpAccept=text/xml",
+            "content-type": "text/xml",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          },
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S259019742500093X?httpAccept=text/plain",
+            "content-type": "text/plain",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  12,
+                  1
+                ]
+              ],
+              "date-time": "2025-12-01T00:00:00Z",
+              "timestamp": 1764547200000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  12,
+                  1
+                ]
+              ],
+              "date-time": "2025-12-01T00:00:00Z",
+              "timestamp": 1764547200000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/legal/tdmrep-license"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  12,
+                  2
+                ]
+              ],
+              "date-time": "2025-12-02T00:00:00Z",
+              "timestamp": 1764633600000
+            },
+            "content-version": "vor",
+            "delay-in-days": 1,
+            "URL": "http://creativecommons.org/licenses/by/4.0/"
+          }
+        ],
+        "relation": {}
+      }
+    },
+    {
+      "id": "P04",
+      "metadata_url": "https://api.crossref.org/works/10.1016/j.acags.2026.100362",
+      "checked_utc": "2026-10-16T14:38:29.224113+00:00",
+      "metadata": {
+        "DOI": "10.1016/j.acags.2026.100362",
+        "title": [
+          "An LLM-based multi-agent system for geoscience legacy document processing, knowledge extraction and quality control"
+        ],
+        "author": [
+          {
+            "given": "Jiyin",
+            "family": "Zhang",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Weilin",
+            "family": "Chen",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Chenhao",
+            "family": "Li",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-9110-7369",
+            "authenticated-orcid": false,
+            "given": "Xiaogang",
+            "family": "Ma",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Applied Computing and Geosciences"
+        ],
+        "publisher": "Elsevier BV",
+        "type": "journal-article",
+        "volume": "31",
+        "page": "100362",
+        "article-number": "100362",
+        "published": {
+          "date-parts": [
+            [
+              2026,
+              9
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2026,
+              9
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2026,
+              9
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1016/j.acags.2026.100362",
+        "link": [
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S2590197426000467?httpAccept=text/xml",
+            "content-type": "text/xml",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          },
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S2590197426000467?httpAccept=text/plain",
+            "content-type": "text/plain",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  9,
+                  1
+                ]
+              ],
+              "date-time": "2026-09-01T00:00:00Z",
+              "timestamp": 1788220800000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  9,
+                  1
+                ]
+              ],
+              "date-time": "2026-09-01T00:00:00Z",
+              "timestamp": 1788220800000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/legal/tdmrep-license"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  6,
+                  4
+                ]
+              ],
+              "date-time": "2026-06-04T00:00:00Z",
+              "timestamp": 1780531200000
+            },
+            "content-version": "vor",
+            "delay-in-days": 0,
+            "URL": "http://creativecommons.org/licenses/by/4.0/"
+          }
+        ],
+        "relation": {}
+      }
+    },
+    {
+      "id": "P05",
+      "metadata_url": "https://api.crossref.org/works/10.1016/j.bdes.2026.100042",
+      "checked_utc": "2026-10-16T14:38:29.231289+00:00",
+      "metadata": {
+        "DOI": "10.1016/j.bdes.2026.100042",
+        "title": [
+          "A generalizable automated geophysical agent workflow for accessible subsurface hydrology analysis"
+        ],
+        "author": [
+          {
+            "ORCID": "https://orcid.org/0000-0001-8979-182X",
+            "authenticated-orcid": false,
+            "given": "Hang",
+            "family": "Chen",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Big Data and Earth System"
+        ],
+        "publisher": "Elsevier BV",
+        "type": "journal-article",
+        "volume": "2",
+        "issue": "1",
+        "page": "100042",
+        "article-number": "100042",
+        "published": {
+          "date-parts": [
+            [
+              2026,
+              3
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2026,
+              3
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2026,
+              3
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1016/j.bdes.2026.100042",
+        "link": [
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S3050740526000024?httpAccept=text/xml",
+            "content-type": "text/xml",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          },
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S3050740526000024?httpAccept=text/plain",
+            "content-type": "text/plain",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  3,
+                  1
+                ]
+              ],
+              "date-time": "2026-03-01T00:00:00Z",
+              "timestamp": 1772323200000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  3,
+                  1
+                ]
+              ],
+              "date-time": "2026-03-01T00:00:00Z",
+              "timestamp": 1772323200000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/legal/tdmrep-license"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  1,
+                  22
+                ]
+              ],
+              "date-time": "2026-01-22T00:00:00Z",
+              "timestamp": 1769040000000
+            },
+            "content-version": "vor",
+            "delay-in-days": 0,
+            "URL": "http://creativecommons.org/licenses/by/4.0/"
+          }
+        ],
+        "relation": {
+          "has-preprint": [
+            {
+              "id-type": "doi",
+              "id": "10.22541/essoar.176336946.65126612/v2",
+              "asserted-by": "object"
+            },
+            {
+              "id-type": "doi",
+              "id": "10.22541/essoar.176336946.65126612/v1",
+              "asserted-by": "object"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "P06",
+      "metadata_url": "https://api.crossref.org/works/10.1016/j.autcon.2025.106257",
+      "checked_utc": "2026-10-16T14:38:29.210844+00:00",
+      "metadata": {
+        "DOI": "10.1016/j.autcon.2025.106257",
+        "title": [
+          "Multimodal framework integrating multiple large language model agents for intelligent geotechnical design"
+        ],
+        "author": [
+          {
+            "given": "Hao-Rao",
+            "family": "Xu",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Ning",
+            "family": "Zhang",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Zhen-Yu",
+            "family": "Yin",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Pierre Guy Atangana",
+            "family": "Njock",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Automation in Construction"
+        ],
+        "publisher": "Elsevier BV",
+        "type": "journal-article",
+        "volume": "176",
+        "page": "106257",
+        "article-number": "106257",
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              8
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2025,
+              8
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              8
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1016/j.autcon.2025.106257",
+        "link": [
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S0926580525002973?httpAccept=text/xml",
+            "content-type": "text/xml",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          },
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S0926580525002973?httpAccept=text/plain",
+            "content-type": "text/plain",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  8,
+                  1
+                ]
+              ],
+              "date-time": "2025-08-01T00:00:00Z",
+              "timestamp": 1754006400000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  8,
+                  1
+                ]
+              ],
+              "date-time": "2025-08-01T00:00:00Z",
+              "timestamp": 1754006400000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/legal/tdmrep-license"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  8,
+                  1
+                ]
+              ],
+              "date-time": "2025-08-01T00:00:00Z",
+              "timestamp": 1754006400000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-017"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  8,
+                  1
+                ]
+              ],
+              "date-time": "2025-08-01T00:00:00Z",
+              "timestamp": 1754006400000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-037"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  8,
+                  1
+                ]
+              ],
+              "date-time": "2025-08-01T00:00:00Z",
+              "timestamp": 1754006400000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-012"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  8,
+                  1
+                ]
+              ],
+              "date-time": "2025-08-01T00:00:00Z",
+              "timestamp": 1754006400000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-029"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  8,
+                  1
+                ]
+              ],
+              "date-time": "2025-08-01T00:00:00Z",
+              "timestamp": 1754006400000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-004"
+          }
+        ],
+        "relation": {}
+      }
+    },
+    {
+      "id": "P07",
+      "metadata_url": "https://api.crossref.org/works/10.1016/j.autcon.2025.106103",
+      "checked_utc": "2026-10-16T14:38:30.284350+00:00",
+      "metadata": {
+        "DOI": "10.1016/j.autcon.2025.106103",
+        "title": [
+          "Large language model-empowered paradigm for automated geotechnical site planning and geological characterization"
+        ],
+        "author": [
+          {
+            "given": "Zehang",
+            "family": "Qian",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Chao",
+            "family": "Shi",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Automation in Construction"
+        ],
+        "publisher": "Elsevier BV",
+        "type": "journal-article",
+        "volume": "173",
+        "page": "106103",
+        "article-number": "106103",
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              5
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2025,
+              5
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              5
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1016/j.autcon.2025.106103",
+        "link": [
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S0926580525001438?httpAccept=text/xml",
+            "content-type": "text/xml",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          },
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S0926580525001438?httpAccept=text/plain",
+            "content-type": "text/plain",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2025-05-01T00:00:00Z",
+              "timestamp": 1746057600000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2025-05-01T00:00:00Z",
+              "timestamp": 1746057600000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/legal/tdmrep-license"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2025-05-01T00:00:00Z",
+              "timestamp": 1746057600000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-017"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2025-05-01T00:00:00Z",
+              "timestamp": 1746057600000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-037"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2025-05-01T00:00:00Z",
+              "timestamp": 1746057600000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-012"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2025-05-01T00:00:00Z",
+              "timestamp": 1746057600000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-029"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2025-05-01T00:00:00Z",
+              "timestamp": 1746057600000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-004"
+          }
+        ],
+        "relation": {}
+      }
+    },
+    {
+      "id": "P08",
+      "metadata_url": "https://api.crossref.org/works/10.1016/j.geoai.2025.100047",
+      "checked_utc": "2026-10-16T14:38:30.322633+00:00",
+      "metadata": {
+        "DOI": "10.1016/j.geoai.2025.100047",
+        "title": [
+          "Standardization and interpretable analysis of geological database using retrieval-augmented large language model"
+        ],
+        "author": [
+          {
+            "given": "Wei",
+            "family": "Yan",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0009-0007-4941-0974",
+            "authenticated-orcid": false,
+            "given": "Jinhao",
+            "family": "Wu",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Guanhua",
+            "family": "Chen",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Shaoze",
+            "family": "Su",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Ping",
+            "family": "Shen",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Derek F.",
+            "family": "Wong",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Wan-Huan",
+            "family": "Zhou",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Geodata and AI"
+        ],
+        "publisher": "Elsevier BV",
+        "type": "journal-article",
+        "volume": "6",
+        "page": "100047",
+        "article-number": "100047",
+        "published": {
+          "date-parts": [
+            [
+              2026,
+              3
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2026,
+              3
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2026,
+              3
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1016/j.geoai.2025.100047",
+        "link": [
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S3050483X25000450?httpAccept=text/xml",
+            "content-type": "text/xml",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          },
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S3050483X25000450?httpAccept=text/plain",
+            "content-type": "text/plain",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  3,
+                  1
+                ]
+              ],
+              "date-time": "2026-03-01T00:00:00Z",
+              "timestamp": 1772323200000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  3,
+                  1
+                ]
+              ],
+              "date-time": "2026-03-01T00:00:00Z",
+              "timestamp": 1772323200000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/legal/tdmrep-license"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  11,
+                  28
+                ]
+              ],
+              "date-time": "2025-11-28T00:00:00Z",
+              "timestamp": 1764288000000
+            },
+            "content-version": "vor",
+            "delay-in-days": 0,
+            "URL": "http://creativecommons.org/licenses/by-nc/4.0/"
+          }
+        ],
+        "relation": {}
+      }
+    },
+    {
+      "id": "P09",
+      "metadata_url": "https://api.crossref.org/works/10.1016/j.cageo.2025.105944",
+      "checked_utc": "2026-10-16T14:38:30.329509+00:00",
+      "metadata": {
+        "DOI": "10.1016/j.cageo.2025.105944",
+        "title": [
+          "Domain knowledge-guided geological named entities recognition of rock minerals based on prompt engineering with error feedback mechanism"
+        ],
+        "author": [
+          {
+            "given": "Qinjun",
+            "family": "Qiu",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Yunxia",
+            "family": "Ma",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Peng",
+            "family": "Han",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Kai",
+            "family": "Ma",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Zehua",
+            "family": "Huang",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Miao",
+            "family": "Tian",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Qirui",
+            "family": "Wu",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Computers &amp; Geosciences"
+        ],
+        "publisher": "Elsevier BV",
+        "type": "journal-article",
+        "volume": "201",
+        "page": "105944",
+        "article-number": "105944",
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              7
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2025,
+              7
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              7
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1016/j.cageo.2025.105944",
+        "link": [
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S0098300425000949?httpAccept=text/xml",
+            "content-type": "text/xml",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          },
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S0098300425000949?httpAccept=text/plain",
+            "content-type": "text/plain",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  7,
+                  1
+                ]
+              ],
+              "date-time": "2025-07-01T00:00:00Z",
+              "timestamp": 1751328000000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  7,
+                  1
+                ]
+              ],
+              "date-time": "2025-07-01T00:00:00Z",
+              "timestamp": 1751328000000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/legal/tdmrep-license"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  7,
+                  1
+                ]
+              ],
+              "date-time": "2025-07-01T00:00:00Z",
+              "timestamp": 1751328000000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-017"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  7,
+                  1
+                ]
+              ],
+              "date-time": "2025-07-01T00:00:00Z",
+              "timestamp": 1751328000000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-037"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  7,
+                  1
+                ]
+              ],
+              "date-time": "2025-07-01T00:00:00Z",
+              "timestamp": 1751328000000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-012"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  7,
+                  1
+                ]
+              ],
+              "date-time": "2025-07-01T00:00:00Z",
+              "timestamp": 1751328000000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-029"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  7,
+                  1
+                ]
+              ],
+              "date-time": "2025-07-01T00:00:00Z",
+              "timestamp": 1751328000000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-004"
+          }
+        ],
+        "relation": {}
+      }
+    },
+    {
+      "id": "P10",
+      "metadata_url": "https://api.crossref.org/works/10.3390/geosciences15100382",
+      "checked_utc": "2026-10-16T14:38:31.339668+00:00",
+      "metadata": {
+        "DOI": "10.3390/geosciences15100382",
+        "title": [
+          "Fusing Geoscience Large Language Models and Lightweight RAG for Enhanced Geological Question Answering"
+        ],
+        "author": [
+          {
+            "given": "Bo",
+            "family": "Zhou",
+            "sequence": "first",
+            "affiliation": [
+              {
+                "name": "Chongqing Bureau of Geology and Minerals Exploration, Chongqing 401112, China"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Ke",
+            "family": "Li",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "Chongqing AI Geological and Mineral Research Institute, Chongqing Bureau of Geology and Minerals Exploration Geological Team 107, Chongqing 401120, China"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Geosciences"
+        ],
+        "publisher": "MDPI AG",
+        "type": "journal-article",
+        "volume": "15",
+        "issue": "10",
+        "page": "382",
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              10,
+              2
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2025,
+              10,
+              2
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              10,
+              2
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.3390/geosciences15100382",
+        "link": [
+          {
+            "URL": "https://www.mdpi.com/2076-3263/15/10/382/pdf",
+            "content-type": "unspecified",
+            "content-version": "vor",
+            "intended-application": "similarity-checking"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  10,
+                  2
+                ]
+              ],
+              "date-time": "2025-10-02T00:00:00Z",
+              "timestamp": 1759363200000
+            },
+            "content-version": "vor",
+            "delay-in-days": 0,
+            "URL": "https://creativecommons.org/licenses/by/4.0/"
+          }
+        ],
+        "relation": {}
+      }
+    },
+    {
+      "id": "P11",
+      "metadata_url": "https://api.crossref.org/works/10.1080/20964471.2025.2506291",
+      "checked_utc": "2026-10-16T14:38:31.398141+00:00",
+      "metadata": {
+        "DOI": "10.1080/20964471.2025.2506291",
+        "title": [
+          "GeoFactory: an LLM performance enhancement framework for geoscience factual and inferential tasks"
+        ],
+        "author": [
+          {
+            "given": "Zhou",
+            "family": "Chen",
+            "sequence": "first",
+            "affiliation": [
+              {
+                "name": "Tsinghua University",
+                "place": [
+                  "Beijing, China"
+                ]
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Xiao",
+            "family": "Wang",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "Tsinghua University",
+                "place": [
+                  "Beijing, China"
+                ]
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Xinan",
+            "family": "Zhang",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "Tsinghua University",
+                "place": [
+                  "Beijing, China"
+                ]
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Ming",
+            "family": "Lin",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "Tsinghua University",
+                "place": [
+                  "Beijing, China"
+                ]
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Yuanhong",
+            "family": "Liao",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "Tsinghua University",
+                "place": [
+                  "Beijing, China"
+                ]
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Juanzi",
+            "family": "Li",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "Tsinghua University",
+                "place": [
+                  "Beijing, China"
+                ]
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-4630-5147",
+            "authenticated-orcid": false,
+            "given": "Yuqi",
+            "family": "Bai",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "Tsinghua University",
+                "place": [
+                  "Beijing, China"
+                ]
+              },
+              {
+                "name": "Tsinghua University",
+                "place": [
+                  "Beijing, China"
+                ]
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Big Earth Data"
+        ],
+        "publisher": "Informa UK Limited",
+        "type": "journal-article",
+        "volume": "9",
+        "issue": "4",
+        "page": "714-746",
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              5,
+              25
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2025,
+              5,
+              25
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2025,
+              10,
+              2
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              5,
+              25
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1080/20964471.2025.2506291",
+        "link": [
+          {
+            "URL": "https://www.tandfonline.com/doi/pdf/10.1080/20964471.2025.2506291",
+            "content-type": "unspecified",
+            "content-version": "vor",
+            "intended-application": "similarity-checking"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  5,
+                  25
+                ]
+              ],
+              "date-time": "2025-05-25T00:00:00Z",
+              "timestamp": 1748131200000
+            },
+            "content-version": "vor",
+            "delay-in-days": 0,
+            "URL": "http://creativecommons.org/licenses/by/4.0/"
+          }
+        ],
+        "relation": {}
+      }
+    },
+    {
+      "id": "P12",
+      "metadata_url": "https://api.crossref.org/works/10.1016/j.acags.2025.100229",
+      "checked_utc": "2026-10-16T14:38:31.380831+00:00",
+      "metadata": {
+        "DOI": "10.1016/j.acags.2025.100229",
+        "title": [
+          "Classification of geological borehole descriptions using a domain adapted large language model"
+        ],
+        "author": [
+          {
+            "ORCID": "https://orcid.org/0000-0002-9191-8145",
+            "authenticated-orcid": false,
+            "given": "Hossein",
+            "family": "Ghorbanfekr",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Pieter Jan",
+            "family": "Kerstens",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Katrijn",
+            "family": "Dirix",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "Applied Computing and Geosciences"
+        ],
+        "publisher": "Elsevier BV",
+        "type": "journal-article",
+        "volume": "25",
+        "page": "100229",
+        "article-number": "100229",
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              2
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2025,
+              2
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              2
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1016/j.acags.2025.100229",
+        "link": [
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S2590197425000114?httpAccept=text/xml",
+            "content-type": "text/xml",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          },
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S2590197425000114?httpAccept=text/plain",
+            "content-type": "text/plain",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  2,
+                  1
+                ]
+              ],
+              "date-time": "2025-02-01T00:00:00Z",
+              "timestamp": 1738368000000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  2,
+                  1
+                ]
+              ],
+              "date-time": "2025-02-01T00:00:00Z",
+              "timestamp": 1738368000000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/legal/tdmrep-license"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2025,
+                  2,
+                  17
+                ]
+              ],
+              "date-time": "2025-02-17T00:00:00Z",
+              "timestamp": 1739750400000
+            },
+            "content-version": "vor",
+            "delay-in-days": 16,
+            "URL": "http://creativecommons.org/licenses/by-nc/4.0/"
+          }
+        ],
+        "relation": {}
+      }
+    },
+    {
+      "id": "P13",
+      "metadata_url": "https://api.crossref.org/works/10.1016/j.jag.2026.105195",
+      "checked_utc": "2026-10-16T14:38:32.354477+00:00",
+      "metadata": {
+        "DOI": "10.1016/j.jag.2026.105195",
+        "title": [
+          "GeoAgentic-RAG: A Multi-Agent framework for autonomous geospatial reasoning and visual insight generation with LLM"
+        ],
+        "author": [
+          {
+            "given": "Chao",
+            "family": "Liang",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0001-9013-3568",
+            "authenticated-orcid": false,
+            "given": "Yuanzheng",
+            "family": "Cui",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Run",
+            "family": "Shi",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Guixiang",
+            "family": "Zha",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Xin",
+            "family": "Yin",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Mingzhong",
+            "family": "Xiao",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Dong",
+            "family": "Xu",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Xuejun",
+            "family": "Duan",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-5063-3522",
+            "authenticated-orcid": false,
+            "given": "Bo",
+            "family": "Huang",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "container-title": [
+          "International Journal of Applied Earth Observation and Geoinformation"
+        ],
+        "publisher": "Elsevier BV",
+        "type": "journal-article",
+        "volume": "147",
+        "page": "105195",
+        "article-number": "105195",
+        "published": {
+          "date-parts": [
+            [
+              2026,
+              3
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2026,
+              3
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2026,
+              3
+            ]
+          ]
+        },
+        "URL": "https://doi.org/10.1016/j.jag.2026.105195",
+        "link": [
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S1569843226001111?httpAccept=text/xml",
+            "content-type": "text/xml",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          },
+          {
+            "URL": "https://api.elsevier.com/content/article/PII:S1569843226001111?httpAccept=text/plain",
+            "content-type": "text/plain",
+            "content-version": "vor",
+            "intended-application": "text-mining"
+          }
+        ],
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  3,
+                  1
+                ]
+              ],
+              "date-time": "2026-03-01T00:00:00Z",
+              "timestamp": 1772323200000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  3,
+                  1
+                ]
+              ],
+              "date-time": "2026-03-01T00:00:00Z",
+              "timestamp": 1772323200000
+            },
+            "content-version": "tdm",
+            "delay-in-days": 0,
+            "URL": "https://www.elsevier.com/legal/tdmrep-license"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2026,
+                  2,
+                  17
+                ]
+              ],
+              "date-time": "2026-02-17T00:00:00Z",
+              "timestamp": 1771286400000
+            },
+            "content-version": "vor",
+            "delay-in-days": 0,
+            "URL": "http://creativecommons.org/licenses/by/4.0/"
+          }
+        ],
+        "relation": {}
+      }
+    }
+  ]
+}
