@@ -43,6 +43,7 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
     status, reason = "failed", "Execution budget exhausted"
     calls = errors = 0
     started = time.perf_counter()
+    request_start = getattr(provider, "request_count", None)
     version = getattr(provider, "model", "test-double")
     for turn in range(max_turns):
         try:
@@ -92,7 +93,8 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
     result = {"run_id": run_id, "created_utc": utc_now(), "query": query,
               "provider": type(provider).__name__, "model_version": version,
               "status": status, "reason": reason, "tool_calls": calls, "tool_errors": errors,
-              "provider_requests": getattr(provider, "request_count", None), "usage": usage,
+              "provider_requests": (provider.request_count - request_start) if request_start is not None else None,
+              "provider_requests_scope": "this_run_including_retries", "usage": usage,
               "latency_seconds": time.perf_counter() - started, "estimated_cost_usd": estimate,
               "billing_cost_usd": None, "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
               "source_commit": runtime.manifest["source_commit"],
