@@ -14,6 +14,8 @@ Prepared 16 October 2026 for AI4015 Phase 1, G3-03. Stage 7 was authorized by th
 
 See [GitHub publishing and collaboration](../GITHUB_PUBLISHING.md) for the repository handoff. The group head's local checklist outside the repository holds the exact roster/roll numbers and final PDF filename.
 
+**Publication verified:** [public repository](https://github.com/mehranwazir/ai4015-subsurface-agent). The [first CI run](https://github.com/mehranwazir/ai4015-subsurface-agent/actions/runs/38919298498) installed dependencies/package and passed **19 offline tests on each of Linux and Windows**. [Exact tested commit/job evidence](ci_verification.json). The full numerical training/real API workflow remains locally executed evidence.
+
 ## What each stage concluded
 
 | Stage | Conclusion / present state |
@@ -37,7 +39,7 @@ See [GitHub publishing and collaboration](../GITHUB_PUBLISHING.md) for the repos
 - A completed critical review by the students, ten equally direct petroleum papers, or full-text access to every candidate.
 - Exact LogACF reproduction, superiority to its published RMSE, or an isolated accuracy benefit from using an LLM.
 - Statistical reliability, calibrated uncertainty, successful gap ablations, independent-field generalization, or a guaranteed publication contribution.
-- Zero API cost, successful clean-machine installation, or successful remote CI before it actually runs.
+- Zero API cost or complete remote reproduction of the public-data training/real-API workflow. Remote offline CI passed; it does not execute those workflows.
 
 ## Immediate priorities before the supplied deadline
 

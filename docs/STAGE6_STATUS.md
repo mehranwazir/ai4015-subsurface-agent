@@ -2,9 +2,9 @@
 
 **Recorded:** 16 October 2026. **Project:** AI4015, G3-03. **Scope approved by the user:** a small well-log system inspired by LogACF, with local Git history and real Gemini integration. This is factual engineering documentation, not assessed proposal prose.
 
-The selected workflow now runs. The technical evidence needed to support the group's Phase 1 writing is available. Deliverables A and B have not been written for submission, and nothing has been published to GitHub or submitted to Classroom.
+The selected workflow runs, and its technical evidence supports the group's Phase 1 writing. At the original Stage 6 handoff the repository was local. Deliverables A and B have not been written for submission, and nothing has been submitted to Classroom.
 
-**Subsequent Stage 7 update:** The group head approved the [evidence pack and writing outline](stage7/README.md), provided team details and a GitHub destination, and requested publication. This file records the earlier Stage 6 execution state; use the Stage 7 handoff for later preparation/publication status.
+**Subsequent Stage 7 update:** The group head approved the [evidence pack and writing outline](stage7/README.md), provided team details and a GitHub destination, and requested publication. The [repository](https://github.com/mehranwazir/ai4015-subsurface-agent) is now public, and fresh Windows/Linux CI passed 19 offline tests per platform, including dependency installation. This file records the earlier local execution; [CI verification](stage7/ci_verification.json) records the later checks.
 
 ## 1. What exists
 
@@ -19,7 +19,7 @@ The selected workflow now runs. The technical evidence needed to support the gro
 | Software verification | 19 executed offline tests, including corruption, recovery, identity-safe scoring, per-run accounting, replay | `tests/`, `results/tests.xml` |
 | Reproduction instructions | Dependencies, Windows commands, data provenance, API setup and limitations | `README.md`, `requirements-lock.txt`, `EXPERIMENT_PROTOCOL.md` |
 | Architecture | Implemented flow and locations of planned G1/G2/G3 mechanisms | `ARCHITECTURE.md` |
-| Version control | Meaningful local commits | Local `.git`; no remote configured |
+| Version control | Meaningful initial commits, subsequently published during Stage 7 | Local `.git` and public `origin/main` |
 
 There is one planner and six allowlisted tools. No LangGraph service, vector database, multi-agent fleet, GPU training, or frontend was needed for this baseline. The custom bounded loop exposes the small amount of state and control required here.
 
@@ -124,10 +124,10 @@ The complete requirement extraction, rubric and literature corrections remain in
 | A: literature review and gaps | 45 | Audited references, source links, base-paper decision and evidence-backed gap planning available | Group reads the selected full texts, resolves flagged access/ranking details, writes 150–250-word critical summaries for at least ten eligible papers, cross-paper table and three-gap synthesis |
 | B: project proposal | 30 | Confirmed data, actual baseline, implementable architecture, initial evidence available | Group writes its problem/agentic justification, coherent proposed architecture, per-gap questions/hypotheses/metrics/ablations, realistic semester milestones, named work division and publication direction |
 | C1: working baseline | 12 | Local data/model/tool/LLM workflow runs with actual saved results | Group reproduces and understands it; supervisor judges whether demonstration satisfies the rubric |
-| C2: GitHub repository | 8 | Clean local repository, README, dependencies, meaningful local commits | Publish repository, give supervisor access, obtain each member's real contributions/commits; do not invent history |
+| C2: GitHub repository | 8 | Published public repository, README, dependencies, meaningful initial history; Windows/Linux CI passed | Obtain each member's real contributions/commits; confirm supervisor access; do not invent history |
 | D: writing and submission | 5 | Requirements checklist available | Original writing, IEEE references, correct PDF format/name/order, head/member details, final checks and Classroom submission |
 
-**I am ready now to provide Stage 7 evidence-organization and draft-review support if you approve it.** Stage 6 no longer blocks that work. The assignment's prohibition on AI-generated submission writing means I will support your group's own A/B drafts, not write a ready-to-submit literature review or proposal. A completion time for the final PDF depends on your writing and the outstanding group/repository details; no submission-ready PDF exists yet.
+**Stage 7 evidence organization is now authorized and prepared** in the linked pack. The assignment's prohibition on AI-generated submission writing means assistance supports your group's own A/B drafts. A completion time for the final PDF depends on the group's writing and review; no submission-ready PDF exists yet.
 
 ### Final submission mechanics
 
@@ -139,10 +139,10 @@ The complete requirement extraction, rubric and literature corrections remain in
 6. Deadline supplied by the user: **17 October 2026, 11:59 pm Pakistan time**. Check Classroom for any additional instructions; no Classroom page has been inspected here.
 7. Confirm the upload/link and final submission state. Nothing has been submitted in this session.
 
-Before final preparation, supply the group head and all names/roll numbers, genuine work allocation, any additional Classroom instructions, and the group's drafts. GitHub publishing can follow when you authorize it; currently the repository is local as requested.
+Group names/roll numbers and a revised responsibility plan have now been supplied in the local Stage 7 checklist. GitHub publication is complete. Before final preparation, provide any additional Classroom instructions and the group's own drafts. Partners' GitHub usernames are needed if collaborator access is requested.
 
 ## 7. Local usage and credentials
 
-Run commands from `D:\Agentic AI\Project\subsurface-agent`; follow the README for download, prepare, baseline, agent, evaluation and replay. An editable package and virtual environment are already available on this computer. Existing dependency packages were reused; a fresh isolated install and the configured remote CI have not been executed.
+Run commands from `D:\Agentic AI\Project\subsurface-agent`; follow the README for download, prepare, baseline, agent, evaluation and replay. An editable package and virtual environment are available on this computer. The initial local environment reused existing dependencies; subsequent remote CI verified dependency/package installation and offline tests on fresh Windows/Linux runners. It did not rerun public-data training or Gemini inference.
 
 The Gemini credential is stored only in ignored `.env` for this local integration, and is excluded from source and recorded traces. Because it was posted in chat, rotate it in the provider console and replace the local value. Do not add the key or `.env` to GitHub.

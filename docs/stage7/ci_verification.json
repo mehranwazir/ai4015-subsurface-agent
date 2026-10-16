@@ -1,0 +1,35 @@
+{
+  "verified_date_asia_karachi": "2026-10-16",
+  "repository": "https://github.com/mehranwazir/ai4015-subsurface-agent",
+  "visibility": "public",
+  "tested_commit": "32eb3025f7299ab54cb4d9a33408b14cd54b765b",
+  "workflow_run_id": 38919298498,
+  "workflow_url": "https://github.com/mehranwazir/ai4015-subsurface-agent/actions/runs/38919298498",
+  "workflow_conclusion": "success",
+  "jobs": [
+    {
+      "platform": "ubuntu-latest",
+      "job_id": 117034757489,
+      "conclusion": "success",
+      "pytest_log_summary": "19 passed in 1.12s"
+    },
+    {
+      "platform": "windows-latest",
+      "job_id": 117034757971,
+      "conclusion": "success",
+      "pytest_log_summary": "19 passed in 4.27s"
+    }
+  ],
+  "verified_scope": [
+    "Install pinned requirements on fresh hosted runners",
+    "Install editable package",
+    "Run offline software tests on both operating systems"
+  ],
+  "not_run_in_ci": [
+    "Download or prepare the public dataset",
+    "Train and score the full numerical baseline",
+    "Make a real Gemini API call"
+  ],
+  "source": "GitHub Actions run/job API and decoded job logs inspected after completion",
+  "documentation_followup": "Publication-status documentation updates skip duplicate CI; application/test code is unchanged from the tested commit."
+}

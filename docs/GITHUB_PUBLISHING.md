@@ -6,7 +6,7 @@ Destination supplied by the group head: [mehranwazir/ai4015-subsurface-agent](ht
 
 The project already has local history. Preserve it when pushing `main`; do not reinitialize or upload a ZIP that discards history. Verify the remote, inspect existing refs, commit the reviewed pack, then push without force. Confirm GitHub's `main` SHA equals local `HEAD` and that README/source/results render.
 
-Record the actual outcome in the local handoff after publication. Creating an empty destination is not evidence that code was pushed, and configuring CI is not evidence that it passed.
+**Verified outcome, 16 October 2026:** the initial project history and Stage 7 pack were pushed to public `main`. Tested commit `32eb3025f7299ab54cb4d9a33408b14cd54b765b` matched local/remote. [CI run 38919298498](https://github.com/mehranwazir/ai4015-subsurface-agent/actions/runs/38919298498) passed on Linux and Windows, **19 tests each**; dependency/package installation also succeeded. The subsequent publication-status commit only updates documentation and skips duplicate CI. [Machine-readable record](stage7/ci_verification.json).
 
 ## What partners should do next
 

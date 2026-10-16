@@ -12,6 +12,7 @@ The [Stage 7 evidence pack and writing guide](docs/stage7/README.md) maps the ex
 - **6/6 selected live Gemini smoke cases passed**, once each. Ten additional defined cases were not run against Gemini; this is development evidence, not a general reliability estimate.
 - On **4,122 held-out rows from wells 3 and 7**, mean property RMSE was **0.051901** for the fixed Random Forest and **0.220384** for the training-mean predictor. These use the same custom split; they are not comparable to LogACF's published score.
 - A real prediction/verification/plot workflow completed; all six recorded tool outputs matched during replay without an LLM request.
+- After publication, **19 tests passed on each of fresh Linux and Windows GitHub runners**, including dependency installation. [Verified CI run](https://github.com/mehranwazir/ai4015-subsurface-agent/actions/runs/38919298498).
 
 See [docs/STAGE6_STATUS.md](docs/STAGE6_STATUS.md) for exact results, limitations, evidence locations, and submission readiness. The repository is local; GitHub publishing/supervisor access and the group's own A/B writing remain outstanding.
 
@@ -32,7 +33,7 @@ python -m venv .venv
 
 For another checkout, replace the first path. The code derives paths from its installed project location; no source path is hardcoded. As a no-install alternative, set `$env:PYTHONPATH='src'` and use `python -m subsurface_agent ...` with the dependencies installed.
 
-The development environment reused already installed packages through `venv --system-site-packages` because sandbox temp permissions prevented the first `ensurepip` attempt. An isolated installation is the recommended reproduction path above. `requirements-lock.txt` records package versions actually used; a completely clean-machine install has not been executed here.
+The initial development environment reused already installed packages through `venv --system-site-packages` because sandbox temp permissions prevented the first `ensurepip` attempt. `requirements-lock.txt` records package versions actually used. Subsequent GitHub CI successfully installed these dependencies and the editable package on fresh Linux and Windows runners and passed all 19 offline tests. The full public-data training/API workflow was executed locally; it is not part of offline CI.
 
 ### Run the real agent
 
@@ -122,7 +123,7 @@ In the Codex Windows sandbox, the default temporary directory can be inaccessibl
 .\.venv\Scripts\python.exe -m pytest -q --basetemp=.tools/pytest-stage6-final-20261016 --junitxml=results/tests.xml
 ```
 
-Use a new directory name if retaining earlier test scratch files. The preceding sandbox-temp failure is retained in `results/evidence/tests_sandbox_temp_failure.xml`; it was an environment setup failure, not a passing test run. The GitHub Actions workflow is configured but has not been executed remotely.
+Use a new directory name if retaining earlier test scratch files. The preceding sandbox-temp failure is retained in `results/evidence/tests_sandbox_temp_failure.xml`; it was an environment setup failure, not a passing test run. Subsequent remote Linux and Windows CI both passed; [verification details](docs/stage7/ci_verification.json) identify the tested commit and scope.
 
 ## Repository layout
 
@@ -138,7 +139,7 @@ results/               actual metrics, figures, validation outputs
 results/evidence/      selected real traces/artifacts retained for review
 ```
 
-GitHub destination: [mehranwazir/ai4015-subsurface-agent](https://github.com/mehranwazir/ai4015-subsurface-agent). Initial source, tests, actual results and the Stage 7 evidence pack are prepared for publication. Verify the remote publication/CI state in GitHub before submission. Group members must add their own real contributions; commit history must not be fabricated.
+Published repository: [mehranwazir/ai4015-subsurface-agent](https://github.com/mehranwazir/ai4015-subsurface-agent). Source, tests, actual results and the Stage 7 evidence pack are public, and the first Windows/Linux CI run passed. Recheck access/state before submission. Group members must add their own real contributions; commit history must not be fabricated.
 
 ## Attribution and comparison limits
 
