@@ -11,7 +11,7 @@ from subsurface_agent.tools import canonical_curve, select_interval
 def test_reversed_and_nonfinite_depths_rejected():
     for bounds in [(10, 2), (1, float("inf")), (float("nan"), 4)]:
         with pytest.raises(ValidationError):
-            Interval(well=3, start=bounds[0], end=bounds[1])
+            Interval(well=3, start=bounds[0], end=bounds[1], unit="ft")
 
 
 def test_path_injection_and_unknown_arguments_rejected():

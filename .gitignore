@@ -14,6 +14,8 @@ data/processed/*
 !data/processed/.gitkeep
 models/*
 !models/.gitkeep
+!models/random_forest.joblib
+!models/model_manifest.json
 results/runs/*
 !results/runs/.gitkeep
 *.log

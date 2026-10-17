@@ -68,7 +68,7 @@ def test_missing_artifact_can_be_repaired_by_repeat_execution(tiny_root):
 def test_tiny_interval_abstains_and_does_not_extrapolate(tiny_root):
     runtime = ToolRuntime(tiny_root, tiny_root / "run")
     runtime.dispatch("inspect_dataset", {})
-    interval = runtime.dispatch("inspect_interval", {"well": 3, "start": 10600, "end": 10600.1})
+    interval = runtime.dispatch("inspect_interval", {"well": 3, "start": 10600, "end": 10600.1, "unit": "ft"})
     assert runtime.dispatch("predict_properties", {"slice_id": interval["slice_id"]})["error"] == "INSUFFICIENT_DATA"
 
 

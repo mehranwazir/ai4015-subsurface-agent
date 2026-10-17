@@ -65,6 +65,11 @@ def valid_label_mask(frame: pd.DataFrame) -> pd.Series:
     return finite & bounded & inputs
 
 
+def exact_feature_overlap(reference: pd.DataFrame, candidate: pd.DataFrame) -> int:
+    """Candidate rows whose full input vector also occurs in reference (missing values match missing)."""
+    return len(candidate[FEATURES].merge(reference[FEATURES].drop_duplicates(), on=FEATURES, how="inner"))
+
+
 def prepare_data(root: Path) -> dict:
     raw = root / "data" / "raw"
     if sha256(raw / "data.zip") != ARCHIVE_SHA256:
@@ -91,6 +96,12 @@ def prepare_data(root: Path) -> dict:
         subset[["sample_id", "WELLNUM", "DEPTH", *FEATURES, *TARGETS]].to_csv(processed / f"{split}.csv", index=False)
         split_counts[split] = {"wells": wells, "rows": len(subset),
                                "per_well": subset.groupby("WELLNUM").size().to_dict()}
+    train_rows = eligible.loc[eligible.WELLNUM.isin(SPLITS["train"])]
+    test_rows = eligible.loc[eligible.WELLNUM.isin(SPLITS["test"])]
+    write_json(root / "results" / "overlap_check.json", {
+        "exact_feature_vector_overlaps_train_test": exact_feature_overlap(train_rows, test_rows),
+        "test_rows": len(test_rows),
+        "meaning": "Exact equality check only; not proof of spatial/geological independence"})
     source_test = load_raw(root, "test.csv")
     manifest = {
         "created_utc": utc_now(), "source_commit": SOURCE_COMMIT,

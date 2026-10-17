@@ -17,7 +17,7 @@ class Interval(Contract):
     well: int = Field(ge=0)
     start: float = Field(ge=0)
     end: float = Field(ge=0)
-    unit: Literal["ft", "m"] = "ft"
+    unit: Literal["ft", "m"]  # Required: a missing unit is an error, never silently assumed.
     curves: list[str] = Field(default_factory=list, max_length=12)
 
     @model_validator(mode="after")
@@ -46,7 +46,7 @@ CONTRACTS = {"inspect_dataset": Empty, "inspect_interval": Interval,
 
 DESCRIPTIONS = {
     "inspect_dataset": "Inspect actual available wells, curves, units, targets, and split policy. Call this first.",
-    "inspect_interval": "Load a single well/depth interval; normalize ft/m and known curve aliases. No target labels are exposed. Use unit ft or m, never guess missing units.",
+    "inspect_interval": "Load a single well/depth interval; normalize ft/m and known curve aliases. No target labels are exposed. The unit (ft or m) is required; if the user did not state it, finish with clarify instead of guessing.",
     "predict_properties": "Predict PHIF, SW and VSH for a previously inspected slice using the frozen Random Forest. No fitting or test labels. Returns an artifact ID.",
     "verify_predictions": "Verify a prediction artifact's identity, finiteness, ranges, and agreement with deterministic recomputation. Missing artifact is recoverable by predicting again.",
     "plot_logs": "Plot an already verified prediction artifact. No labels or hidden reference data are used.",

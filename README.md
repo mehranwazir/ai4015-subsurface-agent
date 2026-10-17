@@ -8,20 +8,20 @@ The [Stage 7 evidence pack and writing guide](docs/stage7/README.md) maps the ex
 
 ## Recorded results: 16 October 2026
 
-- **19 offline software tests passed**; see [results/tests.xml](results/tests.xml).
+- **19 offline software tests passed** at the Phase 1 recording; see [results/tests.xml](results/tests.xml). After the reliability fixes below, the suite has 23 tests.
 - **6/6 selected live Gemini smoke cases passed**, once each. Ten additional defined cases were not run against Gemini; this is development evidence, not a general reliability estimate.
 - On **4,122 held-out rows from wells 3 and 7**, mean property RMSE was **0.051901** for the fixed Random Forest and **0.220384** for the training-mean predictor. These use the same custom split; they are not comparable to LogACF's published score.
 - A real prediction/verification/plot workflow completed; all six recorded tool outputs matched during replay without an LLM request.
 - After publication, **19 tests passed on each of fresh Linux and Windows GitHub runners**, including dependency installation. [Verified CI run](https://github.com/mehranwazir/ai4015-subsurface-agent/actions/runs/38919298498).
 
-See [docs/STAGE6_STATUS.md](docs/STAGE6_STATUS.md) for exact results, limitations, evidence locations, and submission readiness. The repository is local; GitHub publishing/supervisor access and the group's own A/B writing remain outstanding.
+See [docs/STAGE6_STATUS.md](docs/STAGE6_STATUS.md) for exact results, limitations, evidence locations, and submission readiness. The repository is public on GitHub.
 
 ## Reproduce on Windows
 
 Python 3.11-3.13 is supported; the recorded initial run used **Python 3.13.3 on Windows 11**. No GPU or LLM training is needed.
 
 ```powershell
-cd 'D:\Agentic AI\Project\subsurface-agent'
+cd ai4015-subsurface-agent
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
 .\.venv\Scripts\python.exe -m pip install --no-deps -e .
@@ -31,7 +31,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-For another checkout, replace the first path. The code derives paths from its installed project location; no source path is hardcoded. As a no-install alternative, set `$env:PYTHONPATH='src'` and use `python -m subsurface_agent ...` with the dependencies installed.
+Run the commands from the repository root. The code derives paths from its installed project location; no source path is hardcoded. As a no-install alternative, set `$env:PYTHONPATH='src'` and use `python -m subsurface_agent ...` with the dependencies installed.
 
 The initial development environment reused already installed packages through `venv --system-site-packages` because sandbox temp permissions prevented the first `ensurepip` attempt. `requirements-lock.txt` records package versions actually used. Subsequent GitHub CI successfully installed these dependencies and the editable package on fresh Linux and Windows runners and passed all 19 offline tests. The full public-data training/API workflow was executed locally; it is not part of offline CI.
 
@@ -46,7 +46,7 @@ Copy `.env.example` to `.env`, then configure `GEMINI_API_KEY` locally. Never pa
 
 Gemini is a separate API service; a ChatGPT subscription is not an API key. Availability/quota/billing depend on your Google account. The provider does not assume a free tier, silently switch models, or claim invoice cost. On 16 October 2026, `gemini-2.5-flash-lite` listed in the models endpoint but rejected generation for this account; the service recommended `gemini-3.5-flash-lite`. The model is configurable with `--model` or `GEMINI_MODEL`. Failed runs are retained.
 
-Each run writes `results/runs/<run-id>/result.json`, a JSONL event trace, and any CSV/plot artifacts. The result includes disposition, tools/errors, token counts, latency, model/data versions, and explicit cost uncertainty.
+Each run writes `results/runs/<run-id>/result.json`, a JSONL event trace, and any CSV/plot artifacts. Each `evaluate` batch writes its own summary to `results/evaluations/<batch-id>.json`, so later batches never overwrite earlier evidence; the Phase 1 batch is preserved in `results/agent_evaluation.json`. The result includes disposition, tools/errors, token counts, latency, model/data versions, and explicit cost uncertainty.
 
 ### Replay without an LLM call
 
@@ -73,6 +73,13 @@ Public source: [SPWLA PDDA 2021 organizer repository](https://github.com/pddasig
 These choices were fixed before initial scoring. The dataset is one field, the test has only two wells, and labels are interpreted reference properties. Do not claim field-independent generalization or perfect physical truth. This cohort/split is different from the base paper.
 
 The agent reads **only** `data/processed/features.csv` and the locally trained model. Final test labels are not in its tools or state. Evaluation joins on stable sample ID, well, and depth rather than assuming row order.
+
+## Reliability fixes after Phase 1 recording
+
+- **Depth unit is required.** `inspect_interval` no longer defaults a missing unit to feet; it returns `MISSING_UNIT` so the planner must clarify instead of guessing. All recorded Phase 1 runs passed the unit explicitly, so their results are unaffected.
+- **Versioned reference model.** Pickled forests differ byte-for-byte across Python/OS builds even when every prediction is identical. The reference model (`models/random_forest.joblib`, SHA-256 `e24f305b…`) is therefore committed. `baseline` refits the model and, when the refit reproduces the reference predictions exactly, keeps the reference file (`reference_model_reproduced: true`). Prediction IDs and replay of the recorded traces now work from a fresh clone.
+- **Evaluation evidence is append-only** (see above).
+- **Overlap check is reproducible.** `prepare` now regenerates `results/overlap_check.json`.
 
 ## Numerical baseline
 
@@ -117,7 +124,7 @@ Unknown identifiers/unsupported curves produce explicit errors. Insufficient usa
 
 Software tests use synthetic fixtures to check contracts, identity-safe scoring, leakage boundaries, unit conversions, artifact corruption, recovery, budget termination, provider failures, and replay. Scripted test providers are labeled test doubles and never counted as real model results. Network access is unnecessary for tests.
 
-In the Codex Windows sandbox, the default temporary directory can be inaccessible. The recorded final test command used a fresh workspace directory:
+In some sandboxed Windows environments, the default temporary directory can be inaccessible. The recorded final test command used a fresh workspace directory:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -q --basetemp=.tools/pytest-stage6-final-20261016 --junitxml=results/tests.xml
@@ -134,7 +141,7 @@ evaluation/            manually labeled workflow smoke cases
 docs/                  scientific protocol and development status
 data/raw/              ignored public downloads; recreated by download command
 data/processed/        ignored prepared tables; recreated by prepare command
-models/                ignored locally trained artifacts
+models/                versioned reference Random Forest and its manifest
 results/               actual metrics, figures, validation outputs
 results/evidence/      selected real traces/artifacts retained for review
 ```

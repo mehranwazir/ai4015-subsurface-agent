@@ -78,7 +78,12 @@ class ToolRuntime:
             output = getattr(self, name)(**request.model_dump())
             result = {"ok": True, **clean_json(output)}
         except ValidationError as exc:
-            result = {"ok": False, "error": "INVALID_ARGUMENTS", "message": str(exc), "recoverable": True}
+            if any(e["type"] == "missing" and e["loc"] == ("unit",) for e in exc.errors()):
+                result = {"ok": False, "error": "MISSING_UNIT",
+                          "message": "Depth unit not given. Use ft or m only if the user stated it; otherwise finish with clarify.",
+                          "recoverable": True}
+            else:
+                result = {"ok": False, "error": "INVALID_ARGUMENTS", "message": str(exc), "recoverable": True}
         except ToolError as exc:
             result = {"ok": False, "error": exc.code, "message": str(exc), "recoverable": exc.recoverable}
         except (OSError, ValueError, KeyError) as exc:

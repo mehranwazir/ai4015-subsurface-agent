@@ -68,6 +68,23 @@ def save_log_plot(frame: pd.DataFrame, destination: Path) -> None:
     fig.savefig(destination, dpi=140, bbox_inches="tight"); plt.close(fig)
 
 
+def adopt_reference_model(model_dir: Path, fitted, probe: pd.DataFrame):
+    """Return the versioned reference model if this fresh fit reproduces its predictions exactly.
+
+    Pickled forests differ byte-for-byte across Python/OS builds even when every prediction is
+    identical, so the committed file stays the stable identity used by prediction IDs and replay.
+    """
+    path, manifest = model_dir / "random_forest.joblib", model_dir / "model_manifest.json"
+    if not (path.exists() and manifest.exists()):
+        return None
+    info = read_json(manifest)
+    if sha256(path) != info["model_sha256"]:
+        raise ValueError("Reference model checksum mismatch")
+    # Only this repository's own checksum-matched reference model is loaded.
+    reference = joblib.load(path)
+    return (reference, info) if np.array_equal(reference.predict(probe), fitted.predict(probe)) else None
+
+
 def run_baseline(root: Path) -> dict:
     manifest = read_json(root / "results" / "data_manifest.json")
     processed = root / "data" / "processed"
@@ -88,13 +105,19 @@ def run_baseline(root: Path) -> dict:
     mean.fit(train[FEATURES], train[TARGETS])
     fit_seconds = time.perf_counter() - started
     model_dir = root / "models"; model_dir.mkdir(parents=True, exist_ok=True)
-    joblib.dump(model, model_dir / "random_forest.joblib")
-    info = {"model_id": "rf80-depth10-seed42-v1", "features": FEATURES, "targets": TARGETS,
-            "model_sha256": sha256(model_dir / "random_forest.joblib"),
-            "train_wells": manifest["splits"]["train"]["wells"],
-            "fit_seconds": fit_seconds, "data_archive_sha256": manifest["archive_sha256"]}
-    write_json(model_dir / "model_manifest.json", info)
-    results = {"created_utc": utc_now(), "model": info,
+    probe = pd.concat([frames["validation"][FEATURES], frames["test"][FEATURES]])
+    adopted = adopt_reference_model(model_dir, model, probe)
+    if adopted:
+        model, info = adopted
+    else:
+        joblib.dump(model, model_dir / "random_forest.joblib")
+        info = {"model_id": "rf80-depth10-seed42-v1", "features": FEATURES, "targets": TARGETS,
+                "model_sha256": sha256(model_dir / "random_forest.joblib"),
+                "train_wells": manifest["splits"]["train"]["wells"],
+                "fit_seconds": fit_seconds, "data_archive_sha256": manifest["archive_sha256"]}
+        write_json(model_dir / "model_manifest.json", info)
+    results = {"created_utc": utc_now(), "model": info, "fit_seconds_this_run": fit_seconds,
+               "reference_model_reproduced": bool(adopted),
                "versions": {n: version(n) for n in ["numpy", "pandas", "scikit-learn", "joblib", "matplotlib", "pydantic", "requests"]},
                "python": platform.python_version(), "platform": platform.platform(), "splits": {},
                "protocol": "Fixed hyperparameters; no test-based model selection; custom whole-well split, not paper/competition reproduction"}

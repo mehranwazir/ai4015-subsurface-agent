@@ -65,5 +65,7 @@ def evaluate_cases(root: Path, provider, *, limit: int | None = None, selected: 
                "executed_case_count": len(records), "passed": sum(r["passed"] for r in records),
                "pass_rate": sum(r["passed"] for r in records) / len(records), "cases": records,
                "limitations": "Initial convenience smoke suite; single run per prompt; not statistically validated; no gap ablation results"}
-    write_json(root / "results" / "agent_evaluation.json", summary)
+    # One file per batch so later runs never overwrite earlier recorded evidence.
+    summary["path"] = f"results/evaluations/{batch}.json"
+    write_json(root / summary["path"], summary)
     return summary

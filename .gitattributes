@@ -9,3 +9,4 @@
 # Preserve generated evidence bytes so the recorded SHA256 inventory survives cloning.
 results/** -text
 results/evidence/tests_sandbox_temp_failure.xml binary
+*.joblib binary
