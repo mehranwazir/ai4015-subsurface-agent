@@ -1,159 +1,169 @@
-# Subsurface Agent - AI4015 Phase 1
+# Reliable Tool-Using Agents for Well-Log Analysis
 
-A small **LogACF-inspired adaptation** for conventional well-log analysis. A frozen Random Forest predicts porosity (PHIF), water saturation (SW), and shale volume (VSH). One bounded Gemini agent inspects real schemas, selects approved tools, validates artifacts, and answers/clarifies/abstains. Python performs all numerical work.
+AI4015 Agentic Artificial Intelligence, Fall 2026 - Phase 1, Group G3-03.
 
-This repository contains engineering code and factual execution artifacts. It is **not** a student-written Phase 1 literature review/proposal and must not be submitted as one. The assessed writing must be the group's own work.
+This project uses a Gemini agent to coordinate well-log analysis. Given a well and a depth interval, it inspects the available curves, runs a fixed Random Forest to estimate porosity (PHIF), water saturation (SW) and shale volume (VSH), verifies the prediction file, and creates a plot when requested. Python handles the numerical work; the agent chooses the next tool based on the request and the tool results.
 
-The [Stage 7 evidence pack and writing guide](docs/stage7/README.md) maps the exact rubric to verified references, gap experiments, architecture diagrams, actual results and the proposed team responsibilities. [GitHub publication and collaboration](docs/GITHUB_PUBLISHING.md) explains the repository handoff.
+The project is inspired by [LogACF](https://doi.org/10.1016/j.petsci.2026.05.031). We focus on one conventional well-log workflow with a public dataset, one planner and predefined tools. The current implementation provides the working baseline for the Phase 1 report, *Reliable Tool-Using Agents for Well-Log Analysis*. Controlled comparisons of the proposed reliability mechanisms are planned for the next phase.
 
-## Recorded results: 16 October 2026
+## Phase 1 results
 
-- **19 offline software tests passed** at the Phase 1 recording; see [results/tests.xml](results/tests.xml). After the reliability fixes below, the suite has 23 tests.
-- **6/6 selected live Gemini smoke cases passed**, once each. Ten additional defined cases were not run against Gemini; this is development evidence, not a general reliability estimate.
-- On **4,122 held-out rows from wells 3 and 7**, mean property RMSE was **0.051901** for the fixed Random Forest and **0.220384** for the training-mean predictor. These use the same custom split; they are not comparable to LogACF's published score.
-- A real prediction/verification/plot workflow completed; all six recorded tool outputs matched during replay without an LLM request.
-- After publication, **19 tests passed on each of fresh Linux and Windows GitHub runners**, including dependency installation. [Verified CI run](https://github.com/mehranwazir/ai4015-subsurface-agent/actions/runs/38919298498).
+The public-data baseline and live Gemini runs were recorded on 16 October 2026. Numerical evaluation uses 4,122 held-out rows from wells 3 and 7. All target values are fractions.
 
-See [docs/STAGE6_STATUS.md](docs/STAGE6_STATUS.md) for exact results, limitations, evidence locations, and submission readiness. The repository is public on GitHub.
+| Target | Training-mean RMSE | Random Forest RMSE | Random Forest MAE | Random Forest R-squared |
+| --- | ---: | ---: | ---: | ---: |
+| PHIF | 0.071320 | 0.021597 | 0.013402 | 0.876463 |
+| SW | 0.357893 | 0.070118 | 0.031695 | 0.902511 |
+| VSH | 0.231938 | 0.063989 | 0.050770 | 0.914726 |
+| Mean property RMSE | 0.220384 | 0.051901 | - | - |
 
-## Reproduce on Windows
+The last row is the arithmetic mean of the three pooled property RMSEs. Results vary by well: water saturation on well 7 has RMSE 0.092671 and R-squared 0.259237. Full pooled and per-well results are in [baseline_metrics.json](results/baseline_metrics.json). These scores describe the numerical predictor on our custom split; they do not measure an accuracy gain from using an agent or establish a comparison with LogACF's published score.
 
-Python 3.11-3.13 is supported; the recorded initial run used **Python 3.13.3 on Windows 11**. No GPU or LLM training is needed.
+The recorded agent evaluation includes:
+
+- Six selected live Gemini cases, each run once: feet, meters, an unknown well, an unsupported target, a missing prediction file and a curve alias. All six passed their specified checks. Ten other defined cases were not run live.
+- A separate prediction, verification and plotting run for well 3 from 10,600 to 11,000 ft, producing 1,220 prediction rows in six tool calls with no tool errors.
+- Replay of that run with all six structured tool outputs matching, without another LLM call.
+
+See the [recorded evaluation](results/agent_evaluation.json), [successful workflow](results/evidence/gemini-e2e-002/result.json) and [replay result](results/evidence/replay.json). The live cases are development smoke tests, not a blinded reliability benchmark.
+
+The current software suite has **23 passing tests**, including the four tests added after the original 19-test recording. [Windows and Linux CI](https://github.com/mehranwazir/ai4015-subsurface-agent/actions/runs/39028167942) passed the extended suite. CI uses synthetic fixtures and a scripted provider; it does not run full public-data training or call Gemini.
+
+## Setup
+
+Python 3.11-3.13 is supported. The recorded environment used Python 3.13.3 on Windows 11. The numerical model runs on CPU; a GPU is not required.
+
+The commands below use PowerShell:
 
 ```powershell
+git clone https://github.com/mehranwazir/ai4015-subsurface-agent.git
 cd ai4015-subsurface-agent
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
 .\.venv\Scripts\python.exe -m pip install --no-deps -e .
-.\.venv\Scripts\python.exe -m subsurface_agent download
-.\.venv\Scripts\python.exe -m subsurface_agent prepare
-.\.venv\Scripts\python.exe -m subsurface_agent baseline
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Run the commands from the repository root. The code derives paths from its installed project location; no source path is hardcoded. As a no-install alternative, set `$env:PYTHONPATH='src'` and use `python -m subsurface_agent ...` with the dependencies installed.
+The tests run without a dataset download or API key. On Linux or macOS, use `.venv/bin/python` in place of `.\.venv\Scripts\python.exe`.
 
-The initial development environment reused already installed packages through `venv --system-site-packages` because sandbox temp permissions prevented the first `ensurepip` attempt. `requirements-lock.txt` records package versions actually used. Subsequent GitHub CI successfully installed these dependencies and the editable package on fresh Linux and Windows runners and passed all 19 offline tests. The full public-data training/API workflow was executed locally; it is not part of offline CI.
-
-### Run the real agent
-
-Copy `.env.example` to `.env`, then configure `GEMINI_API_KEY` locally. Never paste keys in issues, screenshots, commits, or results. Alternatively set an environment variable in the shell. The real `.env` is ignored by Git.
+### Prepare the data and reproduce the baseline
 
 ```powershell
+.\.venv\Scripts\python.exe -m subsurface_agent download
+.\.venv\Scripts\python.exe -m subsurface_agent prepare
+.\.venv\Scripts\python.exe -m subsurface_agent baseline
+```
+
+`download` retrieves the pinned public archive. `prepare` creates the feature table and supervised splits, records their checksums, and regenerates the train/test feature-overlap check. `baseline` fits and scores the Random Forest and training-mean predictor, then writes metrics, keyed predictions and plots under `results/`.
+
+The reference Random Forest and its manifest are tracked under `models/`. Its SHA-256 is `e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e`. When a fresh fit produces exactly the same predictions on the validation and test feature rows, `baseline` keeps the reference file and reports `reference_model_reproduced: true`. This preserves the model identity used by recorded prediction IDs and replay across environments.
+
+### Run the agent
+
+Copy `.env.example` to `.env` and set `GEMINI_API_KEY`. The recorded runs used `gemini-3.5-flash-lite`; the model can be changed with `GEMINI_MODEL` or `--model` to one available to your account. The `.env` file is ignored by Git. Live runs require Gemini API access and are subject to your account's quota and billing.
+
+```powershell
+Copy-Item .env.example .env
+# Edit .env and add your API key before running the next command.
 .\.venv\Scripts\python.exe -m subsurface_agent agent 'Predict PHIF, SW and VSH for well 3 from 10600 to 11000 ft. Verify the artifact and make a plot.'
+```
+
+Include the depth unit in the request. Missing units, ambiguous well identifiers and unsupported targets require clarification. Unknown wells or insufficient usable data lead to abstention.
+
+Each run saves `result.json`, an event trace and any prediction or plot files in `results/runs/<run-id>/`. Records include the final disposition, tool calls, errors, data/model versions, token usage and loop latency. Billing cost is recorded as unknown unless separately established; optional price inputs produce an estimate only.
+
+To run the same six cases selected for the Phase 1 evaluation:
+
+```powershell
 .\.venv\Scripts\python.exe -m subsurface_agent evaluate --cases predict_ft predict_m unknown_well unsupported_target repair_missing curve_alias
 ```
 
-Gemini is a separate API service; a ChatGPT subscription is not an API key. Availability/quota/billing depend on your Google account. The provider does not assume a free tier, silently switch models, or claim invoice cost. On 16 October 2026, `gemini-2.5-flash-lite` listed in the models endpoint but rejected generation for this account; the service recommended `gemini-3.5-flash-lite`. The model is configurable with `--model` or `GEMINI_MODEL`. Failed runs are retained.
+Each new batch writes a separate summary to `results/evaluations/<batch-id>.json`. The original Phase 1 summary remains in `results/agent_evaluation.json`. New planner runs can differ from the recorded runs.
 
-Each run writes `results/runs/<run-id>/result.json`, a JSONL event trace, and any CSV/plot artifacts. Each `evaluate` batch writes its own summary to `results/evaluations/<batch-id>.json`, so later batches never overwrite earlier evidence; the Phase 1 batch is preserved in `results/agent_evaluation.json`. The result includes disposition, tools/errors, token counts, latency, model/data versions, and explicit cost uncertainty.
+### Replay a recorded workflow
 
-### Replay without an LLM call
+After preparing the pinned data, the committed reference model can be used to replay the saved workflow without an API key:
 
 ```powershell
-.\.venv\Scripts\python.exe -m subsurface_agent replay results/runs/<run-id>/result.json
+.\.venv\Scripts\python.exe -m subsurface_agent replay results/evidence/gemini-e2e-002/result.json
 ```
 
-Replay reruns the recorded approved tool actions with the pinned data/model and checks exact structured outputs. This differs from asking a stochastic LLM to plan again.
+Replay repeats the saved tool actions and checks their structured outputs under matching data/model versions. It does not ask Gemini to create a new plan. Plot bytes may vary with rendering versions.
 
-## Data and split
+## Data and numerical model
 
-Public source: [SPWLA PDDA 2021 organizer repository](https://github.com/pddasig/Machine-Learning-Competition-2021), commit `0ffc94f702feab81f6eb1f4d453e19754a557305`.
+The dataset is the [SPWLA PDDA Machine Learning Competition 2021 release](https://github.com/pddasig/Machine-Learning-Competition-2021), derived from Volve data and pinned to commit `0ffc94f702feab81f6eb1f4d453e19754a557305`.
 
-- Original `train.csv`: **318,967 rows / 9 well IDs (0-8)**.
-- Original competition `test.csv`: **11,275 rows / 4 well IDs (100, 101, 103, 104)**.
-- The organizer reference CSV lacks sample/well/depth keys. We **do not score the competition test data** or claim its official score.
-- Custom evaluation cohort: finite PHIF/SW/VSH in [0,1], at least four finite input curves. **42,219 rows** qualify. **90 complete-label rows outside [0,1]** are flagged/excluded, not clipped. Missing-label rows are excluded only from supervised evaluation/training.
-- Training wells **0,2,4,6,8**: **33,692 rows**.
-- Validation wells **1,5**: **4,405 rows**.
-- Test wells **3,7**: **4,122 rows**.
-- Seven input curves: `GR, CALI, DEN, NEU, RDEP, RMED, DTC`. Well ID, depth, and target labels are not predictor inputs.
-- Depth is feet according to the pinned organizer tutorial; meter requests are explicitly converted. The tutorial's DTC unit wording appears inconsistent, so no DTC unit conversion is performed.
+The original training CSV has 318,967 rows from nine well IDs. The supervised cohort requires finite PHIF, SW and VSH values within [0,1] and at least four finite input curves. It contains 42,219 rows. Ninety complete-label rows with out-of-range targets are excluded rather than clipped.
 
-These choices were fixed before initial scoring. The dataset is one field, the test has only two wells, and labels are interpreted reference properties. Do not claim field-independent generalization or perfect physical truth. This cohort/split is different from the base paper.
+| Split | Well IDs | Eligible rows |
+| --- | --- | ---: |
+| Training | 0, 2, 4, 6, 8 | 33,692 |
+| Validation | 1, 5 | 4,405 |
+| Test | 3, 7 | 4,122 |
 
-The agent reads **only** `data/processed/features.csv` and the locally trained model. Final test labels are not in its tools or state. Evaluation joins on stable sample ID, well, and depth rather than assuming row order.
+The seven inputs are `GR`, `CALI`, `DEN`, `NEU`, `RDEP`, `RMED` and `DTC`. Well ID and depth are alignment keys, not predictor inputs. Depth is stored in feet; declared meter intervals are converted explicitly. No DTC conversion is applied because the organizer tutorial's unit wording is inconsistent.
 
-## Reliability fixes after Phase 1 recording
+The Random Forest uses training-only median imputation with missingness indicators, 80 trees, maximum depth 10, minimum leaf size 3, seed 42 and one CPU worker. Hyperparameters and the well split were fixed before initial scoring. The simpler comparison predicts the training mean for each target.
 
-- **Depth unit is required.** `inspect_interval` no longer defaults a missing unit to feet; it returns `MISSING_UNIT` so the planner must clarify instead of guessing. All recorded Phase 1 runs passed the unit explicitly, so their results are unaffected.
-- **Versioned reference model.** Pickled forests differ byte-for-byte across Python/OS builds even when every prediction is identical. The reference model (`models/random_forest.joblib`, SHA-256 `e24f305b…`) is therefore committed. `baseline` refits the model and, when the refit reproduces the reference predictions exactly, keeps the reference file (`reference_model_reproduced: true`). Prediction IDs and replay of the recorded traces now work from a fresh clone.
-- **Evaluation evidence is append-only** (see above).
-- **Overlap check is reproducible.** `prepare` now regenerates `results/overlap_check.json`.
+The organizer's separate competition test file has 11,275 rows, but its reference target file lacks well/depth identity keys. We do not score that file or report an official competition result. Source hashes, filtering counts and split details are in [data_manifest.json](results/data_manifest.json). The [overlap check](results/overlap_check.json) found no exact training/test feature-vector matches; this does not establish independence between related wellbores.
 
-## Numerical baseline
-
-- Training-only median imputation plus missingness indicators.
-- Random Forest: 80 trees, max depth 10, min leaf size 3, seed 42, one CPU worker.
-- Training-mean predictor as a simpler non-agentic comparison.
-- RMSE, MAE and R² per property/well; pooled and macro-well summaries.
-- No hyperparameter search or test-guided model choice.
-
-Actual metrics: [results/baseline_metrics.json](results/baseline_metrics.json). Data/checksum/split provenance: [results/data_manifest.json](results/data_manifest.json). Figures and keyed predictions are saved under `results/`.
-
-Agent reliability is a different outcome from prediction RMSE. The same frozen numerical tools serve the fixed workflow and the agent; any claimed orchestration improvement needs separate controlled experiments.
-
-## Architecture
+## Agent workflow
 
 ```mermaid
 flowchart TD
- Q[User request] --> A[One bounded Gemini planner]
- A --> R[Dataset/alias/unit registry - initial G1 support]
- R --> I[Inspect exact interval]
- I --> P[Frozen Python prediction tool]
- P --> V[Identity/range/recompute verifier - initial G2 support]
- V -->|recoverable error| A
- V --> F[Finish: answer, clarify, abstain - initial G3 support]
- D[(Pinned public feature-only data)] --> I
- M[(Training-only fitted model)] --> P
- S[(State + event log + version hashes)] --- A
- S --- P
- S --- V
- B[Deterministic baseline with structured inputs] --> P
+    Q[User request] --> A[Bounded Gemini planner]
+    A --> I[Inspect dataset and requested interval]
+    I --> P[Frozen Random Forest prediction]
+    P --> V[Verify identity, values and recomputation]
+    V -->|Recoverable error| A
+    V --> O[Verified CSV and optional plot]
+    A --> F[Answer, clarify or abstain]
+    D[(Feature-only data)] --> I
+    M[(Versioned model)] --> P
+    S[(Run state and event trace)] --- A
 ```
 
-The full research gaps are **not yet validated contributions**. These are initial mechanisms and a smoke benchmark; no gap ablation/significance/calibration claim is made.
+The available tools are `inspect_dataset`, `inspect_interval`, `predict_properties`, `verify_predictions`, `plot_logs` and `finish`. Pydantic validates arguments and rejects unknown fields. The depth unit is mandatory. Prediction requires at least ten usable rows and 60% input coverage; these are demonstration rules, not calibrated confidence thresholds.
 
-Tools: `inspect_dataset`, `inspect_interval`, `predict_properties`, `verify_predictions`, `plot_logs`, `finish`. Arguments are validated by Pydantic with unknown fields rejected. There is no arbitrary code executor, model-training tool, file-path argument, web access, or scoring-label tool. Limits are 10 model turns, 14 calls, and 3 tool errors per run.
+The agent reads the feature-only table and the frozen model. Reference target labels remain with the independent offline scorer. Predictions must pass verification before a successful prediction answer or plot. Verification checks artifact identity, finite values, bounds and agreement with model recomputation; it cannot establish geological correctness.
 
-Unknown identifiers/unsupported curves produce explicit errors. Insufficient usable samples cause abstention. Predictions must be verified before answering/plotting. The verifier establishes execution consistency, not geological correctness or calibrated uncertainty. Fault injection is explicitly labeled and only simulates a missing output artifact for the recovery case.
+A run is limited to 10 planner turns, 14 tool calls and three tool errors. A missing prediction file can be regenerated and verified within that budget. The tool registry provides no arbitrary code execution, model fitting or access to scoring labels. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for state and tool details.
 
-## Evaluation and tests
+## Next phase and limitations
 
-`evaluation/cases.json` contains **16 manually specified smoke cases**, not an independent validated benchmark. Cases include feet/meters, aliases, missing units, ambiguous wells, unsupported targets, missing files, tiny intervals, and test-label tuning requests. Real execution coverage is reported in `results/agent_evaluation.json`; unexecuted cases are not counted as passed.
+The report proposes three comparisons: semantic grounding of wells, curves and units (G1); artifact verification with bounded repair (G2); and answer, clarification or abstention decisions based on available evidence (G3). Initial mechanisms are implemented. Matched controls, ablations and a larger scenario benchmark remain planned; their benefits have not yet been measured.
 
-Software tests use synthetic fixtures to check contracts, identity-safe scoring, leakage boundaries, unit conversions, artifact corruption, recovery, budget termination, provider failures, and replay. Scripted test providers are labeled test doubles and never counted as real model results. Network access is unnecessary for tests.
+The current data comes from one field, with only two held-out test wells and interpreted reference labels. The numerical results do not establish transfer to other fields. Six successful live cases do not establish general agent reliability, and the acceptance rules do not provide calibrated uncertainty. Production forecasting, reservoir simulation, permeability prediction and economics are outside the current scope.
 
-In some sandboxed Windows environments, the default temporary directory can be inaccessible. The recorded final test command used a fresh workspace directory:
-
-```powershell
-.\.venv\Scripts\python.exe -m pytest -q --basetemp=.tools/pytest-stage6-final-20261016 --junitxml=results/tests.xml
-```
-
-Use a new directory name if retaining earlier test scratch files. The preceding sandbox-temp failure is retained in `results/evidence/tests_sandbox_temp_failure.xml`; it was an environment setup failure, not a passing test run. Subsequent remote Linux and Windows CI both passed; [verification details](docs/stage7/ci_verification.json) identify the tested commit and scope.
+The [experiment protocol](docs/EXPERIMENT_PROTOCOL.md) documents scoring, leakage controls and comparison limits. Supporting literature and research notes are collected in [docs/stage7/](docs/stage7/README.md).
 
 ## Repository layout
 
 ```text
-src/subsurface_agent/   data, baseline, contracts, tools, provider, agent, evaluation, CLI
-tests/                 offline unit/integration tests
-evaluation/            manually labeled workflow smoke cases
-docs/                  scientific protocol and development status
-data/raw/              ignored public downloads; recreated by download command
-data/processed/        ignored prepared tables; recreated by prepare command
-models/                versioned reference Random Forest and its manifest
-results/               actual metrics, figures, validation outputs
-results/evidence/      selected real traces/artifacts retained for review
+src/subsurface_agent/   data preparation, model, tools, agent, evaluation and CLI
+tests/                 offline software tests with synthetic fixtures
+evaluation/            16 defined development smoke cases
+docs/                  architecture, protocol and research notes
+data/raw/              downloaded source data, excluded from Git
+data/processed/        prepared tables, excluded from Git
+models/                reference Random Forest and its manifest
+results/               recorded metrics, predictions and figures
+results/evidence/      retained live traces, artifacts and replay results
+results/runs/          new local runs, excluded from Git
 ```
 
-Published repository: [mehranwazir/ai4015-subsurface-agent](https://github.com/mehranwazir/ai4015-subsurface-agent). Source, tests, actual results and the Stage 7 evidence pack are public, and the first Windows/Linux CI run passed. Recheck access/state before submission. Group members must add their own real contributions; commit history must not be fabricated.
+## Project team
 
-## Attribution and comparison limits
+| Member | Roll number | Responsibility |
+| --- | --- | --- |
+| Mehran Hamayoon | 22i-0810 | Group head; data and numerical model |
+| Abdul Basit | 22i-0866 | Agent and tool integration |
+| Talha Araiz | 22i-0796 | Evaluation and reliability |
 
-Base paper: Luo, G. and Xiao, L.-Z. (2026), [Large language model-based AI agent for well logging data processing and interpretation](https://doi.org/10.1016/j.petsci.2026.05.031), *Petroleum Science*.
+## References and data terms
 
-Data background: Fu et al. (2024), [Well-Log-Based Reservoir Property Estimation With Machine Learning: A Contest Summary](https://doi.org/10.30632/PJV65N1-2024a6), *Petrophysics* 65(1), 108-127. This 2024 background paper does not count toward the assignment's ten 2025-26 papers.
+- Luo, G. and Xiao, L.-Z. (2026). [Large language model-based AI agent for well logging data processing and interpretation](https://doi.org/10.1016/j.petsci.2026.05.031). *Petroleum Science*. The project adapts its workflow idea; it does not reproduce the full LogACF system or use copied author code.
+- Fu et al. (2024). [Well-Log-Based Reservoir Property Estimation With Machine Learning: A Contest Summary](https://doi.org/10.30632/PJV65N1-2024a6). *Petrophysics*, 65(1), 108-127. Dataset background.
 
-This code was written for the student project; author LogACF code was inspected for research but not copied. We simplify agent roles, freeze the prediction model, use native typed tools, use another provider/model, and change the split. **Our score must not be presented as outperforming LogACF's reported score.**
-
-See [NOTICE.md](NOTICE.md) for the organizer's noncommercial/share-alike data terms. Do not treat public data availability as an unrestricted code/data license.
+The organizer states Attribution-NonCommercial-ShareAlike terms for the data. Raw and processed datasets are downloaded or regenerated rather than committed. See [NOTICE.md](NOTICE.md) for attribution and third-party data terms.
