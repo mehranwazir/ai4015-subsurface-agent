@@ -59,8 +59,15 @@ def main(argv=None) -> int:
     summary.add_argument("--cases", type=Path, required=True)
     summary.add_argument("--systems", nargs="+", choices=SYSTEMS)
     summary.add_argument("--runs-dir", type=Path, help="folder of saved runs (default logs/runs), e.g. logs/evidence/final")
+    web = sub.add_parser("web", help="open the local web interface (saved runs, results and live runs)")
+    web.add_argument("--port", type=int, default=8765)
+    web.add_argument("--no-browser", action="store_true")
     args = parser.parse_args(argv)
     root = project_root()
+    if args.command == "web":
+        from .web import serve
+        serve(root, port=args.port, open_browser=not args.no_browser)
+        return 0
     try:
         if args.command == "download":
             output = download_data(root)

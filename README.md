@@ -52,7 +52,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-The 73 tests use small synthetic fixtures and a scripted planner; they need no dataset or API key. GitHub Actions runs them on Windows and Linux for every push.
+The 86 tests use small synthetic fixtures and a scripted planner; they need no dataset or API key. GitHub Actions runs them on Windows and Linux for every push.
 
 ### Data and model
 
@@ -99,6 +99,20 @@ Replay a saved run without calling the LLM (checks that every tool output is rep
 ```powershell
 .\.venv\Scripts\python.exe -m subsurface_agent replay logs/evidence/final/final-full-test-predict-01-r1/result.json
 ```
+
+### Web interface
+
+```powershell
+.\.venv\Scripts\python.exe -m subsurface_agent web            # opens http://127.0.0.1:8765
+```
+
+A local browser interface over the same code (standard library server, no extra dependency; `--port` and `--no-browser` are optional):
+
+- **Saved runs**: all 566 final runs with filters. Each run shows its full trajectory step by step, where G1, G2 or G3 acted, the score, the run record (model, temperature, seed, tokens, latency) and an interactive log chart of the predicted PHIF, SW and VSH against the reference labels. Needs no API key.
+- **New run**: type a request, pick a system (`full`, an ablation, `b0` or `b2`) and watch each tool call arrive. The run is saved to `logs/runs/web-<system>-<id>/` like any other run. LLM systems need `GEMINI_API_KEY`; only one run at a time.
+- **Results**: the E1 to E6 tables and the figures, read from `results/final/`.
+
+The server listens on `127.0.0.1` only. The page lives in `web/` and the server in `src/subsurface_agent/web.py`.
 
 ## Reproducing the experiments
 
@@ -215,6 +229,7 @@ experiments/            benchmark generator and files, analysis script, experime
 results/                baseline metrics, experiment summaries, final tables and figures
 logs/evidence/          saved agent trajectories: development rounds and all 566 final runs
 models/                 reference Random Forest, its manifest and the G3 policy
+web/                    local browser interface (served by `subsurface web`)
 tests/                  offline tests for the deterministic components
 docs/                   devlog, results, failure analysis, architecture, Phase 1 notes
 ```
