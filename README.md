@@ -135,6 +135,18 @@ To check the reported numbers without any API calls, re-score the committed run 
 
 `summarize` writes `results/experiments/final/runs.csv` (one scored row per run) and `summary.json`. `analyze.py` writes `results/final/tables.md`, one CSV per table, the figures in `results/final/figures/` and `docs/FAILURE_ANALYSIS.md`.
 
+### Model settings and prompts
+
+Every run record (`result.json`) stores the model version returned by the API, the decoding settings (`generation`: temperature, seed, maximum output tokens, function-calling mode, credentials file), the configuration and its switches, and the data and model checksums. The prompts are fixed in the code and were not changed after the freeze (devlog entry 7):
+
+| Prompt | Location |
+|---|---|
+| Planner system prompt (all agent configurations) | `SYSTEM` in `src/subsurface_agent/agent.py` |
+| G1 dataset registry and grounding checklist (added when G1 is on) | `registry_context` in `src/subsurface_agent/gaps/grounding.py` |
+| G3 evidence rule (added when G3 is on) | `PROMPT_CONTEXT` in `src/subsurface_agent/gaps/acceptance.py` |
+| B2 planner and reviewer prompts | `PLANNER` and `REVIEWER` in `src/subsurface_agent/baselines/logacf_style.py` |
+| Tool descriptions and schemas | `DESCRIPTIONS` and the Pydantic contracts in `src/subsurface_agent/contracts.py` |
+
 ### How runs are scored
 
 The scorer (`src/subsurface_agent/scoring.py`) uses the trace, the offline oracle and the reference labels, never the system's own success claim. A run is **task-correct** when its outcome is allowed for the case, it did not answer from an invalid file, any reported prediction has mean property RMSE of at most 0.05, and, for complete requests, it answered when the interval's reference error was at most 0.05 and refused when it was above.
