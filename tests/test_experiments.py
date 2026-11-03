@@ -115,3 +115,25 @@ def test_pacing_waits_are_excluded_from_active_latency(tiny_root):
     result = read_json(tiny_root / "logs" / "runs" / "p-full-clean-r1" / "result.json")
     assert result["throttle_seconds"] == 5.0 * result["provider_requests"]
     assert abs(result["active_latency_seconds"] - (result["latency_seconds"] - result["throttle_seconds"])) < 1e-9
+
+
+def test_own_gap_scope_runs_each_ablation_only_on_its_gap(tiny_root):
+    cases = setup(tiny_root)
+    result = run_experiment(tiny_root, "s", cases, ["full", "no_g1", "no_g2"], 1, PlannerDouble(), scope="own-gap",
+                            log=lambda *_: None)
+    assert result["new_runs"] == 3 + 2 + 1
+    names = sorted(p.name for p in (tiny_root / "logs" / "runs").glob("s-*"))
+    assert names == ["s-full-clean-r1", "s-full-corrupt-r1", "s-full-nounit-r1",
+                     "s-no_g1-clean-r1", "s-no_g1-nounit-r1", "s-no_g2-corrupt-r1"]
+
+
+def test_explicit_env_file_overrides_and_must_exist(tiny_root, monkeypatch):
+    import os
+    import pytest
+    from subsurface_agent.common import load_env
+    monkeypatch.setenv("GEMINI_API_KEY", "from-shell")
+    (tiny_root / ".env.keyB").write_text("GEMINI_API_KEY=from-file-b\n", encoding="utf-8")
+    load_env(tiny_root, tiny_root / ".env.keyB")
+    assert os.environ["GEMINI_API_KEY"] == "from-file-b"
+    with pytest.raises(ValueError, match="not found"):
+        load_env(tiny_root, tiny_root / ".env.missing")

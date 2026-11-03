@@ -31,8 +31,11 @@ class GeminiProvider:
     """
 
     def __init__(self, root: Path, model: str | None = None, *, temperature: float = 1.0, seed: int | None = None,
-                 min_interval: float = 0.0, rate_limit_waits: int = 0, rate_limit_wait_seconds: float = 60.0):
-        load_env(root)
+                 min_interval: float = 0.0, rate_limit_waits: int = 0, rate_limit_wait_seconds: float = 60.0,
+                 env_file: Path | None = None):
+        load_env(root, env_file)
+        # Which credentials file served a run is recorded (never the key itself).
+        self.credentials = Path(env_file).name if env_file else ".env"
         self.key = os.getenv("GEMINI_API_KEY", "")
         if not self.key:
             raise ProviderError("Set GEMINI_API_KEY in environment or ignored .env")
@@ -49,7 +52,7 @@ class GeminiProvider:
     @property
     def generation_settings(self) -> dict:
         return {"temperature": self.temperature, "seed": self.seed, "max_output_tokens": 1024,
-                "function_calling_mode": "ANY"}
+                "function_calling_mode": "ANY", "credentials_file": self.credentials}
 
     def _pace(self) -> None:
         wait = self._last_request + self.min_interval - time.monotonic()

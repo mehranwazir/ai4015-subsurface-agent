@@ -48,6 +48,10 @@ def main(argv=None) -> int:
     experiment.add_argument("--temperature", type=float, default=1.0)
     experiment.add_argument("--min-interval", type=float, default=4.5,
                             help="seconds between Gemini requests (free tier: about 15 per minute)")
+    experiment.add_argument("--env-file", type=Path,
+                            help="credentials file in the project folder (default .env), e.g. .env.keyB")
+    experiment.add_argument("--scope", choices=["all", "own-gap"], default="all",
+                            help="own-gap: each ablation runs only on the cases of its own gap")
     experiment.add_argument("--rate-limit-waits", type=int, default=10,
                             help="one-minute waits allowed on HTTP 429 before the batch stops")
     summary = sub.add_parser("summarize", help="score saved runs of an experiment")
@@ -79,8 +83,10 @@ def main(argv=None) -> int:
         elif args.command == "experiment":
             needs_llm = set(args.systems) - {"b0"}
             provider = GeminiProvider(root, args.model, temperature=args.temperature, min_interval=args.min_interval,
+                                      env_file=args.env_file,
                                       rate_limit_waits=args.rate_limit_waits) if needs_llm else None
-            output = run_experiment(root, args.name, args.cases, args.systems, args.repeats, provider)
+            output = run_experiment(root, args.name, args.cases, args.systems, args.repeats, provider,
+                                    scope=args.scope)
             if output["completed"]:
                 output["summary"] = summarize(root, args.name, args.cases, args.systems)
         elif args.command == "summarize":

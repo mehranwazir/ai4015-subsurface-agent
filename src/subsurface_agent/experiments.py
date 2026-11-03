@@ -21,6 +21,14 @@ from .scoring import Scorer, metrics
 
 SYSTEMS = ("b0", "b2", "full", "no_g1", "no_g2", "no_g3")
 DETERMINISTIC = {"b0"}
+# With scope "own-gap", each ablation runs only on the cases of the gap whose component it removes (E5).
+ABLATED_GAP = {"no_g1": "G1", "no_g2": "G2", "no_g3": "G3"}
+
+
+def cases_for(system: str, cases: list[dict], scope: str) -> list[dict]:
+    if scope == "own-gap" and system in ABLATED_GAP:
+        return [c for c in cases if ABLATED_GAP[system] in c.get("gaps", [])]
+    return cases
 
 
 def run_id(experiment: str, system: str, case_id: str, repeat: int) -> str:
@@ -48,7 +56,9 @@ def _set_aside(run_dir: Path) -> None:
 
 
 def run_experiment(root: Path, experiment: str, cases_path: Path, systems: list[str], repeats: int,
-                   provider, *, log=print) -> dict:
+                   provider, *, scope: str = "all", log=print) -> dict:
+    if scope not in ("all", "own-gap"):
+        raise ValueError("scope must be 'all' or 'own-gap'")
     cases = read_json(cases_path)
     runs = root / "logs" / "runs"
     done = skipped = 0
@@ -58,7 +68,7 @@ def run_experiment(root: Path, experiment: str, cases_path: Path, systems: list[
                 raise ValueError(f"Unknown system {system!r}")
             if system in DETERMINISTIC and repeat > 1:
                 continue
-            for case in cases:
+            for case in cases_for(system, cases, scope):
                 name = run_id(experiment, system, case["id"], repeat)
                 path = runs / name / "result.json"
                 if path.exists():
