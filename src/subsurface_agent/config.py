@@ -26,6 +26,9 @@ PRESETS = {
     "no_g1": SystemConfig("no_g1", grounding=False),
     "no_g2": SystemConfig("no_g2", verification=False),
     "no_g3": SystemConfig("no_g3", acceptance=False),
+    # Comparison systems use the same tools with none of the three gap components.
+    "b0": SystemConfig("b0", grounding=False, verification=False, acceptance=False),
+    "b2": SystemConfig("b2", grounding=False, verification=False, acceptance=False),
     # Behaviour of the recorded Phase 1 runs; used to replay traces that predate configurations.
     "phase1": SystemConfig("phase1", grounding=False, acceptance=False),
 }

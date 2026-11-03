@@ -11,6 +11,8 @@ from .baseline import run_baseline
 from .common import clean_json, project_root
 from .config import PRESETS, get_config
 from .data import download_data, prepare_data
+from .baselines.fixed_pipeline import run_fixed_pipeline
+from .baselines.logacf_style import run_logacf_style
 from .faults import FAULTS
 from .gaps.acceptance import calibrate
 from .evaluation import evaluate_cases
@@ -47,6 +49,11 @@ def main(argv=None) -> int:
             output = run_baseline(root)
         elif args.command == "calibrate-g3":
             output = calibrate(root)
+        elif args.command == "agent" and args.config == "b0":
+            output = run_fixed_pipeline(root, args.query, run_name=args.run_name, fault=args.fault)
+        elif args.command == "agent" and args.config == "b2":
+            output = run_logacf_style(root, args.query, GeminiProvider(root, args.model), run_name=args.run_name,
+                                      fault=args.fault)
         elif args.command == "agent":
             output = run_agent(root, args.query, GeminiProvider(root, args.model), run_name=args.run_name,
                                omit_prediction_once=args.simulate_missing_artifact, config=get_config(args.config),

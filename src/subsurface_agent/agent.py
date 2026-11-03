@@ -29,16 +29,55 @@ No web browsing, arbitrary code, filesystem paths, or target labels are availabl
 """
 
 
-def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
-              max_turns: int = 10, max_calls: int = 14, max_errors: int = 3,
-              omit_prediction_once: bool = False, config: SystemConfig = PRESETS["full"],
-              fault: str | None = None) -> dict:
-    run_id = run_name or f"agent-{uuid.uuid4().hex[:10]}"
+def prepare_run_dir(root: Path, run_name: str | None, prefix: str = "agent") -> tuple[str, Path]:
+    run_id = run_name or f"{prefix}-{uuid.uuid4().hex[:10]}"
     if not run_id.replace("-", "").replace("_", "").isalnum():
         raise ValueError("Run name must contain only letters/numbers/dash/underscore")
     run_dir = root / "logs" / "runs" / run_id
     if (run_dir / "result.json").exists():
         raise ValueError("Run already exists; use a new run name to preserve evidence")
+    return run_id, run_dir
+
+
+def add_usage(usage: dict, reply) -> None:
+    usage["prompt_tokens"] += reply.usage.get("promptTokenCount", 0)
+    usage["output_tokens"] += reply.usage.get("candidatesTokenCount", 0)
+    usage["thinking_tokens"] += reply.usage.get("thoughtsTokenCount", 0)
+
+
+def finalize_run(runtime: ToolRuntime, run_id: str, query: str, provider, *, version: str, status: str,
+                 reason: str, calls: int, errors: int, usage: dict, request_start, started: float,
+                 trace: list, fault_injection: str | None) -> dict:
+    """Assemble, save and return the run record shared by every system (agent and baselines)."""
+    estimate = None
+    if os.getenv("INPUT_USD_PER_MILLION") and os.getenv("OUTPUT_USD_PER_MILLION"):
+        estimate = (usage["prompt_tokens"] * float(os.environ["INPUT_USD_PER_MILLION"]) +
+                    (usage["output_tokens"] + usage["thinking_tokens"]) * float(os.environ["OUTPUT_USD_PER_MILLION"])) / 1e6
+    result = {"run_id": run_id, "created_utc": utc_now(), "query": query,
+              "provider": type(provider).__name__ if provider is not None else None, "model_version": version,
+              "generation": getattr(provider, "generation_settings", None),
+              "config": runtime.config.name, "config_flags": runtime.config.flags(),
+              "status": status, "reason": reason, "tool_calls": calls, "tool_errors": errors,
+              "provider_requests": (provider.request_count - request_start) if request_start is not None else None,
+              "provider_requests_scope": "this_run_including_retries", "usage": usage,
+              "latency_seconds": time.perf_counter() - started, "estimated_cost_usd": estimate,
+              "billing_cost_usd": None, "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
+              "source_commit": runtime.manifest["source_commit"],
+              "model_sha256": runtime.model_info["model_sha256"],
+              "fault_injection": fault_injection, "oracle": runtime.audit(),
+              "verified_predictions": sorted(runtime.verified), "trace": trace}
+    write_json(runtime.run_dir / "result.json", result)
+    with (runtime.run_dir / "events.jsonl").open("w", encoding="utf-8") as handle:
+        for event in trace:
+            handle.write(json.dumps(clean_json(event), allow_nan=False) + "\n")
+    return result
+
+
+def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
+              max_turns: int = 10, max_calls: int = 14, max_errors: int = 3,
+              omit_prediction_once: bool = False, config: SystemConfig = PRESETS["full"],
+              fault: str | None = None) -> dict:
+    run_id, run_dir = prepare_run_dir(root, run_name)
     runtime = ToolRuntime(root, run_dir, omit_prediction_once=omit_prediction_once, query=query, config=config,
                           fault=fault)
     system = SYSTEM + runtime.prompt_context()
@@ -57,9 +96,7 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
             trace.append({"event": "provider_error", "message": reason})
             break
         version = reply.model_version
-        usage["prompt_tokens"] += reply.usage.get("promptTokenCount", 0)
-        usage["output_tokens"] += reply.usage.get("candidatesTokenCount", 0)
-        usage["thinking_tokens"] += reply.usage.get("thoughtsTokenCount", 0)
+        add_usage(usage, reply)
         contents.append(reply.content)  # Preserve provider signatures between native-tool turns.
         function_calls = [p["functionCall"] for p in reply.content.get("parts", []) if "functionCall" in p]
         if not function_calls:
@@ -90,28 +127,9 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
         if should_stop:
             break
         contents.append({"role": "user", "parts": responses})
-    estimate = None
-    if os.getenv("INPUT_USD_PER_MILLION") and os.getenv("OUTPUT_USD_PER_MILLION"):
-        estimate = (usage["prompt_tokens"] * float(os.environ["INPUT_USD_PER_MILLION"]) +
-                    (usage["output_tokens"] + usage["thinking_tokens"]) * float(os.environ["OUTPUT_USD_PER_MILLION"])) / 1e6
-    result = {"run_id": run_id, "created_utc": utc_now(), "query": query,
-              "provider": type(provider).__name__, "model_version": version,
-              "config": config.name, "config_flags": config.flags(),
-              "status": status, "reason": reason, "tool_calls": calls, "tool_errors": errors,
-              "provider_requests": (provider.request_count - request_start) if request_start is not None else None,
-              "provider_requests_scope": "this_run_including_retries", "usage": usage,
-              "latency_seconds": time.perf_counter() - started, "estimated_cost_usd": estimate,
-              "billing_cost_usd": None, "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
-              "source_commit": runtime.manifest["source_commit"],
-              "model_sha256": runtime.model_info["model_sha256"],
-              "fault_injection": "omit_prediction_once" if omit_prediction_once else fault,
-              "oracle": runtime.audit(),
-              "verified_predictions": sorted(runtime.verified), "trace": trace}
-    write_json(run_dir / "result.json", result)
-    with (run_dir / "events.jsonl").open("w", encoding="utf-8") as handle:
-        for event in trace:
-            handle.write(json.dumps(clean_json(event), allow_nan=False) + "\n")
-    return result
+    return finalize_run(runtime, run_id, query, provider, version=version, status=status, reason=reason,
+                        calls=calls, errors=errors, usage=usage, request_start=request_start, started=started,
+                        trace=trace, fault_injection="omit_prediction_once" if omit_prediction_once else fault)
 
 
 def replay_trace(root: Path, result_path: Path, *, replay_name: str | None = None) -> dict:

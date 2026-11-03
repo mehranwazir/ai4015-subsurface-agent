@@ -118,14 +118,17 @@ def check_answer(facts: RequestFacts) -> None:
                         "clarify and state which parts are supported.", recoverable=True)
 
 
-def registry_context(frame: pd.DataFrame, features: list[str], aliases: dict, targets: list[str]) -> str:
-    """Authoritative dataset facts and the grounding checklist, appended to the planner prompt."""
+def registry_context(frame: pd.DataFrame, features: list[str], aliases: dict, targets: list[str],
+                     checklist: bool = True) -> str:
+    """Authoritative dataset facts and (for G1) the grounding checklist, appended to a planner prompt."""
     ranges = frame.groupby("WELLNUM").DEPTH.agg(["min", "max"])
     wells = "; ".join(f"well {int(w)}: {r['min']:.1f}-{r['max']:.1f} ft" for w, r in ranges.iterrows())
     alias_text = ", ".join(f"{k}={v}" for k, v in aliases.items())
-    return ("\nDATASET REGISTRY (authoritative): " + wells + ". Input curves: " + ", ".join(features) +
-            ". Aliases: " + alias_text + ". Targets: " + ", ".join(targets) + " (fractions). Depth is stored in ft."
-            "\nGROUNDING CHECKLIST: before inspect_interval, confirm the user's request itself states the well, "
+    registry = ("\nDATASET REGISTRY (authoritative): " + wells + ". Input curves: " + ", ".join(features) +
+                ". Aliases: " + alias_text + ". Targets: " + ", ".join(targets) + " (fractions). Depth is stored in ft.")
+    if not checklist:
+        return registry
+    return (registry + "\nGROUNDING CHECKLIST: before inspect_interval, confirm the user's request itself states the well, "
             "the start depth, the end depth and the unit (ft or m). Use only values the user stated; never fill "
             "one in. If any is missing or ambiguous, finish with clarify and say what is missing. Pass curves only "
             "if the user named them. Only PHIF, SW and VSH can be predicted; if the request also asks for anything "

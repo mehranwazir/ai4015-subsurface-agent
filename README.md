@@ -27,7 +27,7 @@ The recorded agent evaluation includes:
 
 See the [recorded evaluation](results/agent_evaluation.json), [successful workflow](logs/evidence/gemini-e2e-002/result.json) and [replay result](logs/evidence/replay.json). The live cases are development smoke tests, not a blinded reliability benchmark.
 
-The current software suite has **56 passing tests**: the original 19, four added after Phase 1 verification and the tests for the three gap components. [Windows and Linux CI](https://github.com/mehranwazir/ai4015-subsurface-agent/actions) runs the suite on every push. CI uses synthetic fixtures and a scripted provider; it does not run full public-data training or call Gemini.
+The current software suite has **61 passing tests**: the original 19, four added after Phase 1 verification and the tests for the three gap components and the comparison systems. [Windows and Linux CI](https://github.com/mehranwazir/ai4015-subsurface-agent/actions) runs the suite on every push. CI uses synthetic fixtures and a scripted provider; it does not run full public-data training or call Gemini.
 
 ## Setup
 
@@ -76,7 +76,7 @@ Copy-Item .env.example .env
 
 Include the well, both depth bounds and the depth unit in the request. With the default `full` configuration, the G1 grounding component checks that the well, depths, unit and any named curves appear in the request itself and that the interval lies within the well's recorded depths; a missing unit or unidentified well leads to clarification instead of an assumed value, and a request that also asks for an unsupported quantity cannot be answered as if it were complete (see [docs/devlog.md](docs/devlog.md), entries 1-2). Unknown wells or insufficient usable data lead to abstention.
 
-`--config` selects a system configuration for experiments and ablations: `full` (default), `no_g1` (G1 grounding off), `no_g2` (G2 verification off), `no_g3` (G3 acceptance off) or `phase1` (the behaviour of the recorded Phase 1 runs). `--fault` injects one controlled artifact fault into the first prediction file (`missing_file`, `corrupt_values`, `drop_rows`, `duplicate_rows`, `wrong_well`, `nan_values`, `stale_artifact`, or the benign control `shuffle_rows`); the planner is not told, and the run's `oracle` record states whether the final artifacts were valid. The same option exists for `evaluate`. Each result records the configuration name and its component switches.
+`--config` selects a system configuration for experiments and ablations: `full` (default), `no_g1` (G1 grounding off), `no_g2` (G2 verification off), `no_g3` (G3 acceptance off), `b0` (fixed non-agentic pipeline, no LLM), `b2` (LogACF-style planner, executor and LLM reviewer without the gap components) or `phase1` (the behaviour of the recorded Phase 1 runs). `--fault` injects one controlled artifact fault into the first prediction file (`missing_file`, `corrupt_values`, `drop_rows`, `duplicate_rows`, `wrong_well`, `nan_values`, `stale_artifact`, or the benign control `shuffle_rows`); the planner is not told, and the run's `oracle` record states whether the final artifacts were valid. The same option exists for `evaluate`. Each result records the configuration name and its component switches.
 
 Each run saves `result.json`, an event trace and any prediction or plot files in `logs/runs/<run-id>/`. Records include the final disposition, tool calls, errors, data/model versions, token usage and loop latency. Billing cost is recorded as unknown unless separately established; optional price inputs produce an estimate only.
 
@@ -107,6 +107,7 @@ Replay repeats the saved tool actions and checks their structured outputs under 
 | 3 Nov 2026 | G1 extended to requested targets, curves and the well's depth range; `finish` with clarify or abstain no longer requires prior data inspection | Completes the Phase 1 G1 definition; live runs showed silently shortened intervals and a failed clarification ([devlog entry 2](docs/devlog.md)) |
 | 3 Nov 2026 | G2 verification made switchable (`gaps/verification.py`); seven artifact faults plus a benign control (`faults.py`, `--fault`); repair limited to two regenerations; offline `oracle` record per run; faults hidden from the planner | Measure the verifier's effect on silent errors; Phase 1 tested one fault and exposed it to the planner ([devlog entry 3](docs/devlog.md)) |
 | 3 Nov 2026 | G3 evidence-based acceptance (`gaps/acceptance.py`): per-prediction evidence and an answer gate on tree-ensemble uncertainty, calibrated on validation wells 1 and 5 (`calibrate-g3`, `models/g3_policy.json`) | Phase 1 refusal rules were uncalibrated demonstration rules ([devlog entry 4](docs/devlog.md)) |
+| 3 Nov 2026 | Comparison systems: B0 fixed non-agentic pipeline (`baselines/fixed_pipeline.py`) and B2 LogACF-style planner/executor/reviewer agent (`baselines/logacf_style.py`); one shared run record for all systems | Required for E1 and E2 ([devlog entry 5](docs/devlog.md)) |
 
 The base paper, the three research gaps and the data split are unchanged.
 
@@ -163,6 +164,7 @@ The [experiment protocol](docs/EXPERIMENT_PROTOCOL.md) documents scoring, leakag
 ```text
 src/subsurface_agent/   agent, tools, state, configurations, data preparation, model and CLI
   gaps/                 one switchable component per research gap (G1 grounding, G2 verification, G3 acceptance)
+  baselines/            comparison systems: B0 fixed pipeline and B2 LogACF-style agent
 data/                   download and split definitions; raw/ and processed/ tables are excluded from Git
 experiments/            evaluation cases (and, in Phase 2, configurations and scripts for E1-E6)
 results/                recorded metrics, predictions, figures and evaluation summaries

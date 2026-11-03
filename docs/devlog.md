@@ -154,3 +154,39 @@ In both abstaining runs, the prediction output already showed `decision: "abstai
 Whether these refusals avoid real errors, and what they cost in false refusals, is measured on the frozen test set in E4/E5. No test-well labels were used here.
 
 **Evidence:** `logs/evidence/devlog-004/`; policy `models/g3_policy.json`.
+
+
+## Entry 5: 3 November 2026. Comparison systems B0 (fixed pipeline) and B2 (LogACF-style roles)
+
+**Need.** Experiments E1 and E2 compare the proposed system against a simpler non-agentic baseline and against the base paper's approach on the same data, tools and metrics. Phase 1 defined both, but neither existed in code.
+
+**Change.**
+
+- **B0** (`baselines/fixed_pipeline.py`, `--config b0`): a conventional script with no LLM.
+  - It parses the first well number and two depths with the same text rules as G1.
+  - It defaults to feet when no unit is given.
+  - It always runs inspect → predict → report. Tool errors are reported as a refusal.
+  - It cannot ask questions, verify files or repair them.
+- **B2** (`baselines/logacf_style.py`, `--config b2`): an adaptation of LogACF's role-based design.
+  - A **Planner** (LLM) reads the request and the shared dataset knowledge and submits one complete plan.
+  - An **Executor** (code) runs it with the same allowlisted tools.
+  - A **Reviewer** (LLM) reads the execution log and a descriptive preview of the prediction file (rows, wells, depth range, missing values, value ranges). It then approves, requests one regeneration, or clarifies/abstains.
+  - It uses the same model and data as the proposed system, but none of the G1/G2/G3 components: checking relies on LLM review. It is an adaptation of the base paper's design, not a reproduction of the authors' code.
+- **Shared run format.** Every system now saves the same run record (`agent.finalize_run`), including the offline oracle. All three systems are scored identically and replay without an LLM call.
+
+**Smoke check (live, `gemini-3.5-flash-lite`; not a benchmark result).**
+
+| Request | B0 | B2 |
+|---|---|---|
+| "…well 3 from 10600 to 11000 ft…" | answer, 0.0 s, no API calls | answer, 2 requests, 3.3 s |
+| No unit stated | answer, assumed ft | answer, planner assumed ft |
+| `corrupt_values` fault | answer on invalid file | reviewer approved; invalid file |
+| `drop_rows` fault | — | reviewer approved, although the execution log showed 1,220 predicted rows and the preview showed fewer; invalid file |
+
+These single runs show the behaviours the experiments will quantify:
+- the fixed script cannot recognise ambiguity or faults;
+- LLM review can miss inconsistencies that a deterministic check catches every time.
+
+The rates are measured in E1, E2 and E4 on the frozen test set.
+
+**Evidence:** `logs/evidence/devlog-005/`.
