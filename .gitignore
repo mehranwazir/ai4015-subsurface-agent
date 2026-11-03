@@ -16,6 +16,7 @@ models/*
 !models/.gitkeep
 !models/random_forest.joblib
 !models/model_manifest.json
+!models/g3_policy.json
 logs/runs/*
 !logs/runs/.gitkeep
 *.log

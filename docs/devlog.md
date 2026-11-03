@@ -109,3 +109,48 @@ With G2 off, both faulty runs ended in confident answers on invalid artifacts. T
 - repair is bounded.
 
 **Evidence:** `logs/evidence/devlog-003/`.
+
+
+## Entry 4: 3 November 2026. G3 evidence-based acceptance calibrated on the validation wells
+
+**Observed.**
+- Phase 1 refused only when an interval had fewer than 10 usable rows or less than 60% input coverage.
+- Any interval that passed those rules was answered, however uncertain the model was. The Phase 1 report itself notes these were "demonstration rules, not calibrated confidence thresholds".
+- On the validation wells, 16.1% of 100-ft windows have a mean property RMSE above 0.05 when the system always answers.
+
+**Change.** `gaps/acceptance.py` adds the G3 component.
+
+1. **Evidence.** Each prediction carries:
+   - input coverage;
+   - **model uncertainty:** the spread of the 80 trees' predictions, averaged over PHIF/SW/VSH and the interval;
+   - the share of rows with inputs outside the training wells' 0.5–99.5% range.
+2. **Calibration** (`python -m subsurface_agent calibrate-g3`, written to `models/g3_policy.json`). Run on the **validation wells 1 and 5 only**, over 56 sliding 100-ft windows (25-ft step).
+   - Requirements declared before calibration: an acceptable window has mean property RMSE ≤ 0.05, and at most 5% of accepted windows may exceed it.
+   - The largest-coverage uncertainty limit meeting this is **0.0254**.
+3. **Gate.** `finish` with `answer` is refused (`LOW_EVIDENCE`) when an interval's uncertainty exceeds the limit. The planner must abstain.
+4. **Switch.** `no_g3` removes the evidence and the gate, so the system answers whenever its tools succeed.
+
+The policy records the model SHA-256 and is rejected if the model changes.
+
+**Calibration result (validation wells only; test wells untouched).**
+
+| Policy | Windows answered | Answered windows with RMSE > 0.05 |
+|---|---|---|
+| Always answer (`no_g3`) | 100% | 16.1% |
+| G3 (`full`) | 64.3% | 2.8% |
+
+**Negative finding.** Model uncertainty tracks window error (Spearman 0.53). The out-of-range share does not (Spearman ≈ 0.01 for 100-ft windows, −0.08 for 200-ft windows). It is therefore reported with each prediction but **not** used to decide.
+
+**Effect (live, `gemini-3.5-flash-lite`).** Intervals were chosen by uncertainty alone; no reference labels were used.
+
+| Request | G3 off (`no_g3`) | G3 on (`full`) |
+|---|---|---|
+| Well 3, 10,600–11,000 ft (uncertainty 0.0240) | — | answer, 5 calls, 7.0 s |
+| Well 3, 10,200–10,500 ft (uncertainty 0.0363) | answer, 5 calls | **abstain**, citing "uncertainty 0.0363 exceeds the calibrated limit 0.0254", 6 calls, 8.3 s |
+| Well 7, 14,400–14,600 ft (uncertainty 0.0282) | — | **abstain**, 6 calls, 7.9 s |
+
+In both abstaining runs, the prediction output already showed `decision: "abstain"`, but the planner still called `finish` with `answer` first. The deterministic gate refused it (`LOW_EVIDENCE`), and the planner then abstained. Without the gate, the evidence alone would not have changed the outcome.
+
+Whether these refusals avoid real errors, and what they cost in false refusals, is measured on the frozen test set in E4/E5. No test-well labels were used here.
+
+**Evidence:** `logs/evidence/devlog-004/`; policy `models/g3_policy.json`.

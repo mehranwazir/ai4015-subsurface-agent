@@ -12,6 +12,7 @@ from .common import clean_json, project_root
 from .config import PRESETS, get_config
 from .data import download_data, prepare_data
 from .faults import FAULTS
+from .gaps.acceptance import calibrate
 from .evaluation import evaluate_cases
 from .providers import GeminiProvider, ProviderError
 
@@ -19,7 +20,7 @@ from .providers import GeminiProvider, ProviderError
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="subsurface")
     sub = parser.add_subparsers(dest="command", required=True)
-    for name in ["download", "prepare", "baseline"]:
+    for name in ["download", "prepare", "baseline", "calibrate-g3"]:
         sub.add_parser(name)
     agent = sub.add_parser("agent")
     agent.add_argument("query")
@@ -44,6 +45,8 @@ def main(argv=None) -> int:
             output = prepare_data(root)
         elif args.command == "baseline":
             output = run_baseline(root)
+        elif args.command == "calibrate-g3":
+            output = calibrate(root)
         elif args.command == "agent":
             output = run_agent(root, args.query, GeminiProvider(root, args.model), run_name=args.run_name,
                                omit_prediction_once=args.simulate_missing_artifact, config=get_config(args.config),

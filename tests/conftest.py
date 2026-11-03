@@ -37,4 +37,8 @@ def tiny_root(tmp_path: Path) -> Path:
     write_json(tmp_path / "results" / "data_manifest.json", {
         "source_commit": "synthetic-test-fixture", "splits": {"test": {"wells": [3]}},
         "processed_sha256": {"features.csv": sha256(path)}})
+    # Permissive G3 policy for software tests; the real policy is calibrated on validation wells.
+    write_json(modelpath.parent / "g3_policy.json", {
+        "model_sha256": sha256(modelpath), "max_model_uncertainty": 1.0,
+        "input_low": {f: 0.0 for f in FEATURES}, "input_high": {f: 10.0 for f in FEATURES}})
     return tmp_path

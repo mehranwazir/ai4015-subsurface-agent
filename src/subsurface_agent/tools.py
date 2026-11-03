@@ -17,7 +17,7 @@ from .contracts import CONTRACTS, Interval
 from .data import ALIASES, FEATURES, TARGETS
 from .errors import ToolError
 from .faults import apply_fault
-from .gaps import grounding, verification
+from .gaps import acceptance, grounding, verification
 
 
 def canonical_curve(name: str) -> str:
@@ -62,6 +62,7 @@ class ToolRuntime:
             raise ValueError("Model checksum mismatch; only load trusted locally trained models")
         # Only this package's locally trained, checksum-matched model is loaded.
         self.model = joblib.load(model_path)
+        self.policy = acceptance.load_policy(root, self.model_info["model_sha256"]) if config.acceptance else None
         feature_path = root / "data" / "processed" / "features.csv"
         if sha256(feature_path) != self.manifest["processed_sha256"]["features.csv"]:
             raise ValueError("Feature-only data checksum mismatch")
@@ -173,6 +174,10 @@ class ToolRuntime:
                   "model_id": self.model_info["model_id"],
                   "mean_prediction": {t: float(output[f"{t}_pred"].mean()) for t in TARGETS},
                   "test_labels_used": False}
+        if self.policy:
+            self.predictions[prediction_id]["evidence"] = acceptance.evidence(
+                self.model, eligible, coverage, self.policy)
+            result["evidence"] = self.predictions[prediction_id]["evidence"]
         if self.config.name == "phase1":
             # Recorded Phase 1 outputs exposed the simulated omission; later configurations hide faults.
             result["simulation_omitted_artifact"] = injected == "missing_file"
@@ -210,6 +215,8 @@ class ToolRuntime:
                 raise ToolError("UNVERIFIED_RESULT", "Cannot answer with unverified predictions", True)
             if not self.inspected:
                 raise ToolError("NO_EVIDENCE", "Inspect data before answering", True)
+            if self.policy:
+                acceptance.check_answer([m["evidence"] for m in self.predictions.values()])
         return {"status": status, "reason": reason, "verified_predictions": sorted(self.verified)}
 
     def audit(self) -> dict:

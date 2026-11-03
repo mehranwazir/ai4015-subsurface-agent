@@ -1,0 +1,37 @@
+{
+  "created_utc": "2026-11-03T08:52:16.617332+00:00",
+  "model_sha256": "e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e",
+  "calibration_wells": [
+    1,
+    5
+  ],
+  "window_ft": 100.0,
+  "step_ft": 25.0,
+  "min_rows": 40,
+  "windows": 56,
+  "max_window_rmse": 0.05,
+  "max_risk": 0.05,
+  "max_model_uncertainty": 0.025409703887875078,
+  "coverage": 0.6428571428571429,
+  "risk": 0.027777777777777776,
+  "risk_if_always_answer": 0.16071428571428573,
+  "spearman_uncertainty_rmse": 0.5336978810663022,
+  "input_low": {
+    "GR": 6.8219543,
+    "CALI": 8.4267,
+    "DEN": 2.124034125,
+    "NEU": 0.042051804,
+    "RDEP": 0.325457,
+    "RMED": 0.358058689,
+    "DTC": 54.3280978
+  },
+  "input_high": {
+    "GR": 114.95826499999997,
+    "CALI": 11.2381,
+    "DEN": 2.8412545,
+    "NEU": 0.40623663999999965,
+    "RDEP": 447.7204249999497,
+    "RMED": 62290.8,
+    "DTC": 117.60947599999997
+  }
+}
