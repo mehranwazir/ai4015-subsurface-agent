@@ -190,3 +190,62 @@ These single runs show the behaviours the experiments will quantify:
 The rates are measured in E1, E2 and E4 on the frozen test set.
 
 **Evidence:** `logs/evidence/devlog-005/`.
+
+
+## Entry 6: 3 November 2026. Resumable experiment runner, independent scorer, and a latency measurement error
+
+**Need.** E1–E6 require:
+- every system to run on the same cases at least three times;
+- metrics reported as mean ± standard deviation;
+- recorded decoding settings;
+- results that survive free-tier quota interruptions.
+
+Phase 1 had only a single-pass smoke evaluator that trusted the requested tool list.
+
+**Change.**
+
+- `providers.py`: explicit decoding settings (temperature 1.0 by default, a per-repeat seed), stored with every run as `generation`. The runner also turns on request pacing (`--min-interval`, default 4.5 s) and waits out HTTP 429 responses (`--rate-limit-waits`, default 10 one-minute waits).
+- `experiments.py` (`python -m subsurface_agent experiment` / `summarize`):
+  - runs repeats × systems × cases;
+  - skips completed runs, so an interrupted batch resumes;
+  - keeps provider-failed attempts as `-providerfail-N` and retries them;
+  - stops at the first provider failure;
+  - runs the deterministic B0 once.
+  - Summaries are written to `results/experiments/<name>/` (`runs.csv`, `summary.csv`, `summary.json`), with mean and standard deviation across repeats.
+- `scoring.py`: scores each run from trace events, the offline oracle and reference labels. It never uses the system's own success claim. Per run it records:
+  - task correctness;
+  - argument correctness;
+  - unwarranted answers;
+  - fault detection, silent errors and repairs;
+  - the reference error of the requested interval (what answering would have cost);
+  - the error of the file actually reported;
+  - latency, requests, tokens and tool calls.
+
+  Task correctness requires all of the following:
+  - an allowed disposition;
+  - no answer resting on an invalid artifact;
+  - no reported answer worse than the 0.05 acceptance requirement;
+  - where a case allows answering or abstaining, the choice supported by the interval's reference error.
+
+  Reference labels are read only by the scorer.
+
+**Failure found and fixed: pacing inflated latency.** In the first live smoke experiment (`smoke1`), the full system appeared to take 22.1 s per request. Most of that was the runner's own 4.5 s pause before each Gemini request: the full system makes about 5 requests per run, B2 makes 2. Counting these pauses as system latency would bias E6 against whichever system makes more calls. The provider now accumulates `throttle_seconds`. Each run records it with `active_latency_seconds` (wall time minus throttling), and the scorer uses active latency.
+
+| Smoke experiment (4 cases, 1 repeat) | B2 mean latency | Full mean latency |
+|---|---|---|
+| `smoke1` (wall clock, pauses included) | 8.09 s | 22.11 s |
+| `smoke2` (active latency) | 3.53 s | 7.03 s |
+
+**Smoke result (`smoke2`, validation wells, live).** This is an end-to-end check of the runner and scorer, not an evaluation result. The cases were:
+1. a clean request;
+2. a request with no unit;
+3. a `corrupt_values` fault;
+4. an interval whose reference error is 0.0515.
+
+| System | Task success | Unwarranted answers (G1 case) | Silent errors (G2 case) | Answered the 0.0515 interval | Active latency | Requests |
+|---|---|---|---|---|---|---|
+| B0 | 1/4 | 1/1 | 1/1 | yes | 0.04 s | 0 |
+| B2 | 1/4 | 1/1 | 1/1 | yes | 3.53 s | 2.0 |
+| Full | 4/4 | 0/1 | 0/1 (repaired) | no (abstained) | 7.03 s | 5.0 |
+
+**Evidence:** `logs/evidence/devlog-006/` (all 24 smoke runs) and `results/experiments/smoke1/`, `results/experiments/smoke2/`.

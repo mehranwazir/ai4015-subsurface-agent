@@ -1,0 +1,13 @@
+system,repeat,run_id,case_id,family,gaps,fault,status,expected,task_correct,disposition_correct,answered,refused,should_answer,unwarranted_answer,arguments_correct,fault_detected,silent_error,repaired,interval_error,answer_error,bad_answer,failed,latency_seconds,provider_requests,prompt_tokens,output_tokens,tool_calls,tool_errors
+b0,1,smoke1-b0-smoke-clean-r1,smoke-clean,clean,"G1,G3",,answer,answer,True,True,True,False,True,False,True,,False,,0.031054330186823815,0.031054330186823808,False,False,0.03728690000025381,0,0,0,4,0
+b0,1,smoke1-b0-smoke-nounit-r1,smoke-nounit,missing_unit,G1,,answer,clarify,False,False,True,False,False,True,,,False,,,0.031054330186823808,False,False,0.03507350000109,0,0,0,4,0
+b0,1,smoke1-b0-smoke-corrupt-r1,smoke-corrupt,artifact_fault,G2,corrupt_values,answer,answer/abstain,False,True,True,False,True,False,True,False,True,False,,,,False,0.05185890000029758,0,0,0,4,0
+b0,1,smoke1-b0-smoke-uncertain-r1,smoke-uncertain,evidence,G3,,answer,answer/abstain,False,True,True,False,True,False,True,,False,,0.051494681079224135,0.051494681079224135,True,False,0.03581320000012056,0,0,0,4,0
+b2,1,smoke1-b2-smoke-clean-r1,smoke-clean,clean,"G1,G3",,answer,answer,True,True,True,False,True,False,True,,False,,0.031054330186823815,0.031054330186823808,False,False,6.388980199999423,2,3471,198,6,0
+b2,1,smoke1-b2-smoke-nounit-r1,smoke-nounit,missing_unit,G1,,answer,clarify,False,False,True,False,False,True,,,False,,,0.031054330186823808,False,False,8.131557200000316,2,3455,194,6,0
+b2,1,smoke1-b2-smoke-corrupt-r1,smoke-corrupt,artifact_fault,G2,corrupt_values,answer,answer/abstain,False,True,True,False,True,False,True,False,True,False,,,,False,9.07551919999969,2,3461,188,6,0
+b2,1,smoke1-b2-smoke-uncertain-r1,smoke-uncertain,evidence,G3,,answer,answer/abstain,False,True,True,False,True,False,True,,False,,0.051494681079224135,0.051494681079224135,True,False,8.762872799999968,2,3448,200,6,0
+full,1,smoke1-full-smoke-clean-r1,smoke-clean,clean,"G1,G3",,answer,answer,True,True,True,False,True,False,True,,False,,0.031054330186823815,0.031054330186823808,False,False,21.83179249999921,5,10938,174,5,0
+full,1,smoke1-full-smoke-nounit-r1,smoke-nounit,missing_unit,G1,,clarify,clarify,True,True,False,True,False,False,,,False,,,,,False,8.663363300000128,2,3041,70,2,0
+full,1,smoke1-full-smoke-corrupt-r1,smoke-corrupt,artifact_fault,G2,corrupt_values,answer,answer/abstain,True,True,True,False,True,False,True,True,False,True,,0.03634040103644085,False,False,31.695788600000014,7,17052,227,7,1
+full,1,smoke1-full-smoke-uncertain-r1,smoke-uncertain,evidence,G3,,abstain,answer/abstain,True,True,False,True,True,False,True,,False,,0.051494681079224135,,,False,26.260964900000545,6,13939,218,6,1

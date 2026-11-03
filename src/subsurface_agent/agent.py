@@ -47,8 +47,10 @@ def add_usage(usage: dict, reply) -> None:
 
 def finalize_run(runtime: ToolRuntime, run_id: str, query: str, provider, *, version: str, status: str,
                  reason: str, calls: int, errors: int, usage: dict, request_start, started: float,
-                 trace: list, fault_injection: str | None) -> dict:
+                 trace: list, fault_injection: str | None, throttle_start: float = 0.0) -> dict:
     """Assemble, save and return the run record shared by every system (agent and baselines)."""
+    latency = time.perf_counter() - started
+    throttle = getattr(provider, "throttle_seconds", 0.0) - throttle_start
     estimate = None
     if os.getenv("INPUT_USD_PER_MILLION") and os.getenv("OUTPUT_USD_PER_MILLION"):
         estimate = (usage["prompt_tokens"] * float(os.environ["INPUT_USD_PER_MILLION"]) +
@@ -60,7 +62,8 @@ def finalize_run(runtime: ToolRuntime, run_id: str, query: str, provider, *, ver
               "status": status, "reason": reason, "tool_calls": calls, "tool_errors": errors,
               "provider_requests": (provider.request_count - request_start) if request_start is not None else None,
               "provider_requests_scope": "this_run_including_retries", "usage": usage,
-              "latency_seconds": time.perf_counter() - started, "estimated_cost_usd": estimate,
+              "latency_seconds": latency, "throttle_seconds": throttle,
+              "active_latency_seconds": latency - throttle, "estimated_cost_usd": estimate,
               "billing_cost_usd": None, "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
               "source_commit": runtime.manifest["source_commit"],
               "model_sha256": runtime.model_info["model_sha256"],
@@ -87,6 +90,7 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
     calls = errors = 0
     started = time.perf_counter()
     request_start = getattr(provider, "request_count", None)
+    throttle_start = getattr(provider, "throttle_seconds", 0.0)
     version = getattr(provider, "model", "test-double")
     for turn in range(max_turns):
         try:
@@ -129,7 +133,8 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
         contents.append({"role": "user", "parts": responses})
     return finalize_run(runtime, run_id, query, provider, version=version, status=status, reason=reason,
                         calls=calls, errors=errors, usage=usage, request_start=request_start, started=started,
-                        trace=trace, fault_injection="omit_prediction_once" if omit_prediction_once else fault)
+                        trace=trace, fault_injection="omit_prediction_once" if omit_prediction_once else fault,
+                        throttle_start=throttle_start)
 
 
 def replay_trace(root: Path, result_path: Path, *, replay_name: str | None = None) -> dict:

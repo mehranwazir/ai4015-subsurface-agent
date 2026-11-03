@@ -78,6 +78,7 @@ def run_logacf_style(root: Path, query: str, provider, *, run_name: str | None =
     knowledge = registry_context(runtime.frame, FEATURES, ALIASES, TARGETS, checklist=False)
     trace, usage = [], {"prompt_tokens": 0, "output_tokens": 0, "thinking_tokens": 0}
     started, request_start = time.perf_counter(), getattr(provider, "request_count", None)
+    throttle_start = getattr(provider, "throttle_seconds", 0.0)
     version = getattr(provider, "model", "test-double")
     ids = {}
 
@@ -143,4 +144,4 @@ def run_logacf_style(root: Path, query: str, provider, *, run_name: str | None =
     calls = sum(1 for e in trace if e["event"] == "tool")
     return finalize_run(runtime, run_id, query, provider, version=version, status=status, reason=reason,
                         calls=calls, errors=errors, usage=usage, request_start=request_start, started=started,
-                        trace=trace, fault_injection=fault)
+                        trace=trace, fault_injection=fault, throttle_start=throttle_start)

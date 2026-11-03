@@ -1,0 +1,14 @@
+[
+  {"id": "smoke-clean", "family": "clean", "gaps": ["G1", "G3"],
+   "query": "Predict PHIF, SW and VSH for well 1 from 11000 to 11200 ft and verify the result.",
+   "fault": null, "expected": {"statuses": ["answer"], "well": 1, "bounds_ft": [11000, 11200]}},
+  {"id": "smoke-nounit", "family": "missing_unit", "gaps": ["G1"],
+   "query": "Predict porosity for well 1 between 11000 and 11200.",
+   "fault": null, "expected": {"statuses": ["clarify"]}},
+  {"id": "smoke-corrupt", "family": "artifact_fault", "gaps": ["G2"],
+   "query": "Predict PHIF, SW and VSH for well 1 from 11200 to 11400 ft and verify the result.",
+   "fault": "corrupt_values", "expected": {"statuses": ["answer", "abstain"], "well": 1, "bounds_ft": [11200, 11400]}},
+  {"id": "smoke-uncertain", "family": "evidence", "gaps": ["G3"],
+   "query": "Predict PHIF, SW and VSH for well 5 from 11700 to 11900 ft and verify the result.",
+   "fault": null, "expected": {"statuses": ["answer", "abstain"], "well": 5, "bounds_ft": [11700, 11900]}}
+]

@@ -27,7 +27,7 @@ The recorded agent evaluation includes:
 
 See the [recorded evaluation](results/agent_evaluation.json), [successful workflow](logs/evidence/gemini-e2e-002/result.json) and [replay result](logs/evidence/replay.json). The live cases are development smoke tests, not a blinded reliability benchmark.
 
-The current software suite has **61 passing tests**: the original 19, four added after Phase 1 verification and the tests for the three gap components and the comparison systems. [Windows and Linux CI](https://github.com/mehranwazir/ai4015-subsurface-agent/actions) runs the suite on every push. CI uses synthetic fixtures and a scripted provider; it does not run full public-data training or call Gemini.
+The current software suite has **64 passing tests**: the original 19, four added after Phase 1 verification and the tests for the three gap components, the comparison systems and the experiment runner. [Windows and Linux CI](https://github.com/mehranwazir/ai4015-subsurface-agent/actions) runs the suite on every push. CI uses synthetic fixtures and a scripted provider; it does not run full public-data training or call Gemini.
 
 ## Setup
 
@@ -88,6 +88,28 @@ To run the same six cases selected for the Phase 1 evaluation:
 
 Each new batch writes a separate summary to `results/evaluations/<batch-id>.json`. The original Phase 1 summary remains in `results/agent_evaluation.json`. New planner runs can differ from the recorded runs.
 
+### Run an experiment
+
+`experiment` runs each system on each case of a benchmark file, repeated `--repeats` times (B0 is deterministic and runs once). Every run is saved under `logs/runs/<experiment>-<system>-<case>-r<repeat>/`. Rerunning the same command skips completed runs, so a batch interrupted by a quota limit resumes where it stopped. Request pacing and rate-limit waits suit the free tier; waiting time is recorded separately and excluded from latency.
+
+```powershell
+.\.venv\Scripts\python.exe -m subsurface_agent experiment --name smoke2 --cases experiments/benchmark/smoke.json --systems b0 b2 full --repeats 1
+.\.venv\Scripts\python.exe -m subsurface_agent summarize --name smoke2 --cases experiments/benchmark/smoke.json
+```
+
+`summarize` scores the saved runs independently of the systems' own claims (`scoring.py`). It writes `results/experiments/<name>/runs.csv` (one row per run) and `summary.csv` / `summary.json` (mean and standard deviation across repeats). Reference labels are used only by the scorer.
+
+| Metric | Meaning |
+|---|---|
+| `task_success` | Allowed disposition, no answer on an invalid artifact, no reported answer above 0.05 mean property RMSE, and, where answering or abstaining is allowed, the choice supported by the interval's reference error |
+| `g1_unwarranted_answer_rate` | Answers given to G1 cases that required clarification or abstention |
+| `argument_accuracy` | Successful interval calls that used the expected well and bounds |
+| `g2_detection_rate`, `g2_silent_error_rate`, `g2_repair_rate` | Harmful-fault cases where the fault was detected, an answer rested on an invalid file, or an answer was given with a valid file |
+| `g2_false_alarm_rate` | Refusals on the benign `shuffle_rows` control |
+| `g3_coverage`, `g3_selective_error` | Share of answerable prediction cases answered, and share of given answers above 0.05 RMSE |
+| `g3_false_refusal_rate`, `g3_justified_abstention_rate` | Refusals on intervals whose reference error is at most / above 0.05 |
+| `mean_latency_seconds`, `mean_provider_requests`, `mean_prompt_tokens`, `mean_tool_calls` | Efficiency (E6) |
+
 ### Replay a recorded workflow
 
 After preparing the pinned data, the committed reference model can be used to replay the saved workflow without an API key:
@@ -108,6 +130,7 @@ Replay repeats the saved tool actions and checks their structured outputs under 
 | 3 Nov 2026 | G2 verification made switchable (`gaps/verification.py`); seven artifact faults plus a benign control (`faults.py`, `--fault`); repair limited to two regenerations; offline `oracle` record per run; faults hidden from the planner | Measure the verifier's effect on silent errors; Phase 1 tested one fault and exposed it to the planner ([devlog entry 3](docs/devlog.md)) |
 | 3 Nov 2026 | G3 evidence-based acceptance (`gaps/acceptance.py`): per-prediction evidence and an answer gate on tree-ensemble uncertainty, calibrated on validation wells 1 and 5 (`calibrate-g3`, `models/g3_policy.json`) | Phase 1 refusal rules were uncalibrated demonstration rules ([devlog entry 4](docs/devlog.md)) |
 | 3 Nov 2026 | Comparison systems: B0 fixed non-agentic pipeline (`baselines/fixed_pipeline.py`) and B2 LogACF-style planner/executor/reviewer agent (`baselines/logacf_style.py`); one shared run record for all systems | Required for E1 and E2 ([devlog entry 5](docs/devlog.md)) |
+| 3 Nov 2026 | Resumable experiment runner (`experiments.py`), independent scorer (`scoring.py`), explicit temperature/seed, request pacing and rate-limit waits; latency now excludes pacing waits | Required for repeated E1-E6 runs on the free API tier; pacing had inflated measured latency ([devlog entry 6](docs/devlog.md)) |
 
 The base paper, the three research gaps and the data split are unchanged.
 

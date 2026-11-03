@@ -16,6 +16,7 @@ from .baselines.logacf_style import run_logacf_style
 from .faults import FAULTS
 from .gaps.acceptance import calibrate
 from .evaluation import evaluate_cases
+from .experiments import SYSTEMS, run_experiment, summarize
 from .providers import GeminiProvider, ProviderError
 
 
@@ -38,6 +39,21 @@ def main(argv=None) -> int:
     evaluate.add_argument("--cases", nargs="+")
     evaluate.add_argument("--model")
     evaluate.add_argument("--config", default="full", choices=sorted(PRESETS))
+    experiment = sub.add_parser("experiment", help="run systems x cases x repeats; resumes where it stopped")
+    experiment.add_argument("--name", required=True)
+    experiment.add_argument("--cases", type=Path, required=True)
+    experiment.add_argument("--systems", nargs="+", default=list(SYSTEMS), choices=SYSTEMS)
+    experiment.add_argument("--repeats", type=int, default=3)
+    experiment.add_argument("--model")
+    experiment.add_argument("--temperature", type=float, default=1.0)
+    experiment.add_argument("--min-interval", type=float, default=4.5,
+                            help="seconds between Gemini requests (free tier: about 15 per minute)")
+    experiment.add_argument("--rate-limit-waits", type=int, default=10,
+                            help="one-minute waits allowed on HTTP 429 before the batch stops")
+    summary = sub.add_parser("summarize", help="score saved runs of an experiment")
+    summary.add_argument("--name", required=True)
+    summary.add_argument("--cases", type=Path, required=True)
+    summary.add_argument("--systems", nargs="+", choices=SYSTEMS)
     args = parser.parse_args(argv)
     root = project_root()
     try:
@@ -60,6 +76,15 @@ def main(argv=None) -> int:
                                fault=args.fault)
         elif args.command == "replay":
             output = replay_trace(root, args.result)
+        elif args.command == "experiment":
+            needs_llm = set(args.systems) - {"b0"}
+            provider = GeminiProvider(root, args.model, temperature=args.temperature, min_interval=args.min_interval,
+                                      rate_limit_waits=args.rate_limit_waits) if needs_llm else None
+            output = run_experiment(root, args.name, args.cases, args.systems, args.repeats, provider)
+            if output["completed"]:
+                output["summary"] = summarize(root, args.name, args.cases, args.systems)
+        elif args.command == "summarize":
+            output = summarize(root, args.name, args.cases, args.systems)
         else:
             output = evaluate_cases(root, GeminiProvider(root, args.model), limit=args.limit, selected=args.cases,
                                     config=get_config(args.config))
@@ -67,7 +92,7 @@ def main(argv=None) -> int:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
     print(json.dumps(clean_json(output), indent=2, allow_nan=False))
-    if output.get("status") == "failed" or output.get("all_match") is False:
+    if output.get("status") == "failed" or output.get("all_match") is False or output.get("completed") is False:
         return 1
     return 0
 
