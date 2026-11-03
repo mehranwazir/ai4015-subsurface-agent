@@ -1,0 +1,8 @@
+Failure category,B0 fixed pipeline,B2 LogACF-style,Proposed (full),Full without G1,Full without G2,Full without G3
+G1: answered a request that needed clarification or refusal,5,7,0,6,0,0
+G2: answered from an invalid file,14,37,0,0,42,0
+G3: answered an interval above the error requirement,6,18,12,6,0,18
+G3: refused an acceptable interval,0,0,24,24,0,0
+Wrong kind of non-answer (clarify vs abstain),2,2,0,3,0,0
+Total failed runs,27,64,36,39,42,18
+Runs,50,150,150,102,48,66

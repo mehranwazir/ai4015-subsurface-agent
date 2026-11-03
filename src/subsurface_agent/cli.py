@@ -58,6 +58,7 @@ def main(argv=None) -> int:
     summary.add_argument("--name", required=True)
     summary.add_argument("--cases", type=Path, required=True)
     summary.add_argument("--systems", nargs="+", choices=SYSTEMS)
+    summary.add_argument("--runs-dir", type=Path, help="folder of saved runs (default logs/runs), e.g. logs/evidence/final")
     args = parser.parse_args(argv)
     root = project_root()
     try:
@@ -90,7 +91,8 @@ def main(argv=None) -> int:
             if output["completed"]:
                 output["summary"] = summarize(root, args.name, args.cases, args.systems)
         elif args.command == "summarize":
-            output = summarize(root, args.name, args.cases, args.systems)
+            output = summarize(root, args.name, args.cases, args.systems,
+                               runs_dir=root / args.runs_dir if args.runs_dir else None)
         else:
             output = evaluate_cases(root, GeminiProvider(root, args.model), limit=args.limit, selected=args.cases,
                                     config=get_config(args.config))

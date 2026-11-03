@@ -59,8 +59,9 @@ def arguments_correct(result: dict, expected: dict) -> bool | None:
 
 
 class Scorer:
-    def __init__(self, root: Path):
+    def __init__(self, root: Path, runs_dir: Path | None = None):
         self.root = root
+        self.runs_dir = runs_dir or root / "logs" / "runs"
         processed = root / "data" / "processed"
         frames = [pd.read_csv(processed / f"{s}.csv") for s in ("validation", "test") if (processed / f"{s}.csv").exists()]
         allowed = set(SPLITS["validation"]) | set(SPLITS["test"])
@@ -88,7 +89,7 @@ class Scorer:
         prediction_id = final_prediction_id(result)
         if prediction_id is None or self.labels is None or result["oracle"].get("final_artifacts_valid") is False:
             return None
-        path = self.root / "logs" / "runs" / result["run_id"] / f"{prediction_id}.csv"
+        path = self.runs_dir / result["run_id"] / f"{prediction_id}.csv"
         if not path.exists():
             return None
         merged = pd.read_csv(path).merge(self.labels, on=["sample_id", "WELLNUM", "DEPTH"], how="inner")

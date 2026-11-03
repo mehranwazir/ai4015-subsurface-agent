@@ -1,0 +1,4 @@
+Gap,Method / component,Metric,Base paper result,Our result,Addressed?
+G1 semantic grounding,Request-to-argument check and dataset registry (`gaps/grounding.py`),Must-not-answer requests handled; unwarranted answers,B2: 75.0%; 19.4%,100.0%; 0.0%,Fully
+G2 verification and repair,Artifact verifier with bounded regeneration (`gaps/verification.py`),Silent errors on harmful faults; faults repaired,B2: 88.1%; 11.9%,0.0%; 100.0%,Fully
+G3 acceptance under weak evidence,Uncertainty gate calibrated on validation wells (`gaps/acceptance.py`),Selective error; coverage; false refusals,B2: 27.3%; 100.0%; 0.0%,20.0%; 45.5%; 50.0%,Partially

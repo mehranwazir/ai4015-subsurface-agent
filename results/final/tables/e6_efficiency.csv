@@ -1,0 +1,7 @@
+System,Runs,Requests per run,Prompt tokens per run,Output tokens per run,Tool calls per run,Median active latency (s),Provider failures
+B0 fixed pipeline,50,0.0,0,0,3.82,0.08,0
+B2 LogACF-style,150,1.91,3063,178,5.2,5.94,0
+Proposed (full),150,4.67,10150,156,4.54,13.79,0
+Full without G1,102,4.04,6557,143,3.96,13.25,0
+Full without G2,48,5.17,11059,174,5.0,17.4,0
+Full without G3,66,5.33,11158,181,5.18,13.74,0

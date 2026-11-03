@@ -1,39 +1,47 @@
 # Reliable Tool-Using Agents for Well-Log Analysis
 
-AI4015 Agentic Artificial Intelligence, Fall 2026 - Phase 1, Group G3-03.
+AI4015 Agentic Artificial Intelligence, Fall 2026. Group G3-03, Phase 2 (final).
 
-This project uses a Gemini agent to coordinate well-log analysis. Given a well and a depth interval, it inspects the available curves, runs a fixed Random Forest to estimate porosity (PHIF), water saturation (SW) and shale volume (VSH), verifies the prediction file, and creates a plot when requested. Python handles the numerical work; the agent chooses the next tool based on the request and the tool results.
+An LLM agent (Gemini) takes a plain-language request about well-log data and runs a fixed set of Python tools: it inspects the data, selects an interval, predicts porosity (PHIF), water saturation (SW) and shale volume (VSH) with a frozen Random Forest, checks the output file and answers, asks for clarification, or abstains. The LLM only chooses the next step; all numbers come from deterministic code.
 
-The project is inspired by [LogACF](https://doi.org/10.1016/j.petsci.2026.05.031). We focus on one conventional well-log workflow with a public dataset, one planner and predefined tools. The current implementation provides the working baseline for the Phase 1 report, *Reliable Tool-Using Agents for Well-Log Analysis*. Controlled comparisons of the proposed reliability mechanisms are planned for the next phase.
+The project builds on the base paper [LogACF](https://doi.org/10.1016/j.petsci.2026.05.031) and adds three switchable reliability components, one per research gap:
 
-## Phase 1 results
+| Gap | Component | What it does |
+|---|---|---|
+| G1 semantic grounding | `src/subsurface_agent/gaps/grounding.py` | Checks that the well, depths, unit, curves and requested quantities in every tool call come from the user's own words; blocks guessed values and unsupported requests |
+| G2 verification and repair | `src/subsurface_agent/gaps/verification.py` | Checks every prediction file (identity, values, recomputation with the frozen model) and regenerates a broken file, at most twice |
+| G3 acceptance under weak evidence | `src/subsurface_agent/gaps/acceptance.py` | Measures the model's uncertainty for the interval and refuses to answer above a limit calibrated on the validation wells |
 
-The public-data baseline and live Gemini runs were recorded on 16 October 2026. Numerical evaluation uses 4,122 held-out rows from wells 3 and 7. All target values are fractions.
+**Main result (50 test cases, 3 repeats):** task success 76.0% for the proposed system against 57.3% for a LogACF-style agent and 46.0% for a fixed non-agentic pipeline. G1 and G2 remove all unwarranted answers and all answers from broken files; G3 lowers the share of bad answers from 27.3% to 20.0% but refuses half of the acceptable intervals. Full results: [docs/RESULTS.md](docs/RESULTS.md).
 
-| Target | Training-mean RMSE | Random Forest RMSE | Random Forest MAE | Random Forest R-squared |
-| --- | ---: | ---: | ---: | ---: |
-| PHIF | 0.071320 | 0.021597 | 0.013402 | 0.876463 |
-| SW | 0.357893 | 0.070118 | 0.031695 | 0.902511 |
-| VSH | 0.231938 | 0.063989 | 0.050770 | 0.914726 |
-| Mean property RMSE | 0.220384 | 0.051901 | - | - |
+## Architecture
 
-The last row is the arithmetic mean of the three pooled property RMSEs. Results vary by well: water saturation on well 7 has RMSE 0.092671 and R-squared 0.259237. Full pooled and per-well results are in [baseline_metrics.json](results/baseline_metrics.json). These scores describe the numerical predictor on our custom split; they do not measure an accuracy gain from using an agent or establish a comparison with LogACF's published score.
+![System architecture](results/final/figures/fig_architecture.png)
 
-The recorded agent evaluation includes:
+```mermaid
+flowchart LR
+    Q[User request] --> P[Planner LLM: Gemini native function calls]
+    P <--> T[Tool runtime: inspect, predict, verify, plot, finish]
+    G1[G1 grounding check] --- T
+    G2[G2 verifier and bounded repair] --- T
+    G3[G3 uncertainty gate] --- T
+    D[(Feature-only well-log table)] --> T
+    M[(Frozen Random Forest and G3 policy)] --> T
+    T --> F[Answer, clarify or abstain]
+    S[(Run state, trace and offline oracle)] --- P
+    F --> E[Offline scorer with reference labels]
+```
 
-- Six selected live Gemini cases, each run once: feet, meters, an unknown well, an unsupported target, a missing prediction file and a curve alias. All six passed their specified checks. Ten other defined cases were not run live.
-- A separate prediction, verification and plotting run for well 3 from 10,600 to 11,000 ft, producing 1,220 prediction rows in six tool calls with no tool errors.
-- Replay of that run with all six structured tool outputs matching, without another LLM call.
+- **Tools:** `inspect_dataset`, `inspect_interval`, `predict_properties`, `verify_predictions`, `plot_logs`, `finish`. Arguments are validated with Pydantic; there is no code execution, file-path argument or access to reference labels.
+- **Budgets:** 10 planner turns, 14 tool calls and 3 tool errors per run.
+- **State and trace:** every run saves its arguments, tool outputs, errors, token usage, versions, configuration and an offline `oracle` record (injected fault and final file validity, never shown to the planner).
+- **Comparison systems:** B0 (`baselines/fixed_pipeline.py`), a fixed script with no LLM; B2 (`baselines/logacf_style.py`), a LogACF-style planner, executor and LLM reviewer with none of the three components.
 
-See the [recorded evaluation](results/agent_evaluation.json), [successful workflow](logs/evidence/gemini-e2e-002/result.json) and [replay result](logs/evidence/replay.json). The live cases are development smoke tests, not a blinded reliability benchmark.
+More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-The current software suite has **68 passing tests**: the original 19, four added after Phase 1 verification and the tests for the three gap components, the comparison systems, the experiment runner and the benchmark files. [Windows and Linux CI](https://github.com/mehranwazir/ai4015-subsurface-agent/actions) runs the suite on every push. CI uses synthetic fixtures and a scripted provider; it does not run full public-data training or call Gemini.
+## Installation
 
-## Setup
-
-Python 3.11-3.13 is supported. The recorded environment used Python 3.13.3 on Windows 11. The numerical model runs on CPU; a GPU is not required.
-
-The commands below use PowerShell:
+Python 3.11 to 3.13. No GPU is needed. PowerShell commands (on Linux or macOS use `.venv/bin/python`):
 
 ```powershell
 git clone https://github.com/mehranwazir/ai4015-subsurface-agent.git
@@ -44,172 +52,170 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-The tests run without a dataset download or API key. On Linux or macOS, use `.venv/bin/python` in place of `.\.venv\Scripts\python.exe`.
+The 73 tests use small synthetic fixtures and a scripted planner; they need no dataset or API key. GitHub Actions runs them on Windows and Linux for every push.
 
-### Prepare the data and reproduce the baseline
-
-```powershell
-.\.venv\Scripts\python.exe -m subsurface_agent download
-.\.venv\Scripts\python.exe -m subsurface_agent prepare
-.\.venv\Scripts\python.exe -m subsurface_agent baseline
-```
-
-`download` retrieves the pinned public archive. `prepare` creates the feature table and supervised splits, records their checksums, and regenerates the train/test feature-overlap check. `baseline` fits and scores the Random Forest and training-mean predictor, then writes metrics, keyed predictions and plots under `results/`.
-
-The reference Random Forest and its manifest are tracked under `models/`. Its SHA-256 is `e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e`. When a fresh fit produces exactly the same predictions on the validation and test feature rows, `baseline` keeps the reference file and reports `reference_model_reproduced: true`. This preserves the model identity used by recorded prediction IDs and replay across environments.
-
-The G3 acceptance policy (`models/g3_policy.json`) is also committed. To recalibrate it from the validation wells only:
+### Data and model
 
 ```powershell
-.\.venv\Scripts\python.exe -m subsurface_agent calibrate-g3
+.\.venv\Scripts\python.exe -m subsurface_agent download      # pinned SPWLA 2021 archive, checksum verified
+.\.venv\Scripts\python.exe -m subsurface_agent prepare       # feature table, splits, checksums, overlap check
+.\.venv\Scripts\python.exe -m subsurface_agent baseline      # Random Forest and training-mean scores
 ```
 
-### Run the agent
+The reference Random Forest (`models/random_forest.joblib`, SHA-256 `e24f305b…`) and the calibrated G3 policy (`models/g3_policy.json`) are committed. `baseline` keeps the reference file when a refit reproduces its predictions exactly. `calibrate-g3` recalibrates the G3 limit from the validation wells only.
 
-Copy `.env.example` to `.env` and set `GEMINI_API_KEY`. The recorded runs used `gemini-3.5-flash-lite`; the model can be changed with `GEMINI_MODEL` or `--model` to one available to your account. The `.env` file is ignored by Git. Live runs require Gemini API access and are subject to your account's quota and billing.
+## Configuration
 
-```powershell
-Copy-Item .env.example .env
-# Edit .env and add your API key before running the next command.
-.\.venv\Scripts\python.exe -m subsurface_agent agent 'Predict PHIF, SW and VSH for well 3 from 10600 to 11000 ft. Verify the artifact and make a plot.'
-```
+Copy `.env.example` to `.env` and set:
 
-Include the well, both depth bounds and the depth unit in the request. With the default `full` configuration, the G1 grounding component checks that the well, depths, unit and any named curves appear in the request itself and that the interval lies within the well's recorded depths; a missing unit or unidentified well leads to clarification instead of an assumed value, and a request that also asks for an unsupported quantity cannot be answered as if it were complete (see [docs/devlog.md](docs/devlog.md), entries 1-2). Unknown wells or insufficient usable data lead to abstention.
-
-`--config` selects a system configuration for experiments and ablations: `full` (default), `no_g1` (G1 grounding off), `no_g2` (G2 verification off), `no_g3` (G3 acceptance off), `b0` (fixed non-agentic pipeline, no LLM), `b2` (LogACF-style planner, executor and LLM reviewer without the gap components) or `phase1` (the behaviour of the recorded Phase 1 runs). `--fault` injects one controlled artifact fault into the first prediction file (`missing_file`, `corrupt_values`, `drop_rows`, `duplicate_rows`, `wrong_well`, `nan_values`, `stale_artifact`, or the benign control `shuffle_rows`); the planner is not told, and the run's `oracle` record states whether the final artifacts were valid. The same option exists for `evaluate`. Each result records the configuration name and its component switches.
-
-Each run saves `result.json`, an event trace and any prediction or plot files in `logs/runs/<run-id>/`. Records include the final disposition, tool calls, errors, data/model versions, token usage and loop latency. Billing cost is recorded as unknown unless separately established; optional price inputs produce an estimate only.
-
-To run the same six cases selected for the Phase 1 evaluation:
-
-```powershell
-.\.venv\Scripts\python.exe -m subsurface_agent evaluate --cases predict_ft predict_m unknown_well unsupported_target repair_missing curve_alias
-```
-
-Each new batch writes a separate summary to `results/evaluations/<batch-id>.json`. The original Phase 1 summary remains in `results/agent_evaluation.json`. New planner runs can differ from the recorded runs.
-
-### Run an experiment
-
-`experiment` runs each system on each case of a benchmark file, repeated `--repeats` times (B0 is deterministic and runs once). Every run is saved under `logs/runs/<experiment>-<system>-<case>-r<repeat>/`. Rerunning the same command skips completed runs, so a batch interrupted by a quota limit resumes where it stopped. Request pacing and rate-limit waits suit the free tier; waiting time is recorded separately and excluded from latency.
-
-```powershell
-.\.venv\Scripts\python.exe -m subsurface_agent experiment --name smoke2 --cases experiments/benchmark/smoke.json --systems b0 b2 full --repeats 1
-.\.venv\Scripts\python.exe -m subsurface_agent summarize --name smoke2 --cases experiments/benchmark/smoke.json
-```
-
-`summarize` scores the saved runs independently of the systems' own claims (`scoring.py`). It writes `results/experiments/<name>/runs.csv` (one row per run) and `summary.csv` / `summary.json` (mean and standard deviation across repeats). Reference labels are used only by the scorer.
-
-| Metric | Meaning |
+| Variable | Meaning |
 |---|---|
-| `task_success` | Allowed disposition, no answer on an invalid artifact, no reported answer above 0.05 mean property RMSE, and, where answering or abstaining is allowed, the choice supported by the interval's reference error |
-| `g1_unwarranted_answer_rate` | Answers given to G1 cases that required clarification or abstention |
-| `argument_accuracy` | Successful interval calls that used the expected well and bounds |
-| `g2_detection_rate`, `g2_silent_error_rate`, `g2_repair_rate` | Harmful-fault cases where the fault was detected, an answer rested on an invalid file, or an answer was given with a valid file |
-| `g2_false_alarm_rate` | Refusals on the benign `shuffle_rows` control |
-| `g3_coverage`, `g3_selective_error` | Share of answerable prediction cases answered, and share of given answers above 0.05 RMSE |
-| `g3_false_refusal_rate`, `g3_justified_abstention_rate` | Refusals on intervals whose reference error is at most / above 0.05 |
-| `mean_latency_seconds`, `mean_provider_requests`, `mean_prompt_tokens`, `mean_tool_calls` | Efficiency (E6) |
+| `GEMINI_API_KEY` | Gemini API key (never commit it; `.env` and `.env.*` are ignored by Git) |
+| `GEMINI_MODEL` | Model name, default `gemini-3.5-flash-lite` (used for all reported runs) |
+| `INPUT_USD_PER_MILLION`, `OUTPUT_USD_PER_MILLION` | Optional prices, only used to estimate cost |
 
-### Replay a recorded workflow
+Other credentials files (for example `.env.keyB`) can be selected per experiment with `--env-file`.
 
-After preparing the pinned data, the committed reference model can be used to replay the saved workflow without an API key:
+System configurations (`--config` for `agent`, `--systems` for `experiment`):
+
+| Name | Meaning |
+|---|---|
+| `full` | Proposed system: G1, G2 and G3 on (default) |
+| `no_g1`, `no_g2`, `no_g3` | Full system with one component removed (ablation) |
+| `b0` | Fixed non-agentic pipeline, no LLM |
+| `b2` | LogACF-style planner, executor and LLM reviewer, no gap components |
+| `phase1` | Behaviour of the recorded Phase 1 runs, used only for replay |
+
+## Running the system
 
 ```powershell
-.\.venv\Scripts\python.exe -m subsurface_agent replay logs/evidence/gemini-e2e-002/result.json
+.\.venv\Scripts\python.exe -m subsurface_agent agent "Predict PHIF, SW and VSH for well 3 from 10600 to 11000 ft and verify the result."
 ```
 
-Replay repeats the saved tool actions and checks their structured outputs under matching data/model versions. It does not ask Gemini to create a new plan. Plot bytes may vary with rendering versions.
+The command prints the run record and saves it under `logs/runs/<run-id>/` (`result.json`, `events.jsonl`, prediction CSV, optional plot). `--fault` injects one controlled fault into the first prediction file (`missing_file`, `corrupt_values`, `drop_rows`, `duplicate_rows`, `wrong_well`, `nan_values`, `stale_artifact`, or the benign `shuffle_rows`).
+
+Replay a saved run without calling the LLM (checks that every tool output is reproduced exactly):
+
+```powershell
+.\.venv\Scripts\python.exe -m subsurface_agent replay logs/evidence/final/final-full-test-predict-01-r1/result.json
+```
+
+## Reproducing the experiments
+
+Benchmarks are generated deterministically: 33 development cases on validation wells 1 and 5, and 50 test cases on test wells 3 and 7.
+
+```powershell
+.\.venv\Scripts\python.exe experiments/build_benchmark.py
+```
+
+| Experiment | Command(s) | Output |
+|---|---|---|
+| E1 baseline | `baseline`; `experiment ... --systems b0` | `results/baseline_metrics.json`; B0 rows in the final results |
+| E2 base paper | `experiment ... --systems b2 --repeats 3` | final results |
+| E3 proposed system | `experiment ... --systems full --repeats 3` | final results |
+| E4 gap-wise | from the same runs | `results/final/tables/e2_e4_main_comparison.csv`, `e4_paired_differences.csv` |
+| E5 ablation | `experiment ... --systems no_g1 no_g2 no_g3 --repeats 3 --scope own-gap` | `results/final/tables/e5_ablation.csv` |
+| E6 efficiency | from the same runs | `results/final/tables/e6_*.csv` |
+
+The reported run used the same experiment name with the systems split across three API projects (exact commands in [experiments/README.md](experiments/README.md) and [devlog 8](docs/devlog.md)). With one API project the equivalent commands are below; rerunning a command resumes where it stopped:
+
+```powershell
+.\.venv\Scripts\python.exe -m subsurface_agent experiment --name final --cases experiments/benchmark/test.json --systems b0 full b2 --repeats 3
+.\.venv\Scripts\python.exe -m subsurface_agent experiment --name final --cases experiments/benchmark/test.json --systems no_g1 no_g2 no_g3 --repeats 3 --scope own-gap
+.\.venv\Scripts\python.exe -m subsurface_agent summarize --name final --cases experiments/benchmark/test.json
+.\.venv\Scripts\python.exe experiments/analyze.py
+```
+
+To check the reported numbers without any API calls, re-score the committed run records and rebuild every table and figure:
+
+```powershell
+.\.venv\Scripts\python.exe -m subsurface_agent summarize --name final --cases experiments/benchmark/test.json --runs-dir logs/evidence/final
+.\.venv\Scripts\python.exe experiments/analyze.py
+```
+
+`summarize` writes `results/experiments/final/runs.csv` (one scored row per run) and `summary.json`. `analyze.py` writes `results/final/tables.md`, one CSV per table, the figures in `results/final/figures/` and `docs/FAILURE_ANALYSIS.md`.
+
+### How runs are scored
+
+The scorer (`src/subsurface_agent/scoring.py`) uses the trace, the offline oracle and the reference labels, never the system's own success claim. A run is **task-correct** when its outcome is allowed for the case, it did not answer from an invalid file, any reported prediction has mean property RMSE of at most 0.05, and, for complete requests, it answered when the interval's reference error was at most 0.05 and refused when it was above.
+
+## Results
+
+| Metric (%) | B0 fixed pipeline | B2 LogACF-style | Proposed |
+|---|---|---|---|
+| Task success, 50 cases | 46.0 | 57.3 ± 1.2 | **76.0** |
+| G1: must-not-answer requests handled | 41.7 | 75.0 ± 8.3 | **100.0** |
+| G2: answers from a broken file | 100.0 | 88.1 ± 4.1 | **0.0** |
+| G3: bad answers among answers given | 27.3 | 27.3 | **20.0** |
+| G3: acceptable intervals refused | 0.0 | 0.0 | 50.0 |
+| LLM requests per run | 0 | 1.91 | 4.67 |
+
+![Per-gap comparison](results/final/figures/fig_gapwise.png)
+
+Confidence intervals, ablations, efficiency and consistency are in [docs/RESULTS.md](docs/RESULTS.md); failure categories and step-by-step example runs are in [docs/FAILURE_ANALYSIS.md](docs/FAILURE_ANALYSIS.md).
+
+### Gap-resolution table
+
+Base paper result: our LogACF-style adaptation (B2), reproduced by us on the same data, cases and metrics. LogACF reports no results for these gaps.
+
+| Gap | Method / component | Metric | Base paper result | Our result | Addressed? |
+|---|---|---|---|---|---|
+| G1 semantic grounding | Request-to-argument check and dataset registry (`gaps/grounding.py`) | Must-not-answer requests handled; unwarranted answers | 75.0%; 19.4% | 100.0%; 0.0% | Fully |
+| G2 verification and repair | Artifact verifier with bounded regeneration (`gaps/verification.py`) | Silent errors on harmful faults; faults repaired | 88.1%; 11.9% | 0.0%; 100.0% | Fully |
+| G3 acceptance under weak evidence | Uncertainty gate calibrated on validation wells (`gaps/acceptance.py`) | Selective error; coverage; false refusals | 27.3%; 100.0%; 0.0% | 20.0%; 45.5%; 50.0% | Partially |
 
 ## Changes since Phase 1
 
 | Date | Change | Reason |
 |---|---|---|
-| 17 Oct 2026 | Depth unit made a required tool argument; reference model versioned in Git; evaluation batches written to separate files; overlap check regenerated by `prepare` | Verification of the Phase 1 submission (stale defaults and replay that only worked on the original machine) |
-| 3 Nov 2026 | Added switchable system configurations (`config.py`) and the G1 request-grounding component (`gaps/grounding.py`) | Live runs showed the planner assuming `unit="ft"` when the request stated no unit, contrary to the Phase 1 design; see [devlog entry 1](docs/devlog.md) |
-| 3 Nov 2026 | G1 extended to requested targets, curves and the well's depth range; `finish` with clarify or abstain no longer requires prior data inspection | Completes the Phase 1 G1 definition; live runs showed silently shortened intervals and a failed clarification ([devlog entry 2](docs/devlog.md)) |
-| 3 Nov 2026 | G2 verification made switchable (`gaps/verification.py`); seven artifact faults plus a benign control (`faults.py`, `--fault`); repair limited to two regenerations; offline `oracle` record per run; faults hidden from the planner | Measure the verifier's effect on silent errors; Phase 1 tested one fault and exposed it to the planner ([devlog entry 3](docs/devlog.md)) |
-| 3 Nov 2026 | G3 evidence-based acceptance (`gaps/acceptance.py`): per-prediction evidence and an answer gate on tree-ensemble uncertainty, calibrated on validation wells 1 and 5 (`calibrate-g3`, `models/g3_policy.json`) | Phase 1 refusal rules were uncalibrated demonstration rules ([devlog entry 4](docs/devlog.md)) |
-| 3 Nov 2026 | Comparison systems: B0 fixed non-agentic pipeline (`baselines/fixed_pipeline.py`) and B2 LogACF-style planner/executor/reviewer agent (`baselines/logacf_style.py`); one shared run record for all systems | Required for E1 and E2 ([devlog entry 5](docs/devlog.md)) |
-| 3 Nov 2026 | Resumable experiment runner (`experiments.py`), independent scorer (`scoring.py`), explicit temperature/seed, request pacing and rate-limit waits; latency now excludes pacing waits | Required for repeated E1-E6 runs on the free API tier; pacing had inflated measured latency ([devlog entry 6](docs/devlog.md)) |
-| 3 Nov 2026 | Development (33 cases, validation wells) and test (50 cases, test wells) benchmarks (`experiments/build_benchmark.py`); G3 evidence rule in the prompt; G3 risk-coverage curve recorded; repair metric no longer conflated with G3 abstention; fault cases placed on G3-accepted intervals. System frozen for the final evaluation | Development-round failures: wasted answer attempts before G3 refusals and G3 masking G2 ([devlog entry 7](docs/devlog.md)) |
+| 17 Oct 2026 | Depth unit made a required tool argument; reference model versioned in Git; evaluation batches written to separate files; overlap check regenerated by `prepare` | Verification of the Phase 1 submission |
+| 3 Nov 2026 | Switchable configurations and the G1 grounding component | Live runs showed the planner assuming feet when no unit was given ([devlog 1](docs/devlog.md)) |
+| 3 Nov 2026 | G1 extended to targets, curves and the well's depth range; clarifying no longer requires data inspection | Silently shortened intervals and a failed clarification ([devlog 2](docs/devlog.md)) |
+| 3 Nov 2026 | G2 made switchable; seven artifact faults plus a benign control; bounded repair; offline oracle | Phase 1 tested one fault and showed it to the planner ([devlog 3](docs/devlog.md)) |
+| 3 Nov 2026 | G3 uncertainty gate calibrated on the validation wells | Phase 1 refusal rules were not calibrated ([devlog 4](docs/devlog.md)) |
+| 3 Nov 2026 | B0 and B2 comparison systems | Needed for E1 and E2 ([devlog 5](docs/devlog.md)) |
+| 3 Nov 2026 | Resumable experiment runner, independent scorer, explicit temperature and seed; latency excludes pacing | Repeated runs on the free API tier ([devlog 6](docs/devlog.md)) |
+| 3 Nov 2026 | Development and test benchmarks; G3 evidence rule in the prompt; fault cases on G3-accepted intervals; **system frozen** | Development-round failures ([devlog 7](docs/devlog.md)) |
+| 3-4 Nov 2026 | Final evaluation on the test benchmark; `--env-file` and `--scope own-gap` runner options; analysis script, results and failure analysis | Experiments E1 to E6 ([devlog 8](docs/devlog.md)) |
 
-The base paper, the three research gaps and the data split are unchanged. **The system is frozen** as of devlog entry 7; the test benchmark had not been run by any system at the freeze.
+The base paper, the three research gaps and the data split are unchanged from Phase 1.
 
-## Data and numerical model
+## Data
 
-The dataset is the [SPWLA PDDA Machine Learning Competition 2021 release](https://github.com/pddasig/Machine-Learning-Competition-2021), derived from Volve data and pinned to commit `0ffc94f702feab81f6eb1f4d453e19754a557305`.
+[SPWLA PDDA Machine Learning Competition 2021](https://github.com/pddasig/Machine-Learning-Competition-2021) (Volve field), pinned to commit `0ffc94f7`. Seven input curves (GR, CALI, DEN, NEU, RDEP, RMED, DTC); three targets (PHIF, SW, VSH, as fractions). Whole-well split, fixed before any scoring:
 
-The original training CSV has 318,967 rows from nine well IDs. The supervised cohort requires finite PHIF, SW and VSH values within [0,1] and at least four finite input curves. It contains 42,219 rows. Ninety complete-label rows with out-of-range targets are excluded rather than clipped.
+| Split | Wells | Labelled rows | Use |
+|---|---|---|---|
+| Train | 0, 2, 4, 6, 8 | 33,692 | Fit the Random Forest |
+| Validation | 1, 5 | 4,405 | G3 calibration and development benchmark |
+| Test | 3, 7 | 4,122 | Final evaluation only |
 
-| Split | Well IDs | Eligible rows |
-| --- | --- | ---: |
-| Training | 0, 2, 4, 6, 8 | 33,692 |
-| Validation | 1, 5 | 4,405 |
-| Test | 3, 7 | 4,122 |
-
-The seven inputs are `GR`, `CALI`, `DEN`, `NEU`, `RDEP`, `RMED` and `DTC`. Well ID and depth are alignment keys, not predictor inputs. Depth is stored in feet; declared meter intervals are converted explicitly. No DTC conversion is applied because the organizer tutorial's unit wording is inconsistent.
-
-The Random Forest uses training-only median imputation with missingness indicators, 80 trees, maximum depth 10, minimum leaf size 3, seed 42 and one CPU worker. Hyperparameters and the well split were fixed before initial scoring. The simpler comparison predicts the training mean for each target.
-
-The organizer's separate competition test file has 11,275 rows, but its reference target file lacks well/depth identity keys. We do not score that file or report an official competition result. Source hashes, filtering counts and split details are in [data_manifest.json](results/data_manifest.json). The [overlap check](results/overlap_check.json) found no exact training/test feature-vector matches; this does not establish independence between related wellbores.
-
-## Agent workflow
-
-```mermaid
-flowchart TD
-    Q[User request] --> A[Bounded Gemini planner]
-    A --> I[Inspect dataset and requested interval]
-    I --> P[Frozen Random Forest prediction]
-    P --> V[Verify identity, values and recomputation]
-    V -->|Recoverable error| A
-    V --> O[Verified CSV and optional plot]
-    A --> F[Answer, clarify or abstain]
-    D[(Feature-only data)] --> I
-    M[(Versioned model)] --> P
-    S[(Run state and event trace)] --- A
-```
-
-The available tools are `inspect_dataset`, `inspect_interval`, `predict_properties`, `verify_predictions`, `plot_logs` and `finish`. Pydantic validates arguments and rejects unknown fields. The depth unit is mandatory. Prediction requires at least ten usable rows and 60% input coverage; these are demonstration rules, not calibrated confidence thresholds.
-
-The agent reads the feature-only table and the frozen model. Reference target labels remain with the independent offline scorer. Predictions must pass verification before a successful prediction answer or plot. Verification checks artifact identity, finite values, bounds and agreement with model recomputation; it cannot establish geological correctness.
-
-A run is limited to 10 planner turns, 14 tool calls and three tool errors. A missing prediction file can be regenerated and verified within that budget. The tool registry provides no arbitrary code execution, model fitting or access to scoring labels. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for state and tool details.
-
-## Next phase and limitations
-
-The report proposes three comparisons: semantic grounding of wells, curves and units (G1); artifact verification with bounded repair (G2); and answer, clarification or abstention decisions based on available evidence (G3). Initial mechanisms are implemented. Matched controls, ablations and a larger scenario benchmark remain planned; their benefits have not yet been measured.
-
-The current data comes from one field, with only two held-out test wells and interpreted reference labels. The numerical results do not establish transfer to other fields. Six successful live cases do not establish general agent reliability, and the acceptance rules do not provide calibrated uncertainty. Production forecasting, reservoir simulation, permeability prediction and economics are outside the current scope.
-
-The [experiment protocol](docs/EXPERIMENT_PROTOCOL.md) documents scoring, leakage controls and comparison limits. Supporting literature and research notes are collected in [docs/stage7/](docs/stage7/README.md).
+The agent reads only the feature table (no labels). Reference labels are read only by the offline scorer. Details: [data/README.md](data/README.md), [results/data_manifest.json](results/data_manifest.json). The data is under Attribution-NonCommercial-ShareAlike terms and is downloaded rather than committed ([NOTICE.md](NOTICE.md)).
 
 ## Repository layout
 
 ```text
-src/subsurface_agent/   agent, tools, state, configurations, data preparation, model and CLI
-  gaps/                 one switchable component per research gap (G1 grounding, G2 verification, G3 acceptance)
-  baselines/            comparison systems: B0 fixed pipeline and B2 LogACF-style agent
-data/                   download and split definitions; raw/ and processed/ tables are excluded from Git
-experiments/            evaluation cases (and, in Phase 2, configurations and scripts for E1-E6)
-results/                recorded metrics, predictions, figures and evaluation summaries
-logs/evidence/          retained agent trajectories, artifacts and replay results
-logs/runs/              new local runs, excluded from Git
-models/                 versioned reference Random Forest, its manifest and the calibrated G3 policy
-tests/                  offline software tests with synthetic fixtures
-docs/                   development log, architecture, protocol and Phase 1 research notes
+src/subsurface_agent/   agent loop, tools, contracts, provider, configurations, scoring, runner, CLI
+  gaps/                 G1 grounding, G2 verification, G3 acceptance (one switchable component each)
+  baselines/            B0 fixed pipeline and B2 LogACF-style agent
+data/                   download and split definitions (tables are regenerated, not committed)
+experiments/            benchmark generator and files, analysis script, experiment notes
+results/                baseline metrics, experiment summaries, final tables and figures
+logs/evidence/          saved agent trajectories: development rounds and all 566 final runs
+models/                 reference Random Forest, its manifest and the G3 policy
+tests/                  offline tests for the deterministic components
+docs/                   devlog, results, failure analysis, architecture, Phase 1 notes
 ```
 
-## Project team
+## Team
 
 | Member | Roll number | Responsibility |
-| --- | --- | --- |
+|---|---|---|
 | Mehran Hamayoon | 22i-0810 | Group head; data and numerical model |
 | Abdul Basit | 22i-0866 | Agent and tool integration |
 | Talha Araiz | 22i-0796 | Evaluation and reliability |
 
-## References and data terms
+## References
 
-- Luo, G. and Xiao, L.-Z. (2026). [Large language model-based AI agent for well logging data processing and interpretation](https://doi.org/10.1016/j.petsci.2026.05.031). *Petroleum Science*. The project adapts its workflow idea; it does not reproduce the full LogACF system or use copied author code.
-- Fu et al. (2024). [Well-Log-Based Reservoir Property Estimation With Machine Learning: A Contest Summary](https://doi.org/10.30632/PJV65N1-2024a6). *Petrophysics*, 65(1), 108-127. Dataset background.
-
-The organizer states Attribution-NonCommercial-ShareAlike terms for the data. Raw and processed datasets are downloaded or regenerated rather than committed. See [NOTICE.md](NOTICE.md) for attribution and third-party data terms.
+- G. Luo and L.-Z. Xiao, "Large language model-based AI agent for well logging data processing and interpretation," *Petroleum Science*, 2026. [doi:10.1016/j.petsci.2026.05.031](https://doi.org/10.1016/j.petsci.2026.05.031). The project adapts its workflow idea; it does not reproduce the full LogACF system or use its code.
+- L. Fu et al., "Well-log-based reservoir property estimation with machine learning: a contest summary," *Petrophysics*, 65(1), 108-127, 2024. [doi:10.30632/PJV65N1-2024a6](https://doi.org/10.30632/PJV65N1-2024a6).

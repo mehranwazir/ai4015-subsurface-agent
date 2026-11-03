@@ -1,0 +1,7 @@
+Cases,System,Runs,Requests per run,Prompt tokens per run,Tool calls per run
+g1 (34),Proposed (full),102,3.58,7109,3.5
+g1 (34),Full without G1,102,4.04,6557,3.96
+harmful (14),Proposed (full),42,7.26,17389,7.0
+harmful (14),Full without G2,42,5.17,11057,5.0
+prediction (22),Proposed (full),66,4.62,9612,4.5
+prediction (22),Full without G3,66,5.33,11158,5.18

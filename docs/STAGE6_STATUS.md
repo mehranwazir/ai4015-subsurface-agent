@@ -1,3 +1,5 @@
+> **Phase 1 document, kept for the record.** It describes the system and results as of October 2026. For the final Phase 2 system and results see the [README](../README.md) and [RESULTS.md](RESULTS.md).
+
 # Stage 6: implemented baseline and submission readiness
 
 **Recorded:** 16 October 2026. **Project:** AI4015, G3-03. **Scope approved by the user:** a small well-log system inspired by LogACF, with local Git history and real Gemini integration. This is factual engineering documentation, not assessed proposal prose.

@@ -1,0 +1,227 @@
+system,repeat,case_id,family,status,expected,interval_error,answer_error,category
+b0,1,test-predict-08,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+b0,1,test-predict-09,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+b0,1,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+b0,1,test-predict-19,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+b0,1,test-predict-20,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+b0,1,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+b0,1,test-fault-missingfile-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-corruptvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-droprows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-duplicaterows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-wrongwell-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-nanvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-staleartifact-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-missingfile-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-corruptvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-droprows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-duplicaterows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-wrongwell-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-nanvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-fault-staleartifact-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b0,1,test-missing_unit-01,missing_unit,answer,clarify,,0.0477398719515393,G1: answered a request that needed clarification or refusal
+b0,1,test-missing_unit-02,missing_unit,answer,clarify,,0.0985458185233486,G1: answered a request that needed clarification or refusal
+b0,1,test-vague_well-03,vague_well,abstain,clarify,,,Wrong kind of non-answer (clarify vs abstain)
+b0,1,test-vague_well-04,vague_well,abstain,clarify,,,Wrong kind of non-answer (clarify vs abstain)
+b0,1,test-unsupported-09,unsupported,answer,clarify/abstain,,0.0477398719515393,G1: answered a request that needed clarification or refusal
+b0,1,test-unsupported-10,unsupported,answer,clarify,,0.0985458185233486,G1: answered a request that needed clarification or refusal
+b0,1,test-unsupported-12,unsupported,answer,clarify/abstain,,0.0985458185233486,G1: answered a request that needed clarification or refusal
+b2,1,test-predict-08,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+b2,2,test-predict-08,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+b2,3,test-predict-08,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+b2,1,test-predict-09,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+b2,2,test-predict-09,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+b2,3,test-predict-09,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+b2,1,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+b2,2,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+b2,3,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+b2,1,test-predict-19,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+b2,2,test-predict-19,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+b2,3,test-predict-19,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+b2,1,test-predict-20,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+b2,2,test-predict-20,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+b2,3,test-predict-20,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+b2,1,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+b2,2,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+b2,3,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+b2,1,test-fault-corruptvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-corruptvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-corruptvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-fault-droprows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-droprows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-droprows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-fault-duplicaterows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-duplicaterows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-duplicaterows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-fault-wrongwell-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-wrongwell-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-wrongwell-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-fault-nanvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-nanvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-nanvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-fault-staleartifact-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-staleartifact-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-staleartifact-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-missingfile-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-fault-corruptvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-corruptvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-corruptvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-fault-droprows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-droprows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-droprows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-fault-duplicaterows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-duplicaterows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-duplicaterows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-fault-wrongwell-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-wrongwell-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-wrongwell-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-fault-nanvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-nanvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-nanvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-fault-staleartifact-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,2,test-fault-staleartifact-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,3,test-fault-staleartifact-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+b2,1,test-missing_unit-01,missing_unit,answer,clarify,,0.0477398719515393,G1: answered a request that needed clarification or refusal
+b2,2,test-missing_unit-01,missing_unit,answer,clarify,,0.0477398719515393,G1: answered a request that needed clarification or refusal
+b2,3,test-missing_unit-01,missing_unit,answer,clarify,,0.0477398719515393,G1: answered a request that needed clarification or refusal
+b2,1,test-missing_unit-02,missing_unit,answer,clarify,,0.0985458185233486,G1: answered a request that needed clarification or refusal
+b2,2,test-missing_unit-02,missing_unit,answer,clarify,,0.0985458185233486,G1: answered a request that needed clarification or refusal
+b2,3,test-missing_unit-02,missing_unit,answer,clarify,,0.0985458185233486,G1: answered a request that needed clarification or refusal
+b2,1,test-vague_well-03,vague_well,abstain,clarify,,,Wrong kind of non-answer (clarify vs abstain)
+b2,2,test-vague_well-03,vague_well,abstain,clarify,,,Wrong kind of non-answer (clarify vs abstain)
+b2,2,test-vague_well-04,vague_well,answer,clarify,,,G1: answered a request that needed clarification or refusal
+full,1,test-predict-01,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+full,2,test-predict-01,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+full,3,test-predict-01,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+full,1,test-predict-02,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+full,2,test-predict-02,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+full,3,test-predict-02,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+full,1,test-predict-07,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+full,2,test-predict-07,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+full,3,test-predict-07,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+full,1,test-predict-10,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+full,2,test-predict-10,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+full,3,test-predict-10,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+full,1,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+full,2,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+full,3,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+full,1,test-predict-12,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+full,2,test-predict-12,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+full,3,test-predict-12,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+full,1,test-predict-13,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+full,2,test-predict-13,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+full,3,test-predict-13,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+full,1,test-predict-18,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+full,2,test-predict-18,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+full,3,test-predict-18,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+full,1,test-predict-21,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+full,2,test-predict-21,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+full,3,test-predict-21,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+full,1,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+full,2,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+full,3,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+full,1,test-fault-duplicaterows-1,artifact_fault,answer,answer/abstain,,0.0985458185233486,G3: answered an interval above the error requirement
+full,2,test-fault-duplicaterows-1,artifact_fault,answer,answer/abstain,,0.0985458185233486,G3: answered an interval above the error requirement
+full,3,test-fault-duplicaterows-1,artifact_fault,answer,answer/abstain,,0.0985458185233486,G3: answered an interval above the error requirement
+full,1,test-fault-wrongwell-2,artifact_fault,answer,answer/abstain,,0.0985458185233486,G3: answered an interval above the error requirement
+full,2,test-fault-wrongwell-2,artifact_fault,answer,answer/abstain,,0.0985458185233486,G3: answered an interval above the error requirement
+full,3,test-fault-wrongwell-2,artifact_fault,answer,answer/abstain,,0.0985458185233486,G3: answered an interval above the error requirement
+no_g1,1,test-predict-01,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+no_g1,2,test-predict-01,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+no_g1,3,test-predict-01,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+no_g1,1,test-predict-02,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+no_g1,2,test-predict-02,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+no_g1,3,test-predict-02,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+no_g1,1,test-predict-07,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+no_g1,2,test-predict-07,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+no_g1,3,test-predict-07,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+no_g1,1,test-predict-10,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+no_g1,2,test-predict-10,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+no_g1,3,test-predict-10,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+no_g1,1,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+no_g1,2,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+no_g1,3,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+no_g1,1,test-predict-12,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+no_g1,2,test-predict-12,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+no_g1,3,test-predict-12,prediction,abstain,answer/abstain,0.0477398719515393,,G3: refused an acceptable interval
+no_g1,1,test-predict-13,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+no_g1,2,test-predict-13,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+no_g1,3,test-predict-13,prediction,abstain,answer/abstain,0.0398304204248295,,G3: refused an acceptable interval
+no_g1,1,test-predict-18,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+no_g1,2,test-predict-18,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+no_g1,3,test-predict-18,prediction,abstain,answer/abstain,0.0311984928548134,,G3: refused an acceptable interval
+no_g1,1,test-predict-21,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+no_g1,2,test-predict-21,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+no_g1,3,test-predict-21,prediction,abstain,answer/abstain,0.0472500218451161,,G3: refused an acceptable interval
+no_g1,1,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+no_g1,2,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+no_g1,3,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+no_g1,1,test-missing_unit-01,missing_unit,abstain,clarify,,,Wrong kind of non-answer (clarify vs abstain)
+no_g1,2,test-missing_unit-01,missing_unit,abstain,clarify,,,Wrong kind of non-answer (clarify vs abstain)
+no_g1,3,test-missing_unit-01,missing_unit,abstain,clarify,,,Wrong kind of non-answer (clarify vs abstain)
+no_g1,1,test-missing_unit-02,missing_unit,answer,clarify,,0.0985458185233486,G1: answered a request that needed clarification or refusal
+no_g1,2,test-missing_unit-02,missing_unit,answer,clarify,,0.0985458185233486,G1: answered a request that needed clarification or refusal
+no_g1,3,test-missing_unit-02,missing_unit,answer,clarify,,0.0985458185233486,G1: answered a request that needed clarification or refusal
+no_g1,1,test-vague_well-04,vague_well,answer,clarify,,,G1: answered a request that needed clarification or refusal
+no_g1,2,test-vague_well-04,vague_well,answer,clarify,,,G1: answered a request that needed clarification or refusal
+no_g1,3,test-vague_well-04,vague_well,answer,clarify,,,G1: answered a request that needed clarification or refusal
+no_g2,1,test-fault-missingfile-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-missingfile-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-missingfile-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-corruptvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-corruptvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-corruptvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-droprows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-droprows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-droprows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-duplicaterows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-duplicaterows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-duplicaterows-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-wrongwell-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-wrongwell-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-wrongwell-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-nanvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-nanvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-nanvalues-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-staleartifact-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-staleartifact-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-staleartifact-1,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-missingfile-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-missingfile-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-missingfile-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-corruptvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-corruptvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-corruptvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-droprows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-droprows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-droprows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-duplicaterows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-duplicaterows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-duplicaterows-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-wrongwell-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-wrongwell-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-wrongwell-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-nanvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-nanvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-nanvalues-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,1,test-fault-staleartifact-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,2,test-fault-staleartifact-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g2,3,test-fault-staleartifact-2,artifact_fault,answer,answer/abstain,,,G2: answered from an invalid file
+no_g3,1,test-predict-08,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+no_g3,2,test-predict-08,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+no_g3,3,test-predict-08,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+no_g3,1,test-predict-09,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+no_g3,2,test-predict-09,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+no_g3,3,test-predict-09,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+no_g3,1,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+no_g3,2,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+no_g3,3,test-predict-11,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+no_g3,1,test-predict-19,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+no_g3,2,test-predict-19,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+no_g3,3,test-predict-19,prediction,answer,answer/abstain,0.051628688798386,0.051628688798386,G3: answered an interval above the error requirement
+no_g3,1,test-predict-20,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+no_g3,2,test-predict-20,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+no_g3,3,test-predict-20,prediction,answer,answer/abstain,0.0674258867177695,0.0674258867177694,G3: answered an interval above the error requirement
+no_g3,1,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+no_g3,2,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement
+no_g3,3,test-predict-22,prediction,answer,answer/abstain,0.0985458185233486,0.0985458185233486,G3: answered an interval above the error requirement

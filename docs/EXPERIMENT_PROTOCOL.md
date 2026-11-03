@@ -1,3 +1,5 @@
+> **Phase 1 document, kept for the record.** It describes the system and results as of October 2026. For the final Phase 2 system and results see the [README](../README.md) and [RESULTS.md](RESULTS.md).
+
 # Initial executed protocol (Phase 1)
 
 ## What was fixed before scoring

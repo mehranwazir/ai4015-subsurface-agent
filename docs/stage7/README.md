@@ -1,3 +1,5 @@
+> **Phase 1 document, kept for the record.** It describes the system and results as of October 2026. For the final Phase 2 system and results see the [README](../../README.md) and [RESULTS.md](../RESULTS.md).
+
 # Stage 7 evidence pack and writing guide
 
 Prepared 16 October 2026 for AI4015 Phase 1, G3-03. Stage 7 was authorized by the group head. These are AI-assisted research notes, factual artifacts and writing prompts. **They are not the group's assessed literature review or proposal.** The assignment prohibits AI-generated submission writing; the group must read, judge and write its own text and comparisons.

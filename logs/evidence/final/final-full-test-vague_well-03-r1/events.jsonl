@@ -1,0 +1,1 @@
+{"event": "tool", "turn": 1, "name": "finish", "arguments": {"status": "clarify", "reason": "The request asks for 'my best well', which is ambiguous and does not specify a well ID."}, "result": {"ok": true, "status": "clarify", "reason": "The request asks for 'my best well', which is ambiguous and does not specify a well ID.", "verified_predictions": []}}

@@ -88,13 +88,17 @@ def run_experiment(root: Path, experiment: str, cases_path: Path, systems: list[
     return {"experiment": experiment, "completed": True, "new_runs": done, "skipped": skipped}
 
 
-def summarize(root: Path, experiment: str, cases_path: Path, systems: list[str] | None = None) -> dict:
+def summarize(root: Path, experiment: str, cases_path: Path, systems: list[str] | None = None,
+              runs_dir: Path | None = None) -> dict:
     """Score every saved run of an experiment; write per-run rows and mean/std across repeats."""
-    cases, scorer = read_json(cases_path), Scorer(root)
+    # Runs are read from logs/runs by default; the committed copy in logs/evidence/<experiment> re-scores the
+    # reported results from a fresh clone.
+    runs_dir = runs_dir or root / "logs" / "runs"
+    cases, scorer = read_json(cases_path), Scorer(root, runs_dir)
     rows = []
     for system in systems or SYSTEMS:
         for case in cases:
-            for path in sorted((root / "logs" / "runs").glob(f"{experiment}-{system}-{case['id']}-r*/result.json")):
+            for path in sorted(runs_dir.glob(f"{experiment}-{system}-{case['id']}-r*/result.json")):
                 result = read_json(path)
                 if provider_failed(result):
                     continue

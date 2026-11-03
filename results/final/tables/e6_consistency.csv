@@ -1,0 +1,6 @@
+System,Cases,Cases whose outcome changed across repeats
+B2 LogACF-style,50,3
+Proposed (full),50,0
+Full without G1,34,3
+Full without G2,16,0
+Full without G3,22,0

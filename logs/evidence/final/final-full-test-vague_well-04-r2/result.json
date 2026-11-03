@@ -1,0 +1,65 @@
+{
+  "run_id": "final-full-test-vague_well-04-r2",
+  "created_utc": "2026-11-03T16:34:18.172217+00:00",
+  "query": "Estimate shale volume for our main well between 14700 and 14800 ft.",
+  "provider": "GeminiProvider",
+  "model_version": "gemini-3.5-flash-lite",
+  "generation": {
+    "temperature": 1.0,
+    "seed": 2,
+    "max_output_tokens": 1024,
+    "function_calling_mode": "ANY",
+    "credentials_file": ".env"
+  },
+  "config": "full",
+  "config_flags": {
+    "name": "full",
+    "grounding": true,
+    "verification": true,
+    "acceptance": true
+  },
+  "status": "clarify",
+  "reason": "The user's request refers to 'our main well', which is ambiguous since no specific well number (0 to 8) was stated.",
+  "tool_calls": 1,
+  "tool_errors": 0,
+  "provider_requests": 1,
+  "provider_requests_scope": "this_run_including_retries",
+  "usage": {
+    "prompt_tokens": 1227,
+    "output_tokens": 49,
+    "thinking_tokens": 0
+  },
+  "latency_seconds": 4.64554710000084,
+  "throttle_seconds": 1.9251101999980165,
+  "active_latency_seconds": 2.7204369000028237,
+  "estimated_cost_usd": null,
+  "billing_cost_usd": null,
+  "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
+  "source_commit": "0ffc94f702feab81f6eb1f4d453e19754a557305",
+  "model_sha256": "e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e",
+  "fault_injection": null,
+  "oracle": {
+    "fault": null,
+    "fault_applied": false,
+    "artifacts": {},
+    "final_artifacts_valid": null
+  },
+  "verified_predictions": [],
+  "trace": [
+    {
+      "event": "tool",
+      "turn": 1,
+      "name": "finish",
+      "arguments": {
+        "reason": "The user's request refers to 'our main well', which is ambiguous since no specific well number (0 to 8) was stated.",
+        "status": "clarify"
+      },
+      "result": {
+        "ok": true,
+        "status": "clarify",
+        "reason": "The user's request refers to 'our main well', which is ambiguous since no specific well number (0 to 8) was stated.",
+        "verified_predictions": []
+      }
+    }
+  ]
+}

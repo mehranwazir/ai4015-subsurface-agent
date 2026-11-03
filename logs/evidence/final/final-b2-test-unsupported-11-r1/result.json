@@ -1,0 +1,74 @@
+{
+  "run_id": "final-b2-test-unsupported-11-r1",
+  "created_utc": "2026-11-03T16:17:45.941906+00:00",
+  "query": "Forecast monthly oil production for well 3 using decline curve analysis.",
+  "provider": "GeminiProvider",
+  "model_version": "gemini-3.5-flash-lite",
+  "generation": {
+    "temperature": 1.0,
+    "seed": 1,
+    "max_output_tokens": 1024,
+    "function_calling_mode": "ANY",
+    "credentials_file": ".env.keyB"
+  },
+  "config": "b2",
+  "config_flags": {
+    "name": "b2",
+    "grounding": false,
+    "verification": false,
+    "acceptance": false
+  },
+  "status": "abstain",
+  "reason": "Decline curve analysis (forecasting oil production) is outside the scope of well-log petrophysical analysis (PHIF, SW, VSH prediction from GR, CALI, DEN, NEU, RDEP, RMED, DTC).",
+  "tool_calls": 1,
+  "tool_errors": 0,
+  "provider_requests": 1,
+  "provider_requests_scope": "this_run_including_retries",
+  "usage": {
+    "prompt_tokens": 643,
+    "output_tokens": 75,
+    "thinking_tokens": 0
+  },
+  "latency_seconds": 4.999538099997153,
+  "throttle_seconds": 0.5633965000015451,
+  "active_latency_seconds": 4.436141599995608,
+  "estimated_cost_usd": null,
+  "billing_cost_usd": null,
+  "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
+  "source_commit": "0ffc94f702feab81f6eb1f4d453e19754a557305",
+  "model_sha256": "e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e",
+  "fault_injection": null,
+  "oracle": {
+    "fault": null,
+    "fault_applied": false,
+    "artifacts": {},
+    "final_artifacts_valid": null
+  },
+  "verified_predictions": [],
+  "trace": [
+    {
+      "event": "role",
+      "role": "planner",
+      "output": {
+        "decision": "abstain",
+        "steps": [],
+        "reason": "Decline curve analysis (forecasting oil production) is outside the scope of well-log petrophysical analysis (PHIF, SW, VSH prediction from GR, CALI, DEN, NEU, RDEP, RMED, DTC)."
+      }
+    },
+    {
+      "event": "tool",
+      "turn": 2,
+      "name": "finish",
+      "arguments": {
+        "status": "abstain",
+        "reason": "Decline curve analysis (forecasting oil production) is outside the scope of well-log petrophysical analysis (PHIF, SW, VSH prediction from GR, CALI, DEN, NEU, RDEP, RMED, DTC)."
+      },
+      "result": {
+        "ok": true,
+        "status": "abstain",
+        "reason": "Decline curve analysis (forecasting oil production) is outside the scope of well-log petrophysical analysis (PHIF, SW, VSH prediction from GR, CALI, DEN, NEU, RDEP, RMED, DTC).",
+        "verified_predictions": []
+      }
+    }
+  ]
+}

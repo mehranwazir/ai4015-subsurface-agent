@@ -1,0 +1,11 @@
+Component removed,Metric (%),Full,Without component
+G1,Task success on G1 cases,"70.6 [52.9, 85.3]","61.8 [47.1, 76.5]"
+G1,Must-not-answer handled,"100.0 [100.0, 100.0]","75.0 [50.0, 100.0]"
+G1,Unwarranted answers,"0.0 [0.0, 0.0]","16.7 [0.0, 41.7]"
+G2,Silent errors on harmful faults,"0.0 [0.0, 0.0]","100.0 [100.0, 100.0]"
+G2,Harmful faults repaired,"100.0 [100.0, 100.0]","0.0 [0.0, 0.0]"
+G2,Task success on fault cases,"85.7 [64.3, 100.0]","0.0 [0.0, 0.0]"
+G3,Coverage,"45.5 [27.3, 68.2]","100.0 [100.0, 100.0]"
+G3,Selective error,"20.0 [0.0, 50.0]","27.3 [9.1, 45.5]"
+G3,False refusals,"50.0 [25.0, 75.0]","0.0 [0.0, 0.0]"
+G3,Task success on prediction cases,"54.5 [31.8, 72.7]","72.7 [54.5, 90.9]"

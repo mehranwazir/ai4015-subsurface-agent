@@ -1,0 +1,1 @@
+{"event": "tool", "turn": 1, "name": "finish", "arguments": {"status": "clarify", "reason": "Decline curve analysis and monthly oil production forecasting are unsupported operations."}, "result": {"ok": true, "status": "clarify", "reason": "Decline curve analysis and monthly oil production forecasting are unsupported operations.", "verified_predictions": []}}

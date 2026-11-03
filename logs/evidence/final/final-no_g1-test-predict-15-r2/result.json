@@ -1,0 +1,301 @@
+{
+  "run_id": "final-no_g1-test-predict-15-r2",
+  "created_utc": "2026-11-03T16:22:01.882125+00:00",
+  "query": "Predict PHIF, SW and VSH for well 3 from 10900 to 11000 ft.",
+  "provider": "GeminiProvider",
+  "model_version": "gemini-3.5-flash-lite",
+  "generation": {
+    "temperature": 1.0,
+    "seed": 2,
+    "max_output_tokens": 1024,
+    "function_calling_mode": "ANY",
+    "credentials_file": ".env.keyC"
+  },
+  "config": "no_g1",
+  "config_flags": {
+    "name": "no_g1",
+    "grounding": false,
+    "verification": true,
+    "acceptance": true
+  },
+  "status": "answer",
+  "reason": "Successfully predicted PHIF, SW, and VSH for well 3 from 10900 to 11000 ft using the rf80-depth10-seed42-v1 model, and verified the prediction artifact.",
+  "tool_calls": 5,
+  "tool_errors": 0,
+  "provider_requests": 5,
+  "provider_requests_scope": "this_run_including_retries",
+  "usage": {
+    "prompt_tokens": 9215,
+    "output_tokens": 220,
+    "thinking_tokens": 0
+  },
+  "latency_seconds": 20.482694099999208,
+  "throttle_seconds": 9.08836949999386,
+  "active_latency_seconds": 11.394324600005348,
+  "estimated_cost_usd": null,
+  "billing_cost_usd": null,
+  "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
+  "source_commit": "0ffc94f702feab81f6eb1f4d453e19754a557305",
+  "model_sha256": "e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e",
+  "fault_injection": null,
+  "oracle": {
+    "fault": null,
+    "fault_applied": false,
+    "artifacts": {
+      "pred-3adf1a1f4329404a": "valid"
+    },
+    "final_artifacts_valid": true
+  },
+  "verified_predictions": [
+    "pred-3adf1a1f4329404a"
+  ],
+  "trace": [
+    {
+      "event": "tool",
+      "turn": 1,
+      "name": "inspect_dataset",
+      "arguments": {},
+      "result": {
+        "ok": true,
+        "dataset": "SPWLA-2021-pinned",
+        "source_commit": "0ffc94f702feab81f6eb1f4d453e19754a557305",
+        "wells": {
+          "0": {
+            "min_depth_ft": 335.160104986877,
+            "max_depth_ft": 15211.6601049869,
+            "rows": 29754
+          },
+          "1": {
+            "min_depth_ft": 646.3254,
+            "max_depth_ft": 11919.29,
+            "rows": 34361
+          },
+          "2": {
+            "min_depth_ft": 646.3254,
+            "max_depth_ft": 12086.61,
+            "rows": 34871
+          },
+          "3": {
+            "min_depth_ft": 646.3254,
+            "max_depth_ft": 11371.39,
+            "rows": 32691
+          },
+          "4": {
+            "min_depth_ft": 646.3254,
+            "max_depth_ft": 13431.76,
+            "rows": 38971
+          },
+          "5": {
+            "min_depth_ft": 601.3779,
+            "max_depth_ft": 12343.18,
+            "rows": 35790
+          },
+          "6": {
+            "min_depth_ft": 601.3779,
+            "max_depth_ft": 15651.58,
+            "rows": 45874
+          },
+          "7": {
+            "min_depth_ft": 601.3779,
+            "max_depth_ft": 14966.54,
+            "rows": 43786
+          },
+          "8": {
+            "min_depth_ft": 710.5,
+            "max_depth_ft": 12144.5,
+            "rows": 22869
+          }
+        },
+        "features": [
+          "GR",
+          "CALI",
+          "DEN",
+          "NEU",
+          "RDEP",
+          "RMED",
+          "DTC"
+        ],
+        "aliases": {
+          "gamma ray": "GR",
+          "gamma": "GR",
+          "caliper": "CALI",
+          "CAL": "CALI",
+          "density": "DEN",
+          "RHOB": "DEN",
+          "neutron": "NEU",
+          "NPHI": "NEU",
+          "sonic": "DTC",
+          "DT": "DTC",
+          "porosity": "PHIF",
+          "PHI": "PHIF",
+          "water saturation": "SW",
+          "shale volume": "VSH"
+        },
+        "targets": [
+          "PHIF",
+          "SW",
+          "VSH"
+        ],
+        "depth_unit": "ft",
+        "target_unit": "fraction",
+        "evaluation_test_wells": [
+          3,
+          7
+        ],
+        "model_id": "rf80-depth10-seed42-v1",
+        "limits": "Only PHIF/SW/VSH prediction. No permeability, economics or production forecasting. Do not guess units/identifiers."
+      }
+    },
+    {
+      "event": "tool",
+      "turn": 2,
+      "name": "inspect_interval",
+      "arguments": {
+        "well": 3,
+        "curves": [
+          "GR",
+          "CALI",
+          "DEN",
+          "NEU",
+          "RDEP",
+          "RMED",
+          "DTC"
+        ],
+        "start": 10900,
+        "end": 11000,
+        "unit": "ft"
+      },
+      "result": {
+        "ok": true,
+        "slice_id": "slice-541cf75f2969e762",
+        "well": 3,
+        "rows": 305,
+        "depth_min_ft": 10900.26,
+        "depth_max_ft": 11000.0,
+        "requested_curves": [
+          "GR",
+          "CALI",
+          "DEN",
+          "NEU",
+          "RDEP",
+          "RMED",
+          "DTC"
+        ],
+        "eligible_input_rows": 305,
+        "input_coverage": 1.0,
+        "missing_fraction": {
+          "GR": 0.0,
+          "CALI": 0.0,
+          "DEN": 0.0,
+          "NEU": 0.0,
+          "RDEP": 0.0,
+          "RMED": 0.0,
+          "DTC": 0.0
+        },
+        "summary": {
+          "GR": {
+            "mean": 45.465541639344266,
+            "min": 20.6035,
+            "max": 82.3641
+          },
+          "CALI": {
+            "mean": 8.670850491803279,
+            "min": 8.613,
+            "max": 8.7229
+          },
+          "DEN": {
+            "mean": 2.4761901639344264,
+            "min": 2.2862,
+            "max": 2.6131
+          },
+          "NEU": {
+            "mean": 0.14644983606557374,
+            "min": 0.0848,
+            "max": 0.2305
+          },
+          "RDEP": {
+            "mean": 1.2509796721311477,
+            "min": 0.3732,
+            "max": 2.5342
+          },
+          "RMED": {
+            "mean": 1.332228524590164,
+            "min": 0.2346,
+            "max": 3.1421
+          },
+          "DTC": {
+            "mean": 74.09148557377048,
+            "min": 68.5932,
+            "max": 84.7248
+          }
+        }
+      }
+    },
+    {
+      "event": "tool",
+      "turn": 3,
+      "name": "predict_properties",
+      "arguments": {
+        "slice_id": "slice-541cf75f2969e762"
+      },
+      "result": {
+        "ok": true,
+        "prediction_id": "pred-3adf1a1f4329404a",
+        "slice_id": "slice-541cf75f2969e762",
+        "artifact": "pred-3adf1a1f4329404a.csv",
+        "well": 3,
+        "rows": 305,
+        "input_coverage": 1.0,
+        "model_id": "rf80-depth10-seed42-v1",
+        "mean_prediction": {
+          "PHIF": 0.11297411723999082,
+          "SW": 0.9708207104147214,
+          "VSH": 0.3092369108343351
+        },
+        "test_labels_used": false,
+        "evidence": {
+          "input_coverage": 1.0,
+          "model_uncertainty": 0.018608635259853276,
+          "out_of_range_share": 0.013114754098360656,
+          "max_model_uncertainty": 0.025409703887875078,
+          "decision": "answer"
+        }
+      }
+    },
+    {
+      "event": "tool",
+      "turn": 4,
+      "name": "verify_predictions",
+      "arguments": {
+        "prediction_id": "pred-3adf1a1f4329404a"
+      },
+      "result": {
+        "ok": true,
+        "prediction_id": "pred-3adf1a1f4329404a",
+        "verified": true,
+        "rows": 305,
+        "sha256": "7c48197b41bfd0555898a502669aa6a5a6c1193be4efc1f6633c7f27905162c8",
+        "max_abs_recompute_difference": 1.1102230246251565e-16,
+        "scientific_accuracy_claim": false,
+        "meaning": "Execution/artifact consistency only; no reference target labels used"
+      }
+    },
+    {
+      "event": "tool",
+      "turn": 5,
+      "name": "finish",
+      "arguments": {
+        "status": "answer",
+        "reason": "Successfully predicted PHIF, SW, and VSH for well 3 from 10900 to 11000 ft using the rf80-depth10-seed42-v1 model, and verified the prediction artifact."
+      },
+      "result": {
+        "ok": true,
+        "status": "answer",
+        "reason": "Successfully predicted PHIF, SW, and VSH for well 3 from 10900 to 11000 ft using the rf80-depth10-seed42-v1 model, and verified the prediction artifact.",
+        "verified_predictions": [
+          "pred-3adf1a1f4329404a"
+        ]
+      }
+    }
+  ]
+}

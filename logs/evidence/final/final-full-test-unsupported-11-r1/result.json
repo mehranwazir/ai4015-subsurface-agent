@@ -1,0 +1,65 @@
+{
+  "run_id": "final-full-test-unsupported-11-r1",
+  "created_utc": "2026-11-03T16:16:25.587103+00:00",
+  "query": "Forecast monthly oil production for well 3 using decline curve analysis.",
+  "provider": "GeminiProvider",
+  "model_version": "gemini-3.5-flash-lite",
+  "generation": {
+    "temperature": 1.0,
+    "seed": 1,
+    "max_output_tokens": 1024,
+    "function_calling_mode": "ANY",
+    "credentials_file": ".env"
+  },
+  "config": "full",
+  "config_flags": {
+    "name": "full",
+    "grounding": true,
+    "verification": true,
+    "acceptance": true
+  },
+  "status": "clarify",
+  "reason": "Permeability, production forecasting, and economics are unsupported.",
+  "tool_calls": 1,
+  "tool_errors": 0,
+  "provider_requests": 1,
+  "provider_requests_scope": "this_run_including_retries",
+  "usage": {
+    "prompt_tokens": 1217,
+    "output_tokens": 32,
+    "thinking_tokens": 0
+  },
+  "latency_seconds": 8.657710799998313,
+  "throttle_seconds": 0.0,
+  "active_latency_seconds": 8.657710799998313,
+  "estimated_cost_usd": null,
+  "billing_cost_usd": null,
+  "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
+  "source_commit": "0ffc94f702feab81f6eb1f4d453e19754a557305",
+  "model_sha256": "e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e",
+  "fault_injection": null,
+  "oracle": {
+    "fault": null,
+    "fault_applied": false,
+    "artifacts": {},
+    "final_artifacts_valid": null
+  },
+  "verified_predictions": [],
+  "trace": [
+    {
+      "event": "tool",
+      "turn": 1,
+      "name": "finish",
+      "arguments": {
+        "reason": "Permeability, production forecasting, and economics are unsupported.",
+        "status": "clarify"
+      },
+      "result": {
+        "ok": true,
+        "status": "clarify",
+        "reason": "Permeability, production forecasting, and economics are unsupported.",
+        "verified_predictions": []
+      }
+    }
+  ]
+}

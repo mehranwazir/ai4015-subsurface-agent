@@ -310,3 +310,44 @@ Phase 1 had only a single-pass smoke evaluator that trusted the requested tool l
 The test benchmark has not been run by any system. Any later change must be logged here with its reason, and would require rerunning the affected test experiments.
 
 **Evidence:** `logs/evidence/devlog-007/` (all 137 `dev1`/`dev2`/`dev3` runs); `results/experiments/dev1/`, `results/experiments/dev2/`, `results/experiments/dev3/`.
+
+## Entry 8: 3 and 4 November 2026. Final evaluation on the test benchmark
+
+**What was run.** The frozen system, B0, B2 and the three ablations ran on the 50-case test benchmark (`experiments/benchmark/test.json`). This was the first time any system saw the test cases. The planned runs were:
+- every LLM system three times (seed = repeat number, temperature 1.0);
+- B0 once;
+- each ablation only on its own gap's cases (`--scope own-gap`), a choice made before the run to fit the API budget.
+
+That is 566 runs in total. Two runner options were added before the test run; neither changes the frozen system:
+- `--env-file`, so that each experiment process could use its own API project;
+- `--scope own-gap`.
+
+**API limits during the run.** Three free-tier API projects each allow 500 requests per day for this model. All three ran in parallel.
+
+| Credentials file | Runs served |
+|---|---|
+| `.env` | B0 and 102 full-system runs |
+| `.env.keyB` | B2, the G3 ablation, and the remaining full, G1-ablation and G2-ablation runs |
+| `.env.keyC` | 83 G1-ablation and 32 G2-ablation runs |
+
+Each record names the file that served it (`generation.credentials_file`). Interruptions:
+- One project had already used its daily quota when the run started, and then reported the free tier as unavailable. Its share resumed once the project accepted requests again.
+- The other two projects reached their daily limit (HTTP 429 `RESOURCE_EXHAUSTED`).
+
+Each interruption stopped its process cleanly. Four interrupted attempts are kept as `-providerfail-1` runs and were not scored; each was rerun. The batch completed on 4 November with **566 scored runs and no provider failures among them**.
+
+**Effect on the results.** All projects used the same model, settings, prompts and tools, so outcomes and token counts are comparable. Latency is not: the same system had a median active latency of 18.95 s on one project and 9.78 s on another (`results/final/tables/e6_latency_by_project.csv`). Latency is therefore reported but not used to compare systems.
+
+**Reproducibility.** The scored records, traces and prediction files of all 566 runs are committed in `logs/evidence/final/` (21 MB; plots excluded).
+- Re-scoring them with `summarize --runs-dir logs/evidence/final` reproduces `results/experiments/final/runs.csv` exactly.
+- `experiments/analyze.py` rebuilds every table and figure from those scores.
+- Replaying the saved tool actions of every final run without an LLM call reproduces every tool output: **566 of 566 runs match**.
+- The first replay pass matched 560 of 566. The six mismatches were B2 runs with the `missing_file` fault. B2 tried to plot the missing file, and the operating-system error message named the file with the run's own absolute folder, which is different on replay. Replay now compares such file paths by file name only (`agent._without_run_folder`, with a test). The frozen system and its recorded outputs were not changed.
+
+**Findings recorded for the report.** Details are in `docs/RESULTS.md` and `docs/FAILURE_ANALYSIS.md`.
+- **Task success:** the full system 76.0%, B2 57.3 ± 1.2%, B0 46.0%.
+- **G1:** must-not-answer requests handled 100% against 75.0% (B2) and 75.0% (without G1).
+- **G2:** silent errors 0% against 88.1% (B2) and 100% (without G2).
+- **G3:** selective error 20.0% against 27.3%, but coverage 45.5% and false refusals 50.0%. Removing G3 raised task success on prediction cases from 54.5% to 72.7%.
+- **G3 calibration did not transfer.** On the validation wells, the chosen limit gave 2.8% bad answers at 64.3% coverage. On the test wells it gave 20.0% at 45.5%. G3 is therefore reported as partially addressed.
+- **Consistency:** the full system gave the same outcome on all 50 cases in all three repeats. B2 changed on 3 cases.

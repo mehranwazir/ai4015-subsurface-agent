@@ -17,7 +17,7 @@ python -m subsurface_agent experiment --name dev2 --cases experiments/benchmark/
 python -m subsurface_agent summarize --name dev2 --cases experiments/benchmark/dev.json
 ```
 
-Outputs go to `results/experiments/<name>/`. Development rounds `dev1` (B0, B2, full) and `dev2` (full, after the fixes in devlog entry 7) are recorded there. The final E1-E6 configurations are added in the next stage.
+Outputs go to `results/experiments/<name>/`. Development rounds `dev1` (B0, B2, full) and `dev2` (full, after the fixes in devlog entry 7) are recorded there. The final E1-E6 runs are described below.
 
 ## Final evaluation (E1-E6)
 
@@ -42,3 +42,17 @@ python -m subsurface_agent summarize --name final --cases experiments/benchmark/
 ```
 
 `summarize` must be run once at the end with all systems; partial summaries written when a single command finishes are overwritten.
+
+### How the reported final run was executed
+
+Each API project's free tier allows 500 requests per day, so the systems were split across three credentials files and run in parallel under the same experiment name. Interrupted processes were simply rerun until all 566 runs were complete (devlog entry 8):
+
+```powershell
+python -m subsurface_agent experiment --name final --cases experiments/benchmark/test.json --systems b0 full b2 --repeats 3
+python -m subsurface_agent experiment --name final --cases experiments/benchmark/test.json --systems b2 no_g3 full --repeats 3 --scope own-gap --env-file .env.keyB
+python -m subsurface_agent experiment --name final --cases experiments/benchmark/test.json --systems no_g1 no_g2 --repeats 3 --scope own-gap --env-file .env.keyC
+python -m subsurface_agent summarize --name final --cases experiments/benchmark/test.json
+python experiments/analyze.py
+```
+
+`--scope own-gap` affects only the ablation systems; `b0`, `b2` and `full` always run on all 50 cases. The saved records of all 566 runs are in `logs/evidence/final/`; `summarize --runs-dir logs/evidence/final` re-scores them without any API calls, and `analyze.py` writes the tables (`results/final/tables/`), figures (`results/final/figures/`) and `docs/FAILURE_ANALYSIS.md`.

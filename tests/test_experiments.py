@@ -137,3 +137,30 @@ def test_explicit_env_file_overrides_and_must_exist(tiny_root, monkeypatch):
     assert os.environ["GEMINI_API_KEY"] == "from-file-b"
     with pytest.raises(ValueError, match="not found"):
         load_env(tiny_root, tiny_root / ".env.missing")
+
+
+def test_summary_can_rescore_runs_saved_in_another_folder(tiny_root):
+    import shutil
+    cases = setup(tiny_root)
+    run_experiment(tiny_root, "m", cases, ["full"], 1, PlannerDouble(), log=lambda *_: None)
+    original = summarize(tiny_root, "m", cases)
+    saved = tiny_root / "logs" / "evidence" / "m"
+    for run in (tiny_root / "logs" / "runs").glob("m-*"):
+        shutil.copytree(run, saved / run.name)
+        shutil.rmtree(run)
+    rescored = summarize(tiny_root, "m", cases, runs_dir=saved)
+    assert rescored["runs_scored"] == original["runs_scored"] == 3
+    assert rescored["systems"] == original["systems"]
+
+
+def test_answer_error_reads_the_prediction_file_from_the_given_folder(tiny_root):
+    import shutil
+    from subsurface_agent.scoring import Scorer
+    cases = setup(tiny_root)
+    run_experiment(tiny_root, "e", cases, ["full"], 1, PlannerDouble(), log=lambda *_: None)
+    result = read_json(tiny_root / "logs" / "runs" / "e-full-clean-r1" / "result.json")
+    moved = tiny_root / "elsewhere"
+    shutil.copytree(tiny_root / "logs" / "runs", moved)
+    shutil.rmtree(tiny_root / "logs" / "runs")
+    assert Scorer(tiny_root).answer_error(result) is None
+    assert abs(Scorer(tiny_root, moved).answer_error(result) - 0.01) < 1e-9

@@ -77,3 +77,11 @@ def test_reusing_provider_counts_requests_per_run(tiny_root):
     assert first["status"] == second["status"] == "answer"
     assert first["provider_requests"] == second["provider_requests"] == 2
     assert provider.request_count == 4
+
+
+def test_replay_compares_run_files_by_name_not_by_folder():
+    from subsurface_agent.agent import _without_run_folder
+    saved = {"message": "[Errno 2] No such file or directory: 'C:/a/logs/runs/x-r1/pred-0123456789abcdef.csv'"}
+    replayed = {"message": "[Errno 2] No such file or directory: '/tmp/b/logs/runs/replay-1/pred-0123456789abcdef.csv'"}
+    other = {"message": "[Errno 2] No such file or directory: '/tmp/b/logs/runs/replay-1/pred-ffffffffffffffff.csv'"}
+    assert _without_run_folder(saved) == _without_run_folder(replayed) != _without_run_folder(other)

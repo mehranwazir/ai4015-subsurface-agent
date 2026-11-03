@@ -1,0 +1,7 @@
+Comparison,Difference (points),95% interval,Cases
+Task success: full − B2,+18.7,"[-0.7, +36.7]",50
+Task success: full − B0,+30.0,"[+10.0, +50.0]",50
+G1 must-not-answer handled: full − B2,+25.0,"[+5.6, +50.0]",12
+G1 must-not-answer handled: full − B0,+58.3,"[+33.3, +83.3]",12
+G2 silent errors: full − B2,-88.1,"[-100.0, -71.4]",14
+G2 silent errors: full − B0,-100.0,"[-100.0, -100.0]",14

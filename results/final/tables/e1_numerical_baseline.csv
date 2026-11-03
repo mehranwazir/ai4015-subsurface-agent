@@ -1,0 +1,5 @@
+Target,Training-mean RMSE,Random Forest RMSE,Random Forest R2
+PHIF,0.0713,0.0216,0.876
+SW,0.3579,0.0701,0.903
+VSH,0.2319,0.064,0.915
+Mean of three,0.2204,0.0519,

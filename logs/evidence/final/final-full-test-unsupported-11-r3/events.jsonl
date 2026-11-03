@@ -1,0 +1,1 @@
+{"event": "tool", "turn": 1, "name": "finish", "arguments": {"reason": "Permeability, production forecasting, and economics are unsupported tasks.", "status": "clarify"}, "result": {"ok": true, "status": "clarify", "reason": "Permeability, production forecasting, and economics are unsupported tasks.", "verified_predictions": []}}

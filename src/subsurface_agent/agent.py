@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 import uuid
 from pathlib import Path
@@ -137,6 +138,19 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
                         throttle_start=throttle_start)
 
 
+# A tool error raised by the operating system (for example a missing file) names the file with the run's own
+# absolute folder, which differs on replay. Replay compares such paths by file name only.
+_RUN_FILE = re.compile(r"'[^']*[\\/]((?:pred|slice)-[0-9a-f]{16}\.\w+)'")
+
+
+def _without_run_folder(value):
+    if isinstance(value, dict):
+        return {k: _without_run_folder(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_without_run_folder(v) for v in value]
+    return _RUN_FILE.sub(r"'\1'", value) if isinstance(value, str) else value
+
+
 def replay_trace(root: Path, result_path: Path, *, replay_name: str | None = None) -> dict:
     saved = read_json(result_path)
     # Traces recorded before configurations existed replay with the Phase 1 behaviour.
@@ -152,7 +166,8 @@ def replay_trace(root: Path, result_path: Path, *, replay_name: str | None = Non
         if event["event"] != "tool":
             continue
         actual = clean_json(runtime.dispatch(event["name"], event["arguments"]))
-        checks.append({"tool": event["name"], "matches": actual == event["result"]})
+        checks.append({"tool": event["name"],
+                       "matches": _without_run_folder(actual) == _without_run_folder(event["result"])})
     output = {"source_run": saved["run_id"], "checks": checks,
               "all_match": bool(checks) and all(c["matches"] for c in checks), "llm_called": False}
     write_json(runtime.run_dir / "replay.json", output)
