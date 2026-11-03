@@ -1,4 +1,6 @@
 from subsurface_agent.agent import replay_trace, run_agent
+
+QUERY = "Predict PHIF, SW and VSH for well 3 from 10600 to 10619.5 ft and verify the result."
 from subsurface_agent.evaluation import score_case
 from subsurface_agent.providers import ProviderError, ProviderReply
 
@@ -27,7 +29,7 @@ class ScriptedProvider:
 
 
 def test_full_tool_loop_and_replay(tiny_root):
-    result = run_agent(tiny_root, "unit test", ScriptedProvider(), run_name="software-test")
+    result = run_agent(tiny_root, QUERY, ScriptedProvider(), run_name="software-test")
     assert result["status"] == "answer"
     assert result["provider"] == "ScriptedProvider"
     replay = replay_trace(tiny_root, tiny_root / "results/runs/software-test/result.json", replay_name="software-replay")
@@ -46,7 +48,7 @@ def test_provider_failure_preserves_honest_failed_run(tiny_root):
 
 
 def test_budget_stops_run_and_preserves_trace(tiny_root):
-    result = run_agent(tiny_root, "test", ScriptedProvider(), run_name="budget-test", max_calls=2)
+    result = run_agent(tiny_root, QUERY, ScriptedProvider(), run_name="budget-test", max_calls=2)
     assert result["status"] == "failed"
     assert result["tool_calls"] == 2
 

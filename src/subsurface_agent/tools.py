@@ -12,14 +12,11 @@ from pydantic import ValidationError
 
 from .baseline import save_log_plot
 from .common import clean_json, read_json, sha256
+from .config import PRESETS, SystemConfig
 from .contracts import CONTRACTS, Interval
 from .data import ALIASES, FEATURES, TARGETS
-
-
-class ToolError(ValueError):
-    def __init__(self, code: str, message: str, recoverable: bool = False):
-        super().__init__(message)
-        self.code, self.recoverable = code, recoverable
+from .errors import ToolError
+from .gaps import grounding
 
 
 def canonical_curve(name: str) -> str:
@@ -47,7 +44,10 @@ def select_interval(frame: pd.DataFrame, request: Interval) -> pd.DataFrame:
 
 
 class ToolRuntime:
-    def __init__(self, root: Path, run_dir: Path, *, omit_prediction_once: bool = False):
+    def __init__(self, root: Path, run_dir: Path, *, omit_prediction_once: bool = False,
+                 query: str = "", config: SystemConfig = PRESETS["phase1"]):
+        self.config = config
+        self.facts = grounding.extract_request_facts(query)
         self.root, self.run_dir = root.resolve(), run_dir.resolve()
         self.run_dir.mkdir(parents=True, exist_ok=True)
         self.manifest = read_json(root / "results" / "data_manifest.json")
@@ -75,6 +75,8 @@ class ToolRuntime:
             request = CONTRACTS[name].model_validate(arguments)
             if name != "inspect_dataset" and not self.inspected:
                 raise ToolError("INSPECT_FIRST", "Call inspect_dataset before other tools", True)
+            if name == "inspect_interval" and self.config.grounding:
+                grounding.check_interval(request, self.facts)
             output = getattr(self, name)(**request.model_dump())
             result = {"ok": True, **clean_json(output)}
         except ValidationError as exc:
@@ -91,6 +93,12 @@ class ToolRuntime:
             result = {"ok": False, "error": "TOOL_FAILURE", "message": str(exc), "recoverable": False}
         self.outputs.append({"tool": name, "arguments": arguments, "result": result})
         return result
+
+    def prompt_context(self) -> str:
+        """Configuration-dependent planner context; empty unless G1 grounding is enabled."""
+        if not self.config.grounding:
+            return ""
+        return grounding.registry_context(self.frame, FEATURES, ALIASES, TARGETS)
 
     def inspect_dataset(self):
         self.inspected = True

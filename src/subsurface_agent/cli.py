@@ -9,6 +9,7 @@ from pathlib import Path
 from .agent import replay_trace, run_agent
 from .baseline import run_baseline
 from .common import clean_json, project_root
+from .config import PRESETS, get_config
 from .data import download_data, prepare_data
 from .evaluation import evaluate_cases
 from .providers import GeminiProvider, ProviderError
@@ -24,12 +25,14 @@ def main(argv=None) -> int:
     agent.add_argument("--run-name")
     agent.add_argument("--model")
     agent.add_argument("--simulate-missing-artifact", action="store_true")
+    agent.add_argument("--config", default="full", choices=sorted(PRESETS))
     replay = sub.add_parser("replay")
     replay.add_argument("result", type=Path)
     evaluate = sub.add_parser("evaluate")
     evaluate.add_argument("--limit", type=int)
     evaluate.add_argument("--cases", nargs="+")
     evaluate.add_argument("--model")
+    evaluate.add_argument("--config", default="full", choices=sorted(PRESETS))
     args = parser.parse_args(argv)
     root = project_root()
     try:
@@ -41,11 +44,12 @@ def main(argv=None) -> int:
             output = run_baseline(root)
         elif args.command == "agent":
             output = run_agent(root, args.query, GeminiProvider(root, args.model), run_name=args.run_name,
-                               omit_prediction_once=args.simulate_missing_artifact)
+                               omit_prediction_once=args.simulate_missing_artifact, config=get_config(args.config))
         elif args.command == "replay":
             output = replay_trace(root, args.result)
         else:
-            output = evaluate_cases(root, GeminiProvider(root, args.model), limit=args.limit, selected=args.cases)
+            output = evaluate_cases(root, GeminiProvider(root, args.model), limit=args.limit, selected=args.cases,
+                                    config=get_config(args.config))
     except (OSError, ValueError, ProviderError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2

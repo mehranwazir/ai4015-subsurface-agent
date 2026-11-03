@@ -8,6 +8,7 @@ import uuid
 from pathlib import Path
 
 from .common import clean_json, read_json, utc_now, write_json
+from .config import PRESETS, SystemConfig, get_config
 from .contracts import function_declarations
 from .providers import ProviderError
 from .tools import ToolRuntime
@@ -30,14 +31,15 @@ No web browsing, arbitrary code, filesystem paths, or target labels are availabl
 
 def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
               max_turns: int = 10, max_calls: int = 14, max_errors: int = 3,
-              omit_prediction_once: bool = False) -> dict:
+              omit_prediction_once: bool = False, config: SystemConfig = PRESETS["full"]) -> dict:
     run_id = run_name or f"agent-{uuid.uuid4().hex[:10]}"
     if not run_id.replace("-", "").replace("_", "").isalnum():
         raise ValueError("Run name must contain only letters/numbers/dash/underscore")
     run_dir = root / "results" / "runs" / run_id
     if (run_dir / "result.json").exists():
         raise ValueError("Run already exists; use a new run name to preserve evidence")
-    runtime = ToolRuntime(root, run_dir, omit_prediction_once=omit_prediction_once)
+    runtime = ToolRuntime(root, run_dir, omit_prediction_once=omit_prediction_once, query=query, config=config)
+    system = SYSTEM + runtime.prompt_context()
     contents = [{"role": "user", "parts": [{"text": query}]}]
     trace = []; usage = {"prompt_tokens": 0, "output_tokens": 0, "thinking_tokens": 0}
     status, reason = "failed", "Execution budget exhausted"
@@ -47,7 +49,7 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
     version = getattr(provider, "model", "test-double")
     for turn in range(max_turns):
         try:
-            reply = provider.generate(SYSTEM, contents, function_declarations())
+            reply = provider.generate(system, contents, function_declarations())
         except ProviderError as exc:
             reason = str(exc)
             trace.append({"event": "provider_error", "message": reason})
@@ -92,6 +94,7 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
                     (usage["output_tokens"] + usage["thinking_tokens"]) * float(os.environ["OUTPUT_USD_PER_MILLION"])) / 1e6
     result = {"run_id": run_id, "created_utc": utc_now(), "query": query,
               "provider": type(provider).__name__, "model_version": version,
+              "config": config.name, "config_flags": config.flags(),
               "status": status, "reason": reason, "tool_calls": calls, "tool_errors": errors,
               "provider_requests": (provider.request_count - request_start) if request_start is not None else None,
               "provider_requests_scope": "this_run_including_retries", "usage": usage,
@@ -110,8 +113,10 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
 
 def replay_trace(root: Path, result_path: Path, *, replay_name: str | None = None) -> dict:
     saved = read_json(result_path)
+    # Traces recorded before configurations existed replay with the Phase 1 behaviour.
     runtime = ToolRuntime(root, root / "results" / "runs" / (replay_name or f"replay-{uuid.uuid4().hex[:8]}"),
-                          omit_prediction_once=saved.get("fault_injection") == "omit_prediction_once")
+                          omit_prediction_once=saved.get("fault_injection") == "omit_prediction_once",
+                          query=saved["query"], config=get_config(saved.get("config", "phase1")))
     if runtime.model_info["model_sha256"] != saved["model_sha256"] or runtime.manifest["source_commit"] != saved["source_commit"]:
         raise ValueError("Replay model/data version differs")
     checks = []

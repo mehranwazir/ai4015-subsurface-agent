@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .agent import run_agent
 from .common import read_json, utc_now, write_json
+from .config import PRESETS, SystemConfig
 
 
 def score_case(case: dict, result: dict) -> dict:
@@ -39,7 +40,8 @@ def score_case(case: dict, result: dict) -> dict:
             "tool_calls": result["tool_calls"], "reason": result["reason"]}
 
 
-def evaluate_cases(root: Path, provider, *, limit: int | None = None, selected: list[str] | None = None) -> dict:
+def evaluate_cases(root: Path, provider, *, limit: int | None = None, selected: list[str] | None = None,
+                   config: SystemConfig = PRESETS["full"]) -> dict:
     cases = read_json(root / "evaluation" / "cases.json")
     if selected:
         cases = [c for c in cases if c["id"] in selected]
@@ -53,7 +55,7 @@ def evaluate_cases(root: Path, provider, *, limit: int | None = None, selected: 
     records = []
     for index, case in enumerate(cases):
         result = run_agent(root, case["query"], provider, run_name=f"{batch}-{case['id']}",
-                           omit_prediction_once=case.get("fault") == "omit_prediction_once")
+                           omit_prediction_once=case.get("fault") == "omit_prediction_once", config=config)
         record = score_case(case, result)
         records.append(record)
         print(f"{case['id']}: {record['status']}, passed={record['passed']}, calls={record['tool_calls']}", flush=True)
@@ -61,7 +63,7 @@ def evaluate_cases(root: Path, provider, *, limit: int | None = None, selected: 
         if result["status"] == "failed" and any(e["event"] == "provider_error" for e in result["trace"]):
             break
     summary = {"created_utc": utc_now(), "batch_id": batch, "provider": type(provider).__name__,
-               "model": getattr(provider, "model", "test-double"), "requested_case_count": len(cases),
+               "model": getattr(provider, "model", "test-double"), "config": config.name, "requested_case_count": len(cases),
                "executed_case_count": len(records), "passed": sum(r["passed"] for r in records),
                "pass_rate": sum(r["passed"] for r in records) / len(records), "cases": records,
                "limitations": "Initial convenience smoke suite; single run per prompt; not statistically validated; no gap ablation results"}
