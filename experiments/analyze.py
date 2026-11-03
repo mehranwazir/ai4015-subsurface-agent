@@ -413,7 +413,6 @@ def architecture() -> None:
     arrow((71, 12), (71, 18))
     arrow((31, 31), (24, 12))
     arrow((91.5, 33), (91.5, 12))
-    ax.text(43, 31.5, "tool calls /\nresults", ha="center", fontsize=6.5, color=MUTED)
     fig.tight_layout()
     fig.savefig(FIGURES / "fig_architecture.png", dpi=220)
     plt.close(fig)
