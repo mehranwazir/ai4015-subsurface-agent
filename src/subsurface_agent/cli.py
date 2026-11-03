@@ -11,6 +11,7 @@ from .baseline import run_baseline
 from .common import clean_json, project_root
 from .config import PRESETS, get_config
 from .data import download_data, prepare_data
+from .faults import FAULTS
 from .evaluation import evaluate_cases
 from .providers import GeminiProvider, ProviderError
 
@@ -26,6 +27,7 @@ def main(argv=None) -> int:
     agent.add_argument("--model")
     agent.add_argument("--simulate-missing-artifact", action="store_true")
     agent.add_argument("--config", default="full", choices=sorted(PRESETS))
+    agent.add_argument("--fault", choices=FAULTS, help="inject one artifact fault into the first prediction file")
     replay = sub.add_parser("replay")
     replay.add_argument("result", type=Path)
     evaluate = sub.add_parser("evaluate")
@@ -44,7 +46,8 @@ def main(argv=None) -> int:
             output = run_baseline(root)
         elif args.command == "agent":
             output = run_agent(root, args.query, GeminiProvider(root, args.model), run_name=args.run_name,
-                               omit_prediction_once=args.simulate_missing_artifact, config=get_config(args.config))
+                               omit_prediction_once=args.simulate_missing_artifact, config=get_config(args.config),
+                               fault=args.fault)
         elif args.command == "replay":
             output = replay_trace(root, args.result)
         else:

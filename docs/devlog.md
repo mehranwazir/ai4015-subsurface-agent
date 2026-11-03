@@ -63,3 +63,49 @@ In both "after" runs, the registry and checklist context led the planner to clar
 | Gamma ray and RHOB, inspect only | — | — | answer, 3 calls, 3.6 s |
 
 **Evidence:** `logs/evidence/devlog-002/`.
+
+
+## Entry 3: 3 November 2026. G2 made switchable; seven controlled artifact faults; bounded repair; offline oracle
+
+**Observed.** Phase 1 tested only one fault, a missing prediction file. In that run the planner was told the file had been omitted, because the tool output contained `simulation_omitted_artifact`. Verification was also always on, so its benefit could not be measured, and nothing limited how many times the planner could regenerate a file.
+
+**Change.**
+
+1. `gaps/verification.py` holds the G2 verifier and a repair limit:
+   - the verifier checks schema, sample/well/depth identity, finite values, [0,1] bounds and frozen-model recomputation;
+   - after 2 regenerations of one slice, `REPAIR_LIMIT` forces the planner to stop.
+2. `faults.py` injects one fault into the first prediction file of a run. There are seven faults:
+   - `missing_file`
+   - `corrupt_values` (plausible values within [0,1], detectable only by recomputation)
+   - `drop_rows`
+   - `duplicate_rows`
+   - `wrong_well`
+   - `nan_values`
+   - `stale_artifact` (correct values attached to another interval)
+
+   There is also one benign control, `shuffle_rows`, which a correct verifier must accept.
+3. Faults are hidden from the planner. Only the `phase1` configuration keeps the old field, so recorded traces still replay.
+4. Every run now stores an offline `oracle` record:
+   - the injected fault;
+   - whether it was applied;
+   - the validity of every final artifact.
+
+   The oracle is used for scoring silent-error acceptance and is never returned to the planner.
+5. With `no_g2`, the verify step accepts artifacts unchecked, and answers and plots are not gated on verification.
+
+**Effect (live, `gemini-3.5-flash-lite`, request "Predict PHIF, SW and VSH for well 3 from 10600 to 11000 ft and verify the result").**
+
+| Fault | G2 off (`no_g2`) | G2 on (`full`) |
+|---|---|---|
+| `corrupt_values` | answer claiming "verified", final file invalid (`RECOMPUTE_MISMATCH`) | detected, regenerated, re-verified: answer with valid file, 7 calls, 9.3 s |
+| `stale_artifact` | answer, final file invalid (`ARTIFACT_IDENTITY`) | detected, regenerated, re-verified: answer with valid file, 7 calls, 10.1 s |
+| `shuffle_rows` (benign) | — | accepted, no false alarm, 5 calls, 7.2 s |
+
+With G2 off, both faulty runs ended in confident answers on invalid artifacts. These are exactly the silent errors Gap 2 targets. With G2 on, recovery cost 2 extra tool calls and about 2–3 s.
+
+**Offline tests:**
+- every fault is detected and repaired with G2 on, and `shuffle_rows` is accepted;
+- every harmful fault is accepted silently with G2 off, and the oracle records it;
+- repair is bounded.
+
+**Evidence:** `logs/evidence/devlog-003/`.

@@ -16,7 +16,8 @@ from .config import PRESETS, SystemConfig
 from .contracts import CONTRACTS, Interval
 from .data import ALIASES, FEATURES, TARGETS
 from .errors import ToolError
-from .gaps import grounding
+from .faults import apply_fault
+from .gaps import grounding, verification
 
 
 def canonical_curve(name: str) -> str:
@@ -45,8 +46,12 @@ def select_interval(frame: pd.DataFrame, request: Interval) -> pd.DataFrame:
 
 class ToolRuntime:
     def __init__(self, root: Path, run_dir: Path, *, omit_prediction_once: bool = False,
-                 query: str = "", config: SystemConfig = PRESETS["phase1"]):
+                 query: str = "", config: SystemConfig = PRESETS["phase1"], fault: str | None = None):
         self.config = config
+        # `omit_prediction_once` is the Phase 1 name for the missing-file fault.
+        self.fault = "missing_file" if omit_prediction_once else fault
+        self.pending_fault, self.fault_applied = self.fault, False
+        self.attempts: dict[str, int] = {}
         self.facts = grounding.extract_request_facts(query)
         self.root, self.run_dir = root.resolve(), run_dir.resolve()
         self.run_dir.mkdir(parents=True, exist_ok=True)
@@ -68,7 +73,6 @@ class ToolRuntime:
         self.verified: set[str] = set()
         self.outputs: list[dict] = []
         self.inspected = False
-        self.omit_prediction_once = omit_prediction_once
 
     def dispatch(self, name: str, arguments: dict) -> dict:
         if name not in CONTRACTS:
@@ -152,53 +156,48 @@ class ToolRuntime:
         prediction_id = "pred-" + identifier
         relative = f"{prediction_id}.csv"
         destination = self.run_dir / relative
-        omitted = self.omit_prediction_once
-        self.omit_prediction_once = False
-        if not omitted:
-            output.to_csv(destination, index=False)
+        attempts = self.attempts.get(slice_id, 0) + 1
+        if self.config.verification:
+            verification.check_repair_budget(attempts - 1)
+        self.attempts[slice_id] = attempts
+        output.to_csv(destination, index=False)
+        injected = None
+        if self.pending_fault:
+            apply_fault(self.pending_fault, destination, self.frame)
+            injected, self.pending_fault, self.fault_applied = self.pending_fault, None, True
         self.predictions[prediction_id] = {"path": destination, "inputs": eligible, "slice_id": slice_id}
         self.verified.discard(prediction_id)
-        return {"prediction_id": prediction_id, "slice_id": slice_id,
-                "artifact": relative, "well": int(subset.WELLNUM.iloc[0]),
-                "rows": len(output), "input_coverage": coverage,
-                "model_id": self.model_info["model_id"],
-                "mean_prediction": {t: float(output[f"{t}_pred"].mean()) for t in TARGETS},
-                "test_labels_used": False, "simulation_omitted_artifact": omitted}
+        result = {"prediction_id": prediction_id, "slice_id": slice_id,
+                  "artifact": relative, "well": int(subset.WELLNUM.iloc[0]),
+                  "rows": len(output), "input_coverage": coverage,
+                  "model_id": self.model_info["model_id"],
+                  "mean_prediction": {t: float(output[f"{t}_pred"].mean()) for t in TARGETS},
+                  "test_labels_used": False}
+        if self.config.name == "phase1":
+            # Recorded Phase 1 outputs exposed the simulated omission; later configurations hide faults.
+            result["simulation_omitted_artifact"] = injected == "missing_file"
+        return result
 
     def verify_predictions(self, prediction_id: str):
         if prediction_id not in self.predictions:
             raise ToolError("UNKNOWN_PREDICTION", "No prediction artifact with this ID", True)
         metadata = self.predictions[prediction_id]
-        if not metadata["path"].exists():
-            raise ToolError("MISSING_ARTIFACT", "Prediction CSV missing; repeat predict_properties for the same slice", True)
-        actual = pd.read_csv(metadata["path"])
-        inputs = metadata["inputs"]
-        keys = ["sample_id", "WELLNUM", "DEPTH"]
-        cols = [f"{t}_pred" for t in TARGETS]
-        if set(keys + cols) != set(actual.columns):
-            raise ToolError("ARTIFACT_SCHEMA", "Prediction column schema differs", True)
-        if actual.sample_id.duplicated().any() or set(actual.sample_id) != set(inputs.sample_id):
-            raise ToolError("ARTIFACT_IDENTITY", "Prediction sample identity differs", True)
-        aligned = inputs.merge(actual, on=keys, validate="one_to_one")
-        if len(aligned) != len(inputs):
-            raise ToolError("ARTIFACT_IDENTITY", "Prediction well/depth identity differs", True)
-        values = aligned[cols].to_numpy()
-        if not np.isfinite(values).all():
-            raise ToolError("NONFINITE_RESULT", "Prediction contains NaN/infinite values", True)
-        if ((values < 0) | (values > 1)).any():
-            raise ToolError("BOUNDS_VIOLATION", "Prediction outside declared fraction range", True)
-        reference = self.model.predict(aligned[FEATURES])
-        max_difference = float(np.max(np.abs(values - reference)))
-        if not np.allclose(values, reference, rtol=1e-10, atol=1e-12):
-            raise ToolError("RECOMPUTE_MISMATCH", "Stored prediction differs from frozen-model recomputation", True)
+        if not self.config.verification:
+            # G2 switched off: the step accepts the artifact without inspecting it.
+            self.verified.add(prediction_id)
+            return {"prediction_id": prediction_id, "verified": True, "rows": len(metadata["inputs"]),
+                    "scientific_accuracy_claim": False,
+                    "meaning": "Execution/artifact consistency only; no reference target labels used"}
+        details = verification.check_artifact(metadata["path"], metadata["inputs"], self.model)
         self.verified.add(prediction_id)
-        return {"prediction_id": prediction_id, "verified": True, "rows": len(actual),
-                "sha256": sha256(metadata["path"]), "max_abs_recompute_difference": max_difference,
+        return {"prediction_id": prediction_id, "verified": True, "rows": details["rows"],
+                "sha256": sha256(metadata["path"]),
+                "max_abs_recompute_difference": details["max_abs_recompute_difference"],
                 "scientific_accuracy_claim": False,
                 "meaning": "Execution/artifact consistency only; no reference target labels used"}
 
     def plot_logs(self, prediction_id: str):
-        if prediction_id not in self.verified:
+        if self.config.verification and prediction_id not in self.verified:
             raise ToolError("VERIFY_FIRST", "Verify this prediction before plotting", True)
         frame = pd.read_csv(self.predictions[prediction_id]["path"])
         artifact = f"{prediction_id}.png"
@@ -207,8 +206,20 @@ class ToolRuntime:
 
     def finish(self, status: str, reason: str):
         if status == "answer":
-            if self.predictions and set(self.predictions) - self.verified:
+            if self.config.verification and self.predictions and set(self.predictions) - self.verified:
                 raise ToolError("UNVERIFIED_RESULT", "Cannot answer with unverified predictions", True)
             if not self.inspected:
                 raise ToolError("NO_EVIDENCE", "Inspect data before answering", True)
         return {"status": status, "reason": reason, "verified_predictions": sorted(self.verified)}
+
+    def audit(self) -> dict:
+        """Offline record of injected faults and final artifact validity; never returned to the planner."""
+        validity = {}
+        for prediction_id, metadata in self.predictions.items():
+            try:
+                verification.check_artifact(metadata["path"], metadata["inputs"], self.model)
+                validity[prediction_id] = "valid"
+            except ToolError as exc:
+                validity[prediction_id] = exc.code
+        return {"fault": self.fault, "fault_applied": self.fault_applied, "artifacts": validity,
+                "final_artifacts_valid": all(v == "valid" for v in validity.values()) if validity else None}

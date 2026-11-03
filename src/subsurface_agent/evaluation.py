@@ -55,7 +55,8 @@ def evaluate_cases(root: Path, provider, *, limit: int | None = None, selected: 
     records = []
     for index, case in enumerate(cases):
         result = run_agent(root, case["query"], provider, run_name=f"{batch}-{case['id']}",
-                           omit_prediction_once=case.get("fault") == "omit_prediction_once", config=config)
+                           omit_prediction_once=case.get("fault") == "omit_prediction_once", config=config,
+                           fault=None if case.get("fault") in (None, "omit_prediction_once") else case["fault"])
         record = score_case(case, result)
         records.append(record)
         print(f"{case['id']}: {record['status']}, passed={record['passed']}, calls={record['tool_calls']}", flush=True)

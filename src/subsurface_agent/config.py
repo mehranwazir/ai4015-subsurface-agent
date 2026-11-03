@@ -10,6 +10,9 @@ class SystemConfig:
     # G1: registry context in the prompt plus a deterministic check that interval arguments
     # (well, depths, unit) are stated in the user's own request rather than assumed.
     grounding: bool = True
+    # G2: verify every prediction artifact (identity, values, recomputation) and allow bounded regeneration.
+    # Off: the verify step accepts artifacts unchecked and answers/plots are not gated on verification.
+    verification: bool = True
 
     def flags(self) -> dict:
         return asdict(self)
@@ -18,6 +21,7 @@ class SystemConfig:
 PRESETS = {
     "full": SystemConfig("full"),
     "no_g1": SystemConfig("no_g1", grounding=False),
+    "no_g2": SystemConfig("no_g2", verification=False),
     # Behaviour of the recorded Phase 1 runs; used to replay traces that predate configurations.
     "phase1": SystemConfig("phase1", grounding=False),
 }

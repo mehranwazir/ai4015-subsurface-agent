@@ -31,14 +31,16 @@ No web browsing, arbitrary code, filesystem paths, or target labels are availabl
 
 def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
               max_turns: int = 10, max_calls: int = 14, max_errors: int = 3,
-              omit_prediction_once: bool = False, config: SystemConfig = PRESETS["full"]) -> dict:
+              omit_prediction_once: bool = False, config: SystemConfig = PRESETS["full"],
+              fault: str | None = None) -> dict:
     run_id = run_name or f"agent-{uuid.uuid4().hex[:10]}"
     if not run_id.replace("-", "").replace("_", "").isalnum():
         raise ValueError("Run name must contain only letters/numbers/dash/underscore")
     run_dir = root / "logs" / "runs" / run_id
     if (run_dir / "result.json").exists():
         raise ValueError("Run already exists; use a new run name to preserve evidence")
-    runtime = ToolRuntime(root, run_dir, omit_prediction_once=omit_prediction_once, query=query, config=config)
+    runtime = ToolRuntime(root, run_dir, omit_prediction_once=omit_prediction_once, query=query, config=config,
+                          fault=fault)
     system = SYSTEM + runtime.prompt_context()
     contents = [{"role": "user", "parts": [{"text": query}]}]
     trace = []; usage = {"prompt_tokens": 0, "output_tokens": 0, "thinking_tokens": 0}
@@ -102,7 +104,8 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
               "billing_cost_usd": None, "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
               "source_commit": runtime.manifest["source_commit"],
               "model_sha256": runtime.model_info["model_sha256"],
-              "fault_injection": "omit_prediction_once" if omit_prediction_once else None,
+              "fault_injection": "omit_prediction_once" if omit_prediction_once else fault,
+              "oracle": runtime.audit(),
               "verified_predictions": sorted(runtime.verified), "trace": trace}
     write_json(run_dir / "result.json", result)
     with (run_dir / "events.jsonl").open("w", encoding="utf-8") as handle:
@@ -116,6 +119,8 @@ def replay_trace(root: Path, result_path: Path, *, replay_name: str | None = Non
     # Traces recorded before configurations existed replay with the Phase 1 behaviour.
     runtime = ToolRuntime(root, root / "logs" / "runs" / (replay_name or f"replay-{uuid.uuid4().hex[:8]}"),
                           omit_prediction_once=saved.get("fault_injection") == "omit_prediction_once",
+                          fault=None if saved.get("fault_injection") in (None, "omit_prediction_once")
+                          else saved["fault_injection"],
                           query=saved["query"], config=get_config(saved.get("config", "phase1")))
     if runtime.model_info["model_sha256"] != saved["model_sha256"] or runtime.manifest["source_commit"] != saved["source_commit"]:
         raise ValueError("Replay model/data version differs")
