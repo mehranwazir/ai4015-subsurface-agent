@@ -1,0 +1,1 @@
+{"event": "tool", "turn": 1, "name": "finish", "arguments": {"status": "clarify", "reason": "Production forecasting and decline curve analysis are unsupported."}, "result": {"ok": true, "status": "clarify", "reason": "Production forecasting and decline curve analysis are unsupported.", "verified_predictions": []}}

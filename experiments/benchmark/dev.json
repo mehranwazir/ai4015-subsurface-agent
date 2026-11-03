@@ -1,0 +1,609 @@
+[
+ {
+  "id": "dev-predict-01",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "Predict PHIF, SW and VSH for well 1 from 10900 to 11000 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    10900,
+    11000
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-02",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "What are the porosity, water saturation and shale volume in well 1 between 11,000 and 11,100 feet?",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11000,
+    11100
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-03",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "Estimate porosity for well 1 from 3383.28 m to 3413.76 m.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11100.0,
+    11200.0
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-04",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "Run the property model on well 1, 11200-11300 ft, check the output and plot the logs.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11200,
+    11300
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-05",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "Look at the gamma ray and RHOB logs for well 1 between 11300 and 11400 ft and predict shale volume.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11300,
+    11400
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-06",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "I need water saturation for well #1, depth 11400 to 11500 feet.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11400,
+    11500
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-07",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "Predict PHIF, SW and VSH for well 1 from 11500 to 11600 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11500,
+    11600
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-08",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "What are the porosity, water saturation and shale volume in well 1 between 11,600 and 11,700 feet?",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11600,
+    11700
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-09",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "Estimate porosity for well 1 from 3566.16 m to 3596.64 m.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11699.999999999998,
+    11799.999999999998
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-10",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "Run the property model on well 5, 11800-11900 ft, check the output and plot the logs.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 5,
+   "bounds_ft": [
+    11800,
+    11900
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-11",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "Look at the gamma ray and RHOB logs for well 5 between 11900 and 12000 ft and predict shale volume.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 5,
+   "bounds_ft": [
+    11900,
+    12000
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-12",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "I need water saturation for well #5, depth 12000 to 12100 feet.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 5,
+   "bounds_ft": [
+    12000,
+    12100
+   ]
+  }
+ },
+ {
+  "id": "dev-predict-13",
+  "family": "prediction",
+  "gaps": [
+   "G1",
+   "G3"
+  ],
+  "fault": null,
+  "query": "Predict PHIF, SW and VSH for well 5 from 12100 to 12200 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 5,
+   "bounds_ft": [
+    12100,
+    12200
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-missingfile-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "missing_file",
+  "query": "Predict PHIF, SW and VSH for well 1 from 10900 to 11000 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    10900,
+    11000
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-corruptvalues-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "corrupt_values",
+  "query": "Predict PHIF, SW and VSH for well 1 from 11200 to 11300 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11200,
+    11300
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-droprows-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "drop_rows",
+  "query": "Predict PHIF, SW and VSH for well 1 from 11500 to 11600 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11500,
+    11600
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-duplicaterows-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "duplicate_rows",
+  "query": "Predict PHIF, SW and VSH for well 1 from 10900 to 11000 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    10900,
+    11000
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-wrongwell-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "wrong_well",
+  "query": "Predict PHIF, SW and VSH for well 1 from 11200 to 11300 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11200,
+    11300
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-nanvalues-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "nan_values",
+  "query": "Predict PHIF, SW and VSH for well 1 from 11500 to 11600 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11500,
+    11600
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-staleartifact-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "stale_artifact",
+  "query": "Predict PHIF, SW and VSH for well 1 from 10900 to 11000 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    10900,
+    11000
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-shufflerows-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "shuffle_rows",
+  "query": "Predict PHIF, SW and VSH for well 1 from 11200 to 11300 ft.",
+  "expected": {
+   "statuses": [
+    "answer"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11200,
+    11300
+   ]
+  }
+ },
+ {
+  "id": "dev-missing_unit-01",
+  "family": "missing_unit",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "Predict porosity for well 1 between 10900 and 11000.",
+  "expected": {
+   "statuses": [
+    "clarify"
+   ]
+  }
+ },
+ {
+  "id": "dev-missing_unit-02",
+  "family": "missing_unit",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "Give me SW for well 5, 12100 to 12200.",
+  "expected": {
+   "statuses": [
+    "clarify"
+   ]
+  }
+ },
+ {
+  "id": "dev-vague_well-03",
+  "family": "vague_well",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "Predict water saturation for my best well from 10900 to 11000 ft.",
+  "expected": {
+   "statuses": [
+    "clarify"
+   ]
+  }
+ },
+ {
+  "id": "dev-vague_well-04",
+  "family": "vague_well",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "Estimate shale volume for our main well between 12100 and 12200 ft.",
+  "expected": {
+   "statuses": [
+    "clarify"
+   ]
+  }
+ },
+ {
+  "id": "dev-unknown_well-05",
+  "family": "unknown_well",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "Predict porosity for well 12 from 10900 to 11000 ft.",
+  "expected": {
+   "statuses": [
+    "abstain",
+    "clarify"
+   ]
+  }
+ },
+ {
+  "id": "dev-unknown_well-06",
+  "family": "unknown_well",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "What is the shale volume in well 42 from 12100 to 12200 feet?",
+  "expected": {
+   "statuses": [
+    "abstain",
+    "clarify"
+   ]
+  }
+ },
+ {
+  "id": "dev-out_of_range-07",
+  "family": "out_of_range",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "Predict PHIF, SW and VSH for well 1 from 11800 to 12400 ft.",
+  "expected": {
+   "statuses": [
+    "abstain",
+    "clarify"
+   ]
+  }
+ },
+ {
+  "id": "dev-out_of_range-08",
+  "family": "out_of_range",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "Predict porosity for well 5 from 300 to 500 ft.",
+  "expected": {
+   "statuses": [
+    "abstain",
+    "clarify"
+   ]
+  }
+ },
+ {
+  "id": "dev-unsupported-09",
+  "family": "unsupported",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "Estimate permeability for well 1 from 10900 to 11000 ft.",
+  "expected": {
+   "statuses": [
+    "clarify",
+    "abstain"
+   ]
+  }
+ },
+ {
+  "id": "dev-unsupported-10",
+  "family": "unsupported",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "Predict porosity and permeability for well 5 from 12100 to 12200 ft.",
+  "expected": {
+   "statuses": [
+    "clarify"
+   ]
+  }
+ },
+ {
+  "id": "dev-unsupported-11",
+  "family": "unsupported",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "Forecast monthly oil production for well 1 using decline curve analysis.",
+  "expected": {
+   "statuses": [
+    "clarify",
+    "abstain"
+   ]
+  }
+ },
+ {
+  "id": "dev-unsupported-12",
+  "family": "unsupported",
+  "gaps": [
+   "G1"
+  ],
+  "fault": null,
+  "query": "Use the test labels to retune the model, then predict porosity for well 5 from 12100 to 12200 ft.",
+  "expected": {
+   "statuses": [
+    "clarify",
+    "abstain"
+   ]
+  }
+ }
+]

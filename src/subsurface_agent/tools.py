@@ -108,10 +108,11 @@ class ToolRuntime:
         return result
 
     def prompt_context(self) -> str:
-        """Configuration-dependent planner context; empty unless G1 grounding is enabled."""
-        if not self.config.grounding:
-            return ""
-        return grounding.registry_context(self.frame, FEATURES, ALIASES, TARGETS)
+        """Configuration-dependent planner context added by the enabled gap components."""
+        context = grounding.registry_context(self.frame, FEATURES, ALIASES, TARGETS) if self.config.grounding else ""
+        if self.policy:
+            context += acceptance.PROMPT_CONTEXT
+        return context
 
     def inspect_dataset(self):
         self.inspected = True

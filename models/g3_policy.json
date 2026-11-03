@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-11-03T08:52:16.617332+00:00",
+  "created_utc": "2026-11-03T10:32:06.468719+00:00",
   "model_sha256": "e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e",
   "calibration_wells": [
     1,
@@ -33,5 +33,343 @@
     "RDEP": 447.7204249999497,
     "RMED": 62290.8,
     "DTC": 117.60947599999997
-  }
+  },
+  "tradeoff": [
+    {
+      "max_model_uncertainty": 0.016279178663962064,
+      "coverage": 0.017857142857142856,
+      "risk": 0.0,
+      "good_windows_refused": 0.9787234042553191
+    },
+    {
+      "max_model_uncertainty": 0.016469152640378487,
+      "coverage": 0.03571428571428571,
+      "risk": 0.0,
+      "good_windows_refused": 0.9574468085106383
+    },
+    {
+      "max_model_uncertainty": 0.016515833479396027,
+      "coverage": 0.05357142857142857,
+      "risk": 0.0,
+      "good_windows_refused": 0.9361702127659575
+    },
+    {
+      "max_model_uncertainty": 0.016735448379612897,
+      "coverage": 0.07142857142857142,
+      "risk": 0.0,
+      "good_windows_refused": 0.9148936170212766
+    },
+    {
+      "max_model_uncertainty": 0.01675452717052582,
+      "coverage": 0.08928571428571429,
+      "risk": 0.0,
+      "good_windows_refused": 0.8936170212765957
+    },
+    {
+      "max_model_uncertainty": 0.016919455929387782,
+      "coverage": 0.10714285714285714,
+      "risk": 0.0,
+      "good_windows_refused": 0.8723404255319149
+    },
+    {
+      "max_model_uncertainty": 0.017057988082374628,
+      "coverage": 0.125,
+      "risk": 0.0,
+      "good_windows_refused": 0.851063829787234
+    },
+    {
+      "max_model_uncertainty": 0.017072535713708547,
+      "coverage": 0.14285714285714285,
+      "risk": 0.0,
+      "good_windows_refused": 0.8297872340425532
+    },
+    {
+      "max_model_uncertainty": 0.017306609400219847,
+      "coverage": 0.16071428571428573,
+      "risk": 0.0,
+      "good_windows_refused": 0.8085106382978723
+    },
+    {
+      "max_model_uncertainty": 0.017372068226080797,
+      "coverage": 0.17857142857142858,
+      "risk": 0.0,
+      "good_windows_refused": 0.7872340425531915
+    },
+    {
+      "max_model_uncertainty": 0.018165539830852617,
+      "coverage": 0.19642857142857142,
+      "risk": 0.0,
+      "good_windows_refused": 0.7659574468085106
+    },
+    {
+      "max_model_uncertainty": 0.018863779799932992,
+      "coverage": 0.21428571428571427,
+      "risk": 0.0,
+      "good_windows_refused": 0.7446808510638298
+    },
+    {
+      "max_model_uncertainty": 0.019044288069967077,
+      "coverage": 0.23214285714285715,
+      "risk": 0.0,
+      "good_windows_refused": 0.723404255319149
+    },
+    {
+      "max_model_uncertainty": 0.019712963777400578,
+      "coverage": 0.25,
+      "risk": 0.0,
+      "good_windows_refused": 0.7021276595744681
+    },
+    {
+      "max_model_uncertainty": 0.019773378205943597,
+      "coverage": 0.26785714285714285,
+      "risk": 0.0,
+      "good_windows_refused": 0.6808510638297872
+    },
+    {
+      "max_model_uncertainty": 0.020132367959476073,
+      "coverage": 0.2857142857142857,
+      "risk": 0.0,
+      "good_windows_refused": 0.6595744680851063
+    },
+    {
+      "max_model_uncertainty": 0.020479949040626392,
+      "coverage": 0.30357142857142855,
+      "risk": 0.0,
+      "good_windows_refused": 0.6382978723404256
+    },
+    {
+      "max_model_uncertainty": 0.020651740561762465,
+      "coverage": 0.32142857142857145,
+      "risk": 0.0,
+      "good_windows_refused": 0.6170212765957447
+    },
+    {
+      "max_model_uncertainty": 0.021049468697513306,
+      "coverage": 0.3392857142857143,
+      "risk": 0.0,
+      "good_windows_refused": 0.5957446808510638
+    },
+    {
+      "max_model_uncertainty": 0.02111536038897912,
+      "coverage": 0.35714285714285715,
+      "risk": 0.0,
+      "good_windows_refused": 0.574468085106383
+    },
+    {
+      "max_model_uncertainty": 0.021588134462985773,
+      "coverage": 0.375,
+      "risk": 0.0,
+      "good_windows_refused": 0.5531914893617021
+    },
+    {
+      "max_model_uncertainty": 0.022013182090399232,
+      "coverage": 0.39285714285714285,
+      "risk": 0.0,
+      "good_windows_refused": 0.5319148936170213
+    },
+    {
+      "max_model_uncertainty": 0.022118278113310522,
+      "coverage": 0.4107142857142857,
+      "risk": 0.0,
+      "good_windows_refused": 0.5106382978723404
+    },
+    {
+      "max_model_uncertainty": 0.02215859725365564,
+      "coverage": 0.42857142857142855,
+      "risk": 0.0,
+      "good_windows_refused": 0.48936170212765956
+    },
+    {
+      "max_model_uncertainty": 0.02233303004165633,
+      "coverage": 0.44642857142857145,
+      "risk": 0.0,
+      "good_windows_refused": 0.46808510638297873
+    },
+    {
+      "max_model_uncertainty": 0.02265208461694476,
+      "coverage": 0.4642857142857143,
+      "risk": 0.0,
+      "good_windows_refused": 0.44680851063829785
+    },
+    {
+      "max_model_uncertainty": 0.02280510788350605,
+      "coverage": 0.48214285714285715,
+      "risk": 0.0,
+      "good_windows_refused": 0.425531914893617
+    },
+    {
+      "max_model_uncertainty": 0.023067558668243726,
+      "coverage": 0.5,
+      "risk": 0.0,
+      "good_windows_refused": 0.40425531914893614
+    },
+    {
+      "max_model_uncertainty": 0.023311448256143206,
+      "coverage": 0.5178571428571429,
+      "risk": 0.0,
+      "good_windows_refused": 0.3829787234042553
+    },
+    {
+      "max_model_uncertainty": 0.023453882426725012,
+      "coverage": 0.5357142857142857,
+      "risk": 0.0,
+      "good_windows_refused": 0.3617021276595745
+    },
+    {
+      "max_model_uncertainty": 0.023774283438020995,
+      "coverage": 0.5535714285714286,
+      "risk": 0.0,
+      "good_windows_refused": 0.3404255319148936
+    },
+    {
+      "max_model_uncertainty": 0.02440396737472085,
+      "coverage": 0.5714285714285714,
+      "risk": 0.0,
+      "good_windows_refused": 0.3191489361702128
+    },
+    {
+      "max_model_uncertainty": 0.02448823459036967,
+      "coverage": 0.5892857142857143,
+      "risk": 0.0,
+      "good_windows_refused": 0.2978723404255319
+    },
+    {
+      "max_model_uncertainty": 0.024545100497777087,
+      "coverage": 0.6071428571428571,
+      "risk": 0.0,
+      "good_windows_refused": 0.2765957446808511
+    },
+    {
+      "max_model_uncertainty": 0.02454616296933693,
+      "coverage": 0.625,
+      "risk": 0.0,
+      "good_windows_refused": 0.2553191489361702
+    },
+    {
+      "max_model_uncertainty": 0.025409703887875078,
+      "coverage": 0.6428571428571429,
+      "risk": 0.027777777777777776,
+      "good_windows_refused": 0.2553191489361702
+    },
+    {
+      "max_model_uncertainty": 0.025871898382270834,
+      "coverage": 0.6607142857142857,
+      "risk": 0.05405405405405406,
+      "good_windows_refused": 0.2553191489361702
+    },
+    {
+      "max_model_uncertainty": 0.026205774396887968,
+      "coverage": 0.6785714285714286,
+      "risk": 0.07894736842105263,
+      "good_windows_refused": 0.2553191489361702
+    },
+    {
+      "max_model_uncertainty": 0.026606063413359016,
+      "coverage": 0.6964285714285714,
+      "risk": 0.07692307692307693,
+      "good_windows_refused": 0.23404255319148937
+    },
+    {
+      "max_model_uncertainty": 0.027326722312690826,
+      "coverage": 0.7142857142857143,
+      "risk": 0.075,
+      "good_windows_refused": 0.2127659574468085
+    },
+    {
+      "max_model_uncertainty": 0.027625115290608612,
+      "coverage": 0.7321428571428571,
+      "risk": 0.0975609756097561,
+      "good_windows_refused": 0.2127659574468085
+    },
+    {
+      "max_model_uncertainty": 0.028241408126834445,
+      "coverage": 0.75,
+      "risk": 0.09523809523809523,
+      "good_windows_refused": 0.19148936170212766
+    },
+    {
+      "max_model_uncertainty": 0.028481987153172652,
+      "coverage": 0.7678571428571429,
+      "risk": 0.09302325581395349,
+      "good_windows_refused": 0.1702127659574468
+    },
+    {
+      "max_model_uncertainty": 0.028537456487732957,
+      "coverage": 0.7857142857142857,
+      "risk": 0.09090909090909091,
+      "good_windows_refused": 0.14893617021276595
+    },
+    {
+      "max_model_uncertainty": 0.028781273422230344,
+      "coverage": 0.8035714285714286,
+      "risk": 0.08888888888888889,
+      "good_windows_refused": 0.1276595744680851
+    },
+    {
+      "max_model_uncertainty": 0.029452930026284078,
+      "coverage": 0.8214285714285714,
+      "risk": 0.10869565217391304,
+      "good_windows_refused": 0.1276595744680851
+    },
+    {
+      "max_model_uncertainty": 0.030115087742567024,
+      "coverage": 0.8392857142857143,
+      "risk": 0.10638297872340426,
+      "good_windows_refused": 0.10638297872340426
+    },
+    {
+      "max_model_uncertainty": 0.03033595246729142,
+      "coverage": 0.8571428571428571,
+      "risk": 0.125,
+      "good_windows_refused": 0.10638297872340426
+    },
+    {
+      "max_model_uncertainty": 0.030367172532841255,
+      "coverage": 0.875,
+      "risk": 0.14285714285714285,
+      "good_windows_refused": 0.10638297872340426
+    },
+    {
+      "max_model_uncertainty": 0.03075799539156351,
+      "coverage": 0.8928571428571429,
+      "risk": 0.14,
+      "good_windows_refused": 0.0851063829787234
+    },
+    {
+      "max_model_uncertainty": 0.031595888654300644,
+      "coverage": 0.9107142857142857,
+      "risk": 0.13725490196078433,
+      "good_windows_refused": 0.06382978723404255
+    },
+    {
+      "max_model_uncertainty": 0.03168448272343718,
+      "coverage": 0.9285714285714286,
+      "risk": 0.1346153846153846,
+      "good_windows_refused": 0.0425531914893617
+    },
+    {
+      "max_model_uncertainty": 0.03185478310351943,
+      "coverage": 0.9464285714285714,
+      "risk": 0.1320754716981132,
+      "good_windows_refused": 0.02127659574468085
+    },
+    {
+      "max_model_uncertainty": 0.032098112943422456,
+      "coverage": 0.9642857142857143,
+      "risk": 0.12962962962962962,
+      "good_windows_refused": 0.0
+    },
+    {
+      "max_model_uncertainty": 0.03276745342246387,
+      "coverage": 0.9821428571428571,
+      "risk": 0.14545454545454545,
+      "good_windows_refused": 0.0
+    },
+    {
+      "max_model_uncertainty": 0.03319680286008275,
+      "coverage": 1.0,
+      "risk": 0.16071428571428573,
+      "good_windows_refused": 0.0
+    }
+  ]
 }

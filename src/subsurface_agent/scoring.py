@@ -126,7 +126,9 @@ class Scorer:
             # G2: an answer resting on an invalid artifact is a silent error; a valid answer after a fault, a repair.
             "fault_detected": (detected or reviewed) if harmful else None,
             "silent_error": answered and valid is False,
-            "repaired": (answered and valid is True) if harmful else None,
+            # A repair is a valid final artifact after a harmful fault, whatever the final disposition (a G3
+            # abstention after a successful repair is not a G2 failure).
+            "repaired": (valid is True) if harmful else None,
             # G3: interval_error is what answering would have cost; answer_error is what was actually reported.
             "interval_error": interval_error, "answer_error": answer_error,
             "bad_answer": None if answer_error is None else answer_error > MAX_WINDOW_RMSE,

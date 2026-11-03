@@ -28,6 +28,10 @@ POLICY_PATH = Path("models") / "g3_policy.json"
 # most 5% of accepted validation windows may break that requirement.
 MAX_WINDOW_RMSE, MAX_RISK = 0.05, 0.05
 WINDOW_FT, STEP_FT, MIN_ROWS = 100.0, 25.0, 40
+# Development runs showed the planner ignoring `evidence.decision` and attempting an answer first (devlog entry 7).
+PROMPT_CONTEXT = ("\nEVIDENCE RULE: predict_properties returns `evidence` with a calibrated decision. If "
+                  "evidence.decision is \"abstain\", do not verify further, plot or answer; finish with abstain and "
+                  "report the model uncertainty and its limit.")
 
 
 def tree_uncertainty(model, features: pd.DataFrame) -> np.ndarray:
@@ -97,13 +101,21 @@ def calibrate(root: Path) -> dict:
     windows = validation_windows(model, validation)
     chosen = choose_threshold(windows)
     base_risk = float((windows.rmse > MAX_WINDOW_RMSE).mean())
+    good = windows.rmse <= MAX_WINDOW_RMSE
+    # Risk-coverage trade-off over every candidate limit, for reporting; the policy uses the pre-declared target.
+    tradeoff = []
+    for limit in sorted(windows.model_uncertainty.unique()):
+        accepted = windows.model_uncertainty <= limit
+        tradeoff.append({"max_model_uncertainty": float(limit), "coverage": float(accepted.mean()),
+                         "risk": float((windows.rmse[accepted] > MAX_WINDOW_RMSE).mean()),
+                         "good_windows_refused": float((~accepted & good).sum() / good.sum())})
     policy = {"created_utc": utc_now(), "model_sha256": sha256(root / "models" / "random_forest.joblib"),
               "calibration_wells": SPLITS["validation"], "window_ft": WINDOW_FT, "step_ft": STEP_FT,
               "min_rows": MIN_ROWS, "windows": len(windows), "max_window_rmse": MAX_WINDOW_RMSE,
               "max_risk": MAX_RISK, **chosen, "risk_if_always_answer": base_risk,
               "spearman_uncertainty_rmse": float(windows.model_uncertainty.corr(windows.rmse, method="spearman")),
               "input_low": train[FEATURES].quantile(.005).to_dict(),
-              "input_high": train[FEATURES].quantile(.995).to_dict()}
+              "input_high": train[FEATURES].quantile(.995).to_dict(), "tradeoff": tradeoff}
     write_json(root / POLICY_PATH, policy)
     return policy
 

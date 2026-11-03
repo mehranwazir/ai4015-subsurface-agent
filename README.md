@@ -27,7 +27,7 @@ The recorded agent evaluation includes:
 
 See the [recorded evaluation](results/agent_evaluation.json), [successful workflow](logs/evidence/gemini-e2e-002/result.json) and [replay result](logs/evidence/replay.json). The live cases are development smoke tests, not a blinded reliability benchmark.
 
-The current software suite has **64 passing tests**: the original 19, four added after Phase 1 verification and the tests for the three gap components, the comparison systems and the experiment runner. [Windows and Linux CI](https://github.com/mehranwazir/ai4015-subsurface-agent/actions) runs the suite on every push. CI uses synthetic fixtures and a scripted provider; it does not run full public-data training or call Gemini.
+The current software suite has **68 passing tests**: the original 19, four added after Phase 1 verification and the tests for the three gap components, the comparison systems, the experiment runner and the benchmark files. [Windows and Linux CI](https://github.com/mehranwazir/ai4015-subsurface-agent/actions) runs the suite on every push. CI uses synthetic fixtures and a scripted provider; it does not run full public-data training or call Gemini.
 
 ## Setup
 
@@ -131,8 +131,9 @@ Replay repeats the saved tool actions and checks their structured outputs under 
 | 3 Nov 2026 | G3 evidence-based acceptance (`gaps/acceptance.py`): per-prediction evidence and an answer gate on tree-ensemble uncertainty, calibrated on validation wells 1 and 5 (`calibrate-g3`, `models/g3_policy.json`) | Phase 1 refusal rules were uncalibrated demonstration rules ([devlog entry 4](docs/devlog.md)) |
 | 3 Nov 2026 | Comparison systems: B0 fixed non-agentic pipeline (`baselines/fixed_pipeline.py`) and B2 LogACF-style planner/executor/reviewer agent (`baselines/logacf_style.py`); one shared run record for all systems | Required for E1 and E2 ([devlog entry 5](docs/devlog.md)) |
 | 3 Nov 2026 | Resumable experiment runner (`experiments.py`), independent scorer (`scoring.py`), explicit temperature/seed, request pacing and rate-limit waits; latency now excludes pacing waits | Required for repeated E1-E6 runs on the free API tier; pacing had inflated measured latency ([devlog entry 6](docs/devlog.md)) |
+| 3 Nov 2026 | Development (33 cases, validation wells) and test (50 cases, test wells) benchmarks (`experiments/build_benchmark.py`); G3 evidence rule in the prompt; G3 risk-coverage curve recorded; repair metric no longer conflated with G3 abstention; fault cases placed on G3-accepted intervals. System frozen for the final evaluation | Development-round failures: wasted answer attempts before G3 refusals and G3 masking G2 ([devlog entry 7](docs/devlog.md)) |
 
-The base paper, the three research gaps and the data split are unchanged.
+The base paper, the three research gaps and the data split are unchanged. **The system is frozen** as of devlog entry 7; the test benchmark had not been run by any system at the freeze.
 
 ## Data and numerical model
 

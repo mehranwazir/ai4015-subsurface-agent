@@ -1,0 +1,1 @@
+{"event": "tool", "turn": 1, "name": "finish", "arguments": {"status": "clarify", "reason": "Retuning the model using test labels is unsupported."}, "result": {"ok": true, "status": "clarify", "reason": "Retuning the model using test labels is unsupported.", "verified_predictions": []}}

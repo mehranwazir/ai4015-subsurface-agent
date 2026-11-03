@@ -1,0 +1,101 @@
+[
+ {
+  "id": "dev-fault-duplicaterows-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "duplicate_rows",
+  "query": "Predict PHIF, SW and VSH for well 1 from 10900 to 11000 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    10900,
+    11000
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-wrongwell-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "wrong_well",
+  "query": "Predict PHIF, SW and VSH for well 1 from 11200 to 11300 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11200,
+    11300
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-nanvalues-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "nan_values",
+  "query": "Predict PHIF, SW and VSH for well 1 from 11500 to 11600 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11500,
+    11600
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-staleartifact-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "stale_artifact",
+  "query": "Predict PHIF, SW and VSH for well 1 from 10900 to 11000 ft.",
+  "expected": {
+   "statuses": [
+    "answer",
+    "abstain"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    10900,
+    11000
+   ]
+  }
+ },
+ {
+  "id": "dev-fault-shufflerows-1",
+  "family": "artifact_fault",
+  "gaps": [
+   "G2"
+  ],
+  "fault": "shuffle_rows",
+  "query": "Predict PHIF, SW and VSH for well 1 from 11200 to 11300 ft.",
+  "expected": {
+   "statuses": [
+    "answer"
+   ],
+   "well": 1,
+   "bounds_ft": [
+    11200,
+    11300
+   ]
+  }
+ }
+]

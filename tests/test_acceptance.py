@@ -52,3 +52,11 @@ def test_policy_must_match_the_model(tiny_root):
     write_json(policy_path, {**read_json(policy_path), "model_sha256": "other"})
     with pytest.raises(ValueError, match="different model"):
         load_policy(tiny_root, read_json(tiny_root / "models" / "model_manifest.json")["model_sha256"])
+
+
+def test_evidence_rule_is_in_the_prompt_only_when_g3_is_on(tiny_root):
+    rule = "EVIDENCE RULE"
+    on = ToolRuntime(tiny_root, tiny_root / "ctx-on", query=QUERY, config=get_config("full"))
+    off = ToolRuntime(tiny_root, tiny_root / "ctx-off", query=QUERY, config=get_config("no_g3"))
+    assert rule in on.prompt_context() and rule not in off.prompt_context()
+    assert "GROUNDING CHECKLIST" in off.prompt_context()

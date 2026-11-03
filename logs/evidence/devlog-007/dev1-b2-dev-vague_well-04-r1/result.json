@@ -1,0 +1,73 @@
+{
+  "run_id": "dev1-b2-dev-vague_well-04-r1",
+  "created_utc": "2026-11-03T10:29:48.949424+00:00",
+  "query": "Estimate shale volume for our main well between 12100 and 12200 ft.",
+  "provider": "GeminiProvider",
+  "model_version": "gemini-3.5-flash-lite",
+  "generation": {
+    "temperature": 1.0,
+    "seed": 1,
+    "max_output_tokens": 1024,
+    "function_calling_mode": "ANY"
+  },
+  "config": "b2",
+  "config_flags": {
+    "name": "b2",
+    "grounding": false,
+    "verification": false,
+    "acceptance": false
+  },
+  "status": "clarify",
+  "reason": "The user mentions 'our main well', but which well index (0 through 8) is considered the 'main well' is ambiguous. Please specify the well number (0 to 8).",
+  "tool_calls": 1,
+  "tool_errors": 0,
+  "provider_requests": 1,
+  "provider_requests_scope": "this_run_including_retries",
+  "usage": {
+    "prompt_tokens": 653,
+    "output_tokens": 64,
+    "thinking_tokens": 0
+  },
+  "latency_seconds": 3.604459499998484,
+  "throttle_seconds": 2.247272600001452,
+  "active_latency_seconds": 1.357186899997032,
+  "estimated_cost_usd": null,
+  "billing_cost_usd": null,
+  "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
+  "source_commit": "0ffc94f702feab81f6eb1f4d453e19754a557305",
+  "model_sha256": "e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e",
+  "fault_injection": null,
+  "oracle": {
+    "fault": null,
+    "fault_applied": false,
+    "artifacts": {},
+    "final_artifacts_valid": null
+  },
+  "verified_predictions": [],
+  "trace": [
+    {
+      "event": "role",
+      "role": "planner",
+      "output": {
+        "decision": "clarify",
+        "reason": "The user mentions 'our main well', but which well index (0 through 8) is considered the 'main well' is ambiguous. Please specify the well number (0 to 8).",
+        "steps": []
+      }
+    },
+    {
+      "event": "tool",
+      "turn": 2,
+      "name": "finish",
+      "arguments": {
+        "status": "clarify",
+        "reason": "The user mentions 'our main well', but which well index (0 through 8) is considered the 'main well' is ambiguous. Please specify the well number (0 to 8)."
+      },
+      "result": {
+        "ok": true,
+        "status": "clarify",
+        "reason": "The user mentions 'our main well', but which well index (0 through 8) is considered the 'main well' is ambiguous. Please specify the well number (0 to 8).",
+        "verified_predictions": []
+      }
+    }
+  ]
+}

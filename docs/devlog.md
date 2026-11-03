@@ -249,3 +249,64 @@ Phase 1 had only a single-pass smoke evaluator that trusted the requested tool l
 | Full | 4/4 | 0/1 | 0/1 (repaired) | no (abstained) | 7.03 s | 5.0 |
 
 **Evidence:** `logs/evidence/devlog-006/` (all 24 smoke runs) and `results/experiments/smoke1/`, `results/experiments/smoke2/`.
+
+
+## Entry 7: 3 November 2026. Benchmark, development round, two fixes, and the system freeze
+
+**Benchmark.** `experiments/build_benchmark.py` generates both benchmarks deterministically. The selection rules are listed in its header.
+
+- **Development set** (`experiments/benchmark/dev.json`): 33 cases on validation wells 1 and 5.
+- **Test set** (`experiments/benchmark/test.json`): 50 cases on test wells 3 and 7.
+- **Prediction cases** lie on a fixed 100-ft grid over each well's labelled depth range. The test set phrases every interval twice. Phrasings include ft, "feet", metres, curve aliases and plot requests.
+- **Fault cases** cover all seven harmful faults plus the benign `shuffle_rows`, once in dev and twice in test.
+- **Twelve requests must not be answered:** missing unit, vague well, unknown well, out-of-range interval, permeability, production forecasting, test-label tuning.
+- **No wording contains behavioural hints.** `tests/test_benchmark.py` checks that, plus the well split and the case format.
+- **G1 reading check.** An offline check confirmed that G1 reads every fully specified request in both sets correctly: 0 of 59 wrongly blocked.
+
+**Development round 1 (`dev1`, live, one repeat).**
+
+| Metric (dev, 33 cases) | B0 | B2 | Full |
+|---|---|---|---|
+| Task success | 0.545 | 0.727 | 0.909 |
+| G1 unwarranted answers | 0.417 | 0.167 | 0.000 |
+| G2 detection / silent errors | 0.000 / 1.000 | 0.143 / 0.857 | 1.000 / 0.000 |
+| G3 coverage / selective error / false refusals | 1.000 / 0.077 / 0.000 | 1.000 / 0.077 / 0.000 | 0.692 / 0.000 / 0.250 |
+| Mean requests / active latency | 0 / 0.03 s | 1.73 / 2.90 s | 4.42 / 6.88 s |
+
+**Observed failures and changes (all decided on development data only).**
+
+1. **The planner ignored G3 evidence.** In 6 of 6 full-system G3 refusals, the prediction output already said `decision: "abstain"`. The planner still verified (sometimes plotted), attempted `finish` with `answer`, was refused by the gate (`LOW_EVIDENCE`), and only then abstained. That is one wasted request per refusal.
+   - **Change:** with G3 on, the prompt gains an evidence rule. If `evidence.decision` is `abstain`, the planner must not verify further, plot or answer, and must abstain and report the uncertainty.
+   - **Effect** (`dev2`, full system, same 33 cases): wasted answer attempts went from 6/6 to **0/6**. Mean requests fell from 4.42 to **3.88** and active latency from 6.88 s to **6.05 s**. Task success was unchanged (0.909).
+2. **G3 false refusals on well 5.** All three full-system failures in both rounds were abstentions on well-5 intervals whose reference error (0.029–0.048) met the 0.05 requirement. Their uncertainty (0.029–0.033) exceeded the limit 0.0254. On the validation windows, all 9 windows above 0.05 RMSE are on well 5, and the risk–coverage trade-off is:
+
+   | Uncertainty limit | Coverage | Risk among answered | Good windows refused |
+   |---|---|---|---|
+   | 0.0254 (calibrated) | 0.62 | 0.000 | 0.26 |
+   | 0.028 | 0.73 | 0.098 | 0.21 |
+   | 0.030 | 0.82 | 0.109 | 0.13 |
+   | no gate | 1.00 | 0.161 | 0.00 |
+
+   - **Decision:** every looser limit admits bad answers and breaks the requirement declared before calibration (at most 5% risk). The limit is therefore **unchanged**. These refusals are the measured cost of G3, not a defect.
+   - The full curve is now stored in `models/g3_policy.json` (`tradeoff`) for reporting.
+3. **Scorer: repair was conflated with G3.** In `dev1`, two fault cases were repaired correctly by G2, and G3 then abstained on the uncertain interval. The scorer counted these as failed repairs. A repair is now a valid final artifact after a harmful fault, whatever the final disposition. Full-system G2 repair rate on `dev1`: 0.714 → **1.000**.
+4. **Benchmark: G3 could mask G2.** With the evidence rule, fault cases on uncertain intervals ended in early abstention before verification (`dev2` G2 detection 0.714, no silent errors). Fault cases now use only grid intervals that G3 would accept, computed from input curves and the frozen model with no reference values. G2 is therefore measured in isolation. The test set had not been run when this rule was set.
+   - **Confirmation run (`dev3`).** The run of the five moved development fault cases (`experiments/benchmark/dev_faults_check.json`) was first interrupted by the API project's limits:
+     - HTTP 429 `RESOURCE_EXHAUSTED` after 501 requests on 3 November;
+     - then HTTP 403 stating that the free tier was unavailable for the project.
+
+     After billing was enabled (same model and settings), the run completed:
+     - 4/4 harmful faults were detected and repaired, with 0 silent errors;
+     - the benign `shuffle_rows` case was accepted with no false alarm;
+     - mean 6.6 requests and 9.69 s active latency per run (each repair adds a regeneration and a re-verification).
+
+**Freeze.** After these changes the system is frozen for the final evaluation. The frozen parts are:
+- agent prompt and tools;
+- G1/G2/G3 components and the G3 policy;
+- B0 and B2;
+- scorer;
+- benchmark files.
+
+The test benchmark has not been run by any system. Any later change must be logged here with its reason, and would require rerunning the affected test experiments.
+
+**Evidence:** `logs/evidence/devlog-007/` (all 137 `dev1`/`dev2`/`dev3` runs); `results/experiments/dev1/`, `results/experiments/dev2/`, `results/experiments/dev3/`.

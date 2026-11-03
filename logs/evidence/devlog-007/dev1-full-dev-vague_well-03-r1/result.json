@@ -1,0 +1,64 @@
+{
+  "run_id": "dev1-full-dev-vague_well-03-r1",
+  "created_utc": "2026-11-03T10:25:14.256257+00:00",
+  "query": "Predict water saturation for my best well from 10900 to 11000 ft.",
+  "provider": "GeminiProvider",
+  "model_version": "gemini-3.5-flash-lite",
+  "generation": {
+    "temperature": 1.0,
+    "seed": 1,
+    "max_output_tokens": 1024,
+    "function_calling_mode": "ANY"
+  },
+  "config": "full",
+  "config_flags": {
+    "name": "full",
+    "grounding": true,
+    "verification": true,
+    "acceptance": true
+  },
+  "status": "clarify",
+  "reason": "The user asked to predict water saturation for 'my best well', which is ambiguous and does not specify a well ID from the dataset registry.",
+  "tool_calls": 1,
+  "tool_errors": 0,
+  "provider_requests": 1,
+  "provider_requests_scope": "this_run_including_retries",
+  "usage": {
+    "prompt_tokens": 1180,
+    "output_tokens": 48,
+    "thinking_tokens": 0
+  },
+  "latency_seconds": 4.25422499999695,
+  "throttle_seconds": 3.05822889999763,
+  "active_latency_seconds": 1.19599609999932,
+  "estimated_cost_usd": null,
+  "billing_cost_usd": null,
+  "cost_note": "No invoice queried; estimates only when explicit price inputs are supplied",
+  "source_commit": "0ffc94f702feab81f6eb1f4d453e19754a557305",
+  "model_sha256": "e24f305b1458fab9189be704db162fd0ed68a25fd7f433ff3f0ace6f618c197e",
+  "fault_injection": null,
+  "oracle": {
+    "fault": null,
+    "fault_applied": false,
+    "artifacts": {},
+    "final_artifacts_valid": null
+  },
+  "verified_predictions": [],
+  "trace": [
+    {
+      "event": "tool",
+      "turn": 1,
+      "name": "finish",
+      "arguments": {
+        "reason": "The user asked to predict water saturation for 'my best well', which is ambiguous and does not specify a well ID from the dataset registry.",
+        "status": "clarify"
+      },
+      "result": {
+        "ok": true,
+        "status": "clarify",
+        "reason": "The user asked to predict water saturation for 'my best well', which is ambiguous and does not specify a well ID from the dataset registry.",
+        "verified_predictions": []
+      }
+    }
+  ]
+}

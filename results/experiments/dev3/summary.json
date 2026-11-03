@@ -1,0 +1,89 @@
+{
+  "created_utc": "2026-11-03T11:04:28.689774+00:00",
+  "experiment": "dev3",
+  "cases_file": "experiments\\benchmark\\dev_faults_check.json",
+  "runs_scored": 5,
+  "systems": {
+    "full": {
+      "repeats": 1,
+      "metrics": {
+        "cases": {
+          "mean": 5.0,
+          "std": 0.0
+        },
+        "task_success": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "disposition_accuracy": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "g1_task_success": {
+          "mean": null,
+          "std": null
+        },
+        "g1_unwarranted_answer_rate": {
+          "mean": null,
+          "std": null
+        },
+        "argument_accuracy": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "g2_detection_rate": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "g2_silent_error_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "g2_repair_rate": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "g2_false_alarm_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "g3_coverage": {
+          "mean": null,
+          "std": null
+        },
+        "g3_selective_error": {
+          "mean": null,
+          "std": null
+        },
+        "g3_false_refusal_rate": {
+          "mean": null,
+          "std": null
+        },
+        "g3_justified_abstention_rate": {
+          "mean": null,
+          "std": null
+        },
+        "provider_failure_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "mean_latency_seconds": {
+          "mean": 9.69177676000254,
+          "std": 0.0
+        },
+        "mean_provider_requests": {
+          "mean": 6.6,
+          "std": 0.0
+        },
+        "mean_prompt_tokens": {
+          "mean": 16136.0,
+          "std": 0.0
+        },
+        "mean_tool_calls": {
+          "mean": 6.6,
+          "std": 0.0
+        }
+      }
+    }
+  }
+}
