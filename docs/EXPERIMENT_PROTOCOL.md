@@ -32,7 +32,6 @@ Therefore do not compare our RMSE numerically to the paper's RMSE as an improvem
 - `results/data_manifest.json`: observed data counts, exclusions, source hashes, units and split IDs.
 - `logs/evidence/`: selected actual Gemini traces, CSVs, and plots, including an initial provider failure.
 - `results/agent_evaluation.json`: only the executed subset of the 16-case convenience smoke suite.
-- `results/tests.xml`: software test execution. Tests use tiny synthetic fixtures and a clearly labeled scripted provider; they are not model performance experiments.
 
 The smoke prompts were manually authored to exercise interfaces and include explicit hints. This is development evaluation, not a blinded held-out benchmark, statistical validation, a novelty result, or proof that G1/G2/G3 improve a baseline. Fault-injection cases label the injected fault explicitly.
 
