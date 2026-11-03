@@ -12,10 +12,10 @@ The selected workflow runs, and its technical evidence supports the group's Phas
 |---|---|---|
 | Public-data pipeline | Pinned SPWLA organizer archive, checksum checks, exact CSV members, missing-value handling, stable identity, whole-well splits | `src/subsurface_agent/data.py`, `results/data_manifest.json` |
 | Deterministic numerical baseline | Train-only imputation, frozen Random Forest and training-mean comparator, keyed scoring and saved plots | `src/subsurface_agent/baseline.py`, `results/baseline_metrics.json` |
-| Real model integration | Gemini REST native function calls; configured model `gemini-3.5-flash-lite` | `src/subsurface_agent/providers.py`, `results/evidence/gemini-e2e-002/` |
+| Real model integration | Gemini REST native function calls; configured model `gemini-3.5-flash-lite` | `src/subsurface_agent/providers.py`, `logs/evidence/gemini-e2e-002/` |
 | Scientific tool interfaces | Inspect schema/interval, convert feet/meters, predict, verify, plot; structured finish states | `contracts.py`, `tools.py` |
 | Execution state | Dataset/model versions, slice/prediction IDs, verification state, bounded turns/calls/errors, JSONL trace | `agent.py`, saved `result.json` and `events.jsonl` |
-| Initial evaluation | 16 specified developer cases; six actually executed against Gemini | `evaluation/cases.json`, `results/agent_evaluation.json` |
+| Initial evaluation | 16 specified developer cases; six actually executed against Gemini | `experiments/phase1_smoke_cases.json`, `results/agent_evaluation.json` |
 | Software verification | 19 executed offline tests, including corruption, recovery, identity-safe scoring, per-run accounting, replay | `tests/`, `results/tests.xml` |
 | Reproduction instructions | Dependencies, Windows commands, data provenance, API setup and limitations | `README.md`, `requirements-lock.txt`, `EXPERIMENT_PROTOCOL.md` |
 | Architecture | Implemented flow and locations of planned G1/G2/G3 mechanisms | `ARCHITECTURE.md` |
@@ -77,8 +77,8 @@ Observed sequence: `inspect_dataset → inspect_interval → predict_properties 
 - Six tool calls, zero tool errors, six provider requests.
 - 78.512 seconds recorded agent-loop latency; data/model initialization precedes this timer.
 - 11,237 reported prompt tokens and 236 reported output tokens.
-- Prediction CSV, plot, structured result and event trace retained in `results/evidence/gemini-e2e-002/`.
-- All six structured tool outputs matched on replay; `results/evidence/replay.json` records `llm_called: false`.
+- Prediction CSV, plot, structured result and event trace retained in `logs/evidence/gemini-e2e-002/`.
+- All six structured tool outputs matched on replay; `logs/evidence/replay.json` records `llm_called: false`.
 
 The verifier checks schema, sample/well/depth identity, finite values, declared bounds, and frozen-model recomputation. Maximum CSV/recomputation difference was approximately 1.11e-16. It does not use target labels and does not establish geological correctness or calibrated uncertainty.
 
@@ -100,8 +100,8 @@ These are manually authored development prompts, some with behavioral hints. Ten
 ### Failures and accounting retained honestly
 
 - An initial real request using `gemini-2.5-flash-lite` returned HTTP 404 for this account. Its failed trace is preserved. An availability diagnostic for another model encountered high demand. The working model was selected after inspecting current service availability.
-- Review found that the batch's original `provider_requests` values were cumulative over the reused provider. Raw records are unchanged. `results/evidence/request_accounting.json` derives the correct per-run deltas: **5, 7, 3, 2, 7, 3**, including retries. Source code now reports each run's own request count, with a regression test. Tool-call counts and pass/fail results were unaffected.
-- A test rerun could not create fixtures in the sandbox's default Windows temporary directory: 9 tests ran successfully and 10 had setup errors. That XML is preserved in `results/evidence/tests_sandbox_temp_failure.xml`. Rerunning all tests with a fresh workspace temporary folder yielded **19 passed** in 0.99 seconds; the final XML is `results/tests.xml`.
+- Review found that the batch's original `provider_requests` values were cumulative over the reused provider. Raw records are unchanged. `logs/evidence/request_accounting.json` derives the correct per-run deltas: **5, 7, 3, 2, 7, 3**, including retries. Source code now reports each run's own request count, with a regression test. Tool-call counts and pass/fail results were unaffected.
+- A test rerun could not create fixtures in the sandbox's default Windows temporary directory: 9 tests ran successfully and 10 had setup errors. That XML is preserved in `logs/evidence/tests_sandbox_temp_failure.xml`. Rerunning all tests with a fresh workspace temporary folder yielded **19 passed** in 0.99 seconds; the final XML is `results/tests.xml`.
 
 Replay validates recorded actions under the pinned data/model, not a new stochastic plan. A different training environment may produce a different model checksum; strict replay rejects mismatched versions.
 

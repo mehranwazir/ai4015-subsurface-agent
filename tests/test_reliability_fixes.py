@@ -47,7 +47,7 @@ def test_reference_model_is_kept_when_refit_reproduces_predictions(tiny_root):
 def test_evaluation_batches_never_overwrite_recorded_evidence(tiny_root):
     recorded = tiny_root / "results" / "agent_evaluation.json"
     write_json(recorded, {"recorded": "phase-1"})
-    write_json(tiny_root / "evaluation" / "cases.json", [
+    write_json(tiny_root / "experiments" / "phase1_smoke_cases.json", [
         {"id": "predict", "query": "Predict well 3 from 10600 to 10619.5 ft",
          "expected": {"statuses": ["answer"], "well": 3, "tools": ["predict_properties", "verify_predictions"]}}])
     first = evaluate_cases(tiny_root, ScriptedProvider())

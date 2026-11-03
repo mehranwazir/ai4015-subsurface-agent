@@ -32,7 +32,7 @@ def test_full_tool_loop_and_replay(tiny_root):
     result = run_agent(tiny_root, QUERY, ScriptedProvider(), run_name="software-test")
     assert result["status"] == "answer"
     assert result["provider"] == "ScriptedProvider"
-    replay = replay_trace(tiny_root, tiny_root / "results/runs/software-test/result.json", replay_name="software-replay")
+    replay = replay_trace(tiny_root, tiny_root / "logs/runs/software-test/result.json", replay_name="software-replay")
     assert replay["all_match"]
     assert replay["llm_called"] is False
 

@@ -28,7 +28,7 @@ Therefore do not compare our RMSE numerically to the paper's RMSE as an improvem
 
 - `results/baseline_metrics.json`: real public-data training and scoring.
 - `results/data_manifest.json`: observed data counts, exclusions, source hashes, units and split IDs.
-- `results/evidence/`: selected actual Gemini traces, CSVs, and plots, including an initial provider failure.
+- `logs/evidence/`: selected actual Gemini traces, CSVs, and plots, including an initial provider failure.
 - `results/agent_evaluation.json`: only the executed subset of the 16-case convenience smoke suite.
 - `results/tests.xml`: software test execution. Tests use tiny synthetic fixtures and a clearly labeled scripted provider; they are not model performance experiments.
 

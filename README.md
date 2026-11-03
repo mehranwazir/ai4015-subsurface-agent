@@ -25,7 +25,7 @@ The recorded agent evaluation includes:
 - A separate prediction, verification and plotting run for well 3 from 10,600 to 11,000 ft, producing 1,220 prediction rows in six tool calls with no tool errors.
 - Replay of that run with all six structured tool outputs matching, without another LLM call.
 
-See the [recorded evaluation](results/agent_evaluation.json), [successful workflow](results/evidence/gemini-e2e-002/result.json) and [replay result](results/evidence/replay.json). The live cases are development smoke tests, not a blinded reliability benchmark.
+See the [recorded evaluation](results/agent_evaluation.json), [successful workflow](logs/evidence/gemini-e2e-002/result.json) and [replay result](logs/evidence/replay.json). The live cases are development smoke tests, not a blinded reliability benchmark.
 
 The current software suite has **32 passing tests**: the original 19, four added after Phase 1 verification and nine for the G1 grounding component. [Windows and Linux CI](https://github.com/mehranwazir/ai4015-subsurface-agent/actions) runs the suite on every push. CI uses synthetic fixtures and a scripted provider; it does not run full public-data training or call Gemini.
 
@@ -72,7 +72,7 @@ Include the well, both depth bounds and the depth unit in the request. With the 
 
 `--config` selects a system configuration for experiments and ablations: `full` (default), `no_g1` (G1 grounding switched off) or `phase1` (the behaviour of the recorded Phase 1 runs). The same option exists for `evaluate`. Each result records the configuration name and its component switches.
 
-Each run saves `result.json`, an event trace and any prediction or plot files in `results/runs/<run-id>/`. Records include the final disposition, tool calls, errors, data/model versions, token usage and loop latency. Billing cost is recorded as unknown unless separately established; optional price inputs produce an estimate only.
+Each run saves `result.json`, an event trace and any prediction or plot files in `logs/runs/<run-id>/`. Records include the final disposition, tool calls, errors, data/model versions, token usage and loop latency. Billing cost is recorded as unknown unless separately established; optional price inputs produce an estimate only.
 
 To run the same six cases selected for the Phase 1 evaluation:
 
@@ -87,7 +87,7 @@ Each new batch writes a separate summary to `results/evaluations/<batch-id>.json
 After preparing the pinned data, the committed reference model can be used to replay the saved workflow without an API key:
 
 ```powershell
-.\.venv\Scripts\python.exe -m subsurface_agent replay results/evidence/gemini-e2e-002/result.json
+.\.venv\Scripts\python.exe -m subsurface_agent replay logs/evidence/gemini-e2e-002/result.json
 ```
 
 Replay repeats the saved tool actions and checks their structured outputs under matching data/model versions. It does not ask Gemini to create a new plan. Plot bytes may vary with rendering versions.
@@ -152,17 +152,16 @@ The [experiment protocol](docs/EXPERIMENT_PROTOCOL.md) documents scoring, leakag
 ## Repository layout
 
 ```text
-src/subsurface_agent/   data preparation, model, tools, agent, evaluation, configurations and CLI
-  gaps/                one switchable component per research gap (G1 grounding so far)
-tests/                 offline software tests with synthetic fixtures
-evaluation/            16 defined development smoke cases
-docs/                  architecture, protocol and research notes
-data/raw/              downloaded source data, excluded from Git
-data/processed/        prepared tables, excluded from Git
-models/                reference Random Forest and its manifest
-results/               recorded metrics, predictions and figures
-results/evidence/      retained live traces, artifacts and replay results
-results/runs/          new local runs, excluded from Git
+src/subsurface_agent/   agent, tools, state, configurations, data preparation, model and CLI
+  gaps/                 one switchable component per research gap (G1 grounding so far)
+data/                   download and split definitions; raw/ and processed/ tables are excluded from Git
+experiments/            evaluation cases (and, in Phase 2, configurations and scripts for E1-E6)
+results/                recorded metrics, predictions, figures and evaluation summaries
+logs/evidence/          retained agent trajectories, artifacts and replay results
+logs/runs/              new local runs, excluded from Git
+models/                 versioned reference Random Forest and its manifest (needed for replay)
+tests/                  offline software tests with synthetic fixtures
+docs/                   development log, architecture, protocol and Phase 1 research notes
 ```
 
 ## Project team

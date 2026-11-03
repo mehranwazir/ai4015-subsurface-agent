@@ -35,7 +35,7 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
     run_id = run_name or f"agent-{uuid.uuid4().hex[:10]}"
     if not run_id.replace("-", "").replace("_", "").isalnum():
         raise ValueError("Run name must contain only letters/numbers/dash/underscore")
-    run_dir = root / "results" / "runs" / run_id
+    run_dir = root / "logs" / "runs" / run_id
     if (run_dir / "result.json").exists():
         raise ValueError("Run already exists; use a new run name to preserve evidence")
     runtime = ToolRuntime(root, run_dir, omit_prediction_once=omit_prediction_once, query=query, config=config)
@@ -114,7 +114,7 @@ def run_agent(root: Path, query: str, provider, *, run_name: str | None = None,
 def replay_trace(root: Path, result_path: Path, *, replay_name: str | None = None) -> dict:
     saved = read_json(result_path)
     # Traces recorded before configurations existed replay with the Phase 1 behaviour.
-    runtime = ToolRuntime(root, root / "results" / "runs" / (replay_name or f"replay-{uuid.uuid4().hex[:8]}"),
+    runtime = ToolRuntime(root, root / "logs" / "runs" / (replay_name or f"replay-{uuid.uuid4().hex[:8]}"),
                           omit_prediction_once=saved.get("fault_injection") == "omit_prediction_once",
                           query=saved["query"], config=get_config(saved.get("config", "phase1")))
     if runtime.model_info["model_sha256"] != saved["model_sha256"] or runtime.manifest["source_commit"] != saved["source_commit"]:

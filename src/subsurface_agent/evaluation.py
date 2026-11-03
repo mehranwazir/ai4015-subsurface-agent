@@ -42,7 +42,7 @@ def score_case(case: dict, result: dict) -> dict:
 
 def evaluate_cases(root: Path, provider, *, limit: int | None = None, selected: list[str] | None = None,
                    config: SystemConfig = PRESETS["full"]) -> dict:
-    cases = read_json(root / "evaluation" / "cases.json")
+    cases = read_json(root / "experiments" / "phase1_smoke_cases.json")
     if selected:
         cases = [c for c in cases if c["id"] in selected]
         if set(selected) != {c["id"] for c in cases}:

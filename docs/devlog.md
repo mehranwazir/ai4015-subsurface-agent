@@ -1,6 +1,6 @@
 # Development log
 
-Each entry records a failure or limitation we observed, the change made, and its measured effect. Traces for the cited runs are kept under `results/evidence/`.
+Each entry records a failure or limitation we observed, the change made, and its measured effect. Traces for the cited runs are kept under `logs/evidence/`.
 
 ## Entry 1: 3 November 2026. Planner assumes an unstated depth unit (G1)
 
@@ -36,4 +36,4 @@ In both "after" runs, the registry and checklist context led the planner to clar
 - These are a few development runs, not the benchmark result. The G1 effect will be measured on the frozen test set with repeated runs (E4/E5).
 - Rule-based extraction can miss unusual phrasings such as "10.6k ft". Such cases would be rejected as ungrounded, which costs a false clarification rather than a silent error.
 
-**Evidence:** `results/evidence/devlog-001/` (`before-*` from the verification clone, `devlog001-after-*` with G1).
+**Evidence:** `logs/evidence/devlog-001/` (`before-*` from the verification clone, `devlog001-after-*` with G1).
