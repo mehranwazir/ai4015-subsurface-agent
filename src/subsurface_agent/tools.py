@@ -61,6 +61,8 @@ class ToolRuntime:
         if sha256(feature_path) != self.manifest["processed_sha256"]["features.csv"]:
             raise ValueError("Feature-only data checksum mismatch")
         self.frame = pd.read_csv(feature_path)
+        self.well_ranges = {int(w): (float(r["min"]), float(r["max"]))
+                            for w, r in self.frame.groupby("WELLNUM").DEPTH.agg(["min", "max"]).iterrows()}
         self.slices: dict[str, pd.DataFrame] = {}
         self.predictions: dict[str, dict] = {}
         self.verified: set[str] = set()
@@ -73,10 +75,16 @@ class ToolRuntime:
             return {"ok": False, "error": "UNKNOWN_TOOL", "message": "Tool is not allowlisted", "recoverable": False}
         try:
             request = CONTRACTS[name].model_validate(arguments)
-            if name != "inspect_dataset" and not self.inspected:
+            # Clarifying or abstaining needs no data access; answers are checked in finish().
+            if name not in ("inspect_dataset", "finish") and not self.inspected:
                 raise ToolError("INSPECT_FIRST", "Call inspect_dataset before other tools", True)
-            if name == "inspect_interval" and self.config.grounding:
-                grounding.check_interval(request, self.facts)
+            if self.config.grounding:
+                if name == "inspect_interval":
+                    grounding.check_interval(request, self.facts, self.well_ranges)
+                elif name == "predict_properties":
+                    grounding.check_prediction_request(self.facts)
+                elif name == "finish" and request.status == "answer":
+                    grounding.check_answer(self.facts)
             output = getattr(self, name)(**request.model_dump())
             result = {"ok": True, **clean_json(output)}
         except ValidationError as exc:
@@ -201,6 +209,6 @@ class ToolRuntime:
         if status == "answer":
             if self.predictions and set(self.predictions) - self.verified:
                 raise ToolError("UNVERIFIED_RESULT", "Cannot answer with unverified predictions", True)
-            if len(self.outputs) < 1:
+            if not self.inspected:
                 raise ToolError("NO_EVIDENCE", "Inspect data before answering", True)
         return {"status": status, "reason": reason, "verified_predictions": sorted(self.verified)}

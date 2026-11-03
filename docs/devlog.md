@@ -37,3 +37,29 @@ In both "after" runs, the registry and checklist context led the planner to clar
 - Rule-based extraction can miss unusual phrasings such as "10.6k ft". Such cases would be rejected as ungrounded, which costs a false clarification rather than a silent error.
 
 **Evidence:** `logs/evidence/devlog-001/` (`before-*` from the verification clone, `devlog001-after-*` with G1).
+
+## Entry 2: 3 November 2026. G1 extended to targets, curves and well depth range; clarification no longer requires data inspection
+
+**Observed.** The Phase 1 design defines G1 over well, curve, target, interval and unit, but entry 1 only covered well, interval and unit. Two live checks with G1 switched off (`no_g1`) showed what was still unprotected:
+
+- *"Predict PHIF, SW and VSH for well 3 from 11000 to 11800 ft"*. Well 3 has data only to 11,371.4 ft. The interval tool silently returned the shorter interval, and the planner answered "successfully predicted … from 11000 to 11800 ft".
+- *"Predict porosity and permeability …"*. The planner clarified correctly in this run, but only the prompt prevented an answer that silently drops permeability. No code enforced it.
+
+**Change.** In `gaps/grounding.py`, with G1 on:
+
+1. Requested quantities are extracted from the request. A prediction is blocked when the request asks only for unsupported quantities (permeability, production, economics, lithology, retraining, test labels). An `answer` is blocked whenever an unsupported part would be dropped (`UNSUPPORTED_TARGET`).
+2. Curves passed to `inspect_interval` must be named in the request (aliases included) or omitted (`UNGROUNDED_CURVE`).
+3. An interval extending beyond the well's recorded depths is rejected instead of being shortened silently (`INTERVAL_OUT_OF_RANGE`).
+4. The checklist in the prompt now covers targets and curves.
+
+**Regression found and fixed.** The first live run of the permeability request with G1 on **failed**. Because the registry already listed the supported targets, the planner tried to `finish` with clarify immediately. The Phase 1 rule "call `inspect_dataset` before any other tool" rejected that call three times and the run used up its error budget. `finish` with clarify or abstain is now allowed without data access; an `answer` still requires prior inspection (`NO_EVIDENCE`).
+
+**Effect (live, `gemini-3.5-flash-lite`).**
+
+| Request | G1 off (`no_g1`) | G1 on, before fix | G1 on, after fix |
+|---|---|---|---|
+| 11,000–11,800 ft (beyond well end) | answer on shortened interval (silent error) | abstain: "exceeds well 3 maximum depth of 11371.4 ft", 3 calls | — |
+| Porosity and permeability | clarify, 2 calls, 2.6 s | failed (budget exhausted) | **clarify, 1 call, 1.4 s (2/2)** |
+| Gamma ray and RHOB, inspect only | — | — | answer, 3 calls, 3.6 s |
+
+**Evidence:** `logs/evidence/devlog-002/`.

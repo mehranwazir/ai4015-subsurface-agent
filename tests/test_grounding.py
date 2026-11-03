@@ -78,3 +78,50 @@ def test_full_system_turns_a_guessed_unit_into_clarification(tiny_root):
     assert full["status"] == "clarify" and full["config"] == "full"
     assert any(e["result"].get("error") == "UNGROUNDED_UNIT" for e in full["trace"])
     assert ablated["status"] == "answer" and ablated["config_flags"]["grounding"] is False
+
+
+def grounded_runtime(tiny_root, query, name="full"):
+    runtime = ToolRuntime(tiny_root, tiny_root / f"run-{name}", query=query, config=get_config(name))
+    runtime.dispatch("inspect_dataset", {})
+    return runtime
+
+
+def test_unsupported_quantities_cannot_be_answered_silently(tiny_root):
+    only = grounded_runtime(tiny_root, "Predict permeability for well 3 from 10600 to 10619.5 ft")
+    interval = only.dispatch("inspect_interval", {"well": 3, "start": 10600, "end": 10619.5, "unit": "ft"})
+    blocked = only.dispatch("predict_properties", {"slice_id": interval["slice_id"]})
+    assert (blocked["error"], blocked["recoverable"]) == ("UNSUPPORTED_TARGET", False)
+    assert only.dispatch("finish", {"status": "clarify", "reason": "Permeability is unsupported"})["ok"]
+
+    mixed = grounded_runtime(tiny_root, "Predict porosity and permeability for well 3 from 10600 to 10619.5 ft")
+    interval = mixed.dispatch("inspect_interval", {"well": 3, "start": 10600, "end": 10619.5, "unit": "ft"})
+    predicted = mixed.dispatch("predict_properties", {"slice_id": interval["slice_id"]})
+    mixed.dispatch("verify_predictions", {"prediction_id": predicted["prediction_id"]})
+    answer = mixed.dispatch("finish", {"status": "answer", "reason": "Done"})
+    assert (answer["error"], answer["recoverable"]) == ("UNSUPPORTED_TARGET", True)
+
+    ablated = grounded_runtime(tiny_root, "Predict permeability for well 3 from 10600 to 10619.5 ft", "no_g1")
+    interval = ablated.dispatch("inspect_interval", {"well": 3, "start": 10600, "end": 10619.5, "unit": "ft"})
+    assert ablated.dispatch("predict_properties", {"slice_id": interval["slice_id"]})["ok"]
+
+
+def test_curves_must_be_named_and_intervals_must_lie_inside_the_well(tiny_root):
+    query = "Inspect gamma ray and RHOB for well 3 from 10600 to 10619.5 ft"
+    runtime = grounded_runtime(tiny_root, query)
+    base = {"well": 3, "start": 10600, "end": 10619.5, "unit": "ft"}
+    assert runtime.dispatch("inspect_interval", {**base, "curves": ["gamma ray", "RHOB"]})["ok"]
+    assert runtime.dispatch("inspect_interval", base)["ok"]
+    assert runtime.dispatch("inspect_interval", {**base, "curves": ["NEU"]})["error"] == "UNGROUNDED_CURVE"
+    beyond = grounded_runtime(tiny_root, "Inspect well 3 from 10600 to 10700 ft")
+    result = beyond.dispatch("inspect_interval", {**base, "end": 10700})
+    assert (result["error"], result["recoverable"]) == ("INTERVAL_OUT_OF_RANGE", False)
+    assert grounded_runtime(tiny_root, "Inspect well 3 from 10600 to 10700 ft", "no_g1").dispatch(
+        "inspect_interval", {**base, "end": 10700})["ok"]
+
+
+def test_clarify_needs_no_inspection_but_an_answer_does(tiny_root):
+    runtime = ToolRuntime(tiny_root, tiny_root / "run-direct", query="Predict permeability for well 3",
+                          config=get_config("full"))
+    assert runtime.dispatch("finish", {"status": "clarify", "reason": "Permeability is unsupported"})["ok"]
+    fresh = ToolRuntime(tiny_root, tiny_root / "run-direct-2", query="List wells", config=get_config("full"))
+    assert fresh.dispatch("finish", {"status": "answer", "reason": "Done"})["error"] == "NO_EVIDENCE"
