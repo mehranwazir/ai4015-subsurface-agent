@@ -457,7 +457,7 @@
       <aside>
         <div class="panel side-card"><h3>Predicted logs</h3>
           ${series ? `<div class="logs" data-logs></div><p class="table-note">File ${esc(series.artifact)} · well ${esc(series.well)}. Hover to read values.</p>`
-            : `<div class="empty"><h3>No prediction file</h3><p>${r.status === 'failed' ? 'The run stopped before a prediction was made.' : 'This run ended before predicting, as expected when a request has to be clarified or refused.'}</p></div>`}
+            : `<div class="empty"><h3>No prediction file</h3><p>${noFileReason(r)}</p></div>`}
         </div>
         ${score.length ? `<div class="panel side-card"><h3>Score</h3><ul class="facts">${score.map(([k, v]) => `<li><span class="k">${esc(k)}</span><span class="v">${esc(v)}</span></li>`).join('')}</ul></div>` : ''}
         <div class="panel side-card"><h3>Run record</h3><ul class="facts">${facts.map(([k, v]) => `<li><span class="k">${esc(k)}</span><span class="v">${esc(v)}</span></li>`).join('')}</ul></div>
@@ -484,7 +484,8 @@
   // ── new run ───────────────────────────────────────────────────────────────
   const EXAMPLES = [
     ['Prediction', 'Predict PHIF, SW and VSH for well 3 from 10900 to 11000 ft.'],
-    ['Meters', 'Predict PHIF, SW and VSH for well 7 between 4380 and 4410 m.'],
+    ['Meters', 'Estimate porosity for well 3 from 3291.84 m to 3322.32 m.'],
+    ['Weak evidence', 'Predict PHIF, SW and VSH for well 7 between 4380 and 4410 m.'],
     ['Missing unit', 'Predict PHIF, SW and VSH for well 3 from 10600 to 10700.'],
     ['Unknown well', 'Predict PHIF, SW and VSH for well 12 from 9000 to 9100 ft.'],
     ['Unsupported', 'Estimate permeability for well 7 from 14300 to 14400 ft.'],
@@ -607,6 +608,17 @@
       if (d.series[0]) drawLogs($('[data-logs]', host), d.series[0]);
       $('[data-go]') && ($('[data-go]').disabled = false);
     }
+  }
+
+  // Why a run has no predicted logs to draw.
+  function noFileReason(r) {
+    const predicted = (r.trace || []).some((e) => e.name === 'predict_properties' && e.result && e.result.ok);
+    if (predicted && r.fault_injection === 'missing_file') {
+      return 'A prediction was made, but the injected fault deleted the file, so there is nothing to draw.';
+    }
+    if (predicted) return 'A prediction was made, but its file is not in the saved evidence.';
+    if (r.status === 'failed') return 'The run stopped before a prediction was made.';
+    return 'This run ended before predicting, as expected when a request has to be clarified or refused.';
   }
 
   function providerHint(r) {
